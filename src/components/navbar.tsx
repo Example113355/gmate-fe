@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import ChatBox from './messages/chatbox';
+import ChatBox from './messages/ChatBox';
 import MessageModal from './messages/MessageModal';
 
 const Navbar = () => {

@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCommenting, faMinusCircle } from '@fortawesome/free-solid-svg-icons';
-import Sidebar from './sidebar';
-import MessageContainer from './messagecontainer';
+import Sidebar from './Sidebar';
+import MessageContainer from './MessageContainer';
 
 interface ChatBoxProps {
   isOpen: boolean;

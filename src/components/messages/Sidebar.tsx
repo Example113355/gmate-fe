@@ -1,5 +1,5 @@
 import React from 'react';
-import Conversation from './conversation';
+import Conversation from './Conversation';
 
 const Sidebar: React.FC = () => {
   return (
