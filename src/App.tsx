@@ -8,6 +8,7 @@ import MainLayout from './components/MainLayout'
 import HomePage from './pages/home'
 import LogIn from './pages/Login/Login'
 import NotFoundPage from './pages/notFound'
+import UserHomePage from './pages/userHomepage'
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
         </Route>
         <Route path="/login" element={<LogIn />} />
         <Route path="*" element={<NotFoundPage />} />
+
+        <Route path="/user-homepage" element={<UserHomePage />} />
       </Routes>
     </Router>
   )
