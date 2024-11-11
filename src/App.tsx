@@ -9,6 +9,7 @@ import HomePage from './pages/home'
 import LogIn from './pages/Login/Login'
 import NotFoundPage from './pages/notFound'
 import UserHomePage from './pages/userHomepage'
+import UserDetail from './pages/UserDetail/UserDetail'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
+          <Route path="/user/:id" element={<UserDetail />} />
         </Route>
         <Route path="/login" element={<LogIn />} />
         <Route path="*" element={<NotFoundPage />} />
