@@ -1,0 +1,38 @@
+.user_payment {
+    padding: 8px 14px;
+    border: 1px solid #f78d6a;
+    width: fit-content;
+    border-radius: 6px;
+}
+
+.price_container {
+    font-size: 30px;
+    letter-spacing: 1px;
+    color: #d24b41;
+    font-weight: 700;
+}
+
+.price_rate {
+    display: flex;
+    align-items: center;
+}
+
+.star {
+    font-size: 14px;
+}
+
+.price_rate--star {
+    margin-right: 8px;
+}
+
+.rate_total {
+    color: #7f8c8d;
+    font-size: 12px;
+}
+
+.user_payment--button {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
