@@ -5,12 +5,13 @@ import {
 import './assets/styles/base.css'
 import './assets/styles/keyframes.css'
 import MainLayout from './components/MainLayout'
+
 import HomePage from './pages/home'
 import LogIn from './pages/Login/Login'
 import NotFoundPage from './pages/notFound'
 import UserHomePage from './pages/userHomepage'
 import UserDetail from './pages/UserDetail/UserDetail'
-
+import TestModalPage from './pages/testpayment'
 function App() {
   return (
     <Router>
@@ -21,6 +22,7 @@ function App() {
         </Route>
         <Route path="/login" element={<LogIn />} />
         <Route path="*" element={<NotFoundPage />} />
+        <Route path="/test-modal" element={<TestModalPage />} /> 
 
         <Route path="/user-homepage" element={<UserHomePage />} />
       </Routes>
