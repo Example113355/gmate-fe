@@ -1,6 +1,13 @@
+import { useState } from 'react';
+import MessageModal from '../../../components/messages/MessageModal';
 import './UserPayment.css';
 
 const UserPayment = () => {
+  const [isMessageModalOpen, setMessageModalOpen] = useState(false);
+
+  const openMessageModal = () => setMessageModalOpen(true);
+  const closeMessageModal = () => setMessageModalOpen(false);
+
   return (
     <div className="user_payment">
       <div className="user_payment--info">
@@ -26,8 +33,10 @@ const UserPayment = () => {
       <div className="user_payment--button">
         <button className="base_btn">THUÊ</button>
         <button className="base_btn payment_btn">DONATE</button>
-        <button className="base_btn payment_btn">CHAT</button>
+        <button className="base_btn payment_btn" onClick={openMessageModal}>CHAT</button>
       </div>
+
+      <MessageModal isOpen={isMessageModalOpen} onClose={closeMessageModal} />
     </div>
   );
 };
