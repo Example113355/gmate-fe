@@ -15,8 +15,8 @@ const Messages: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex-1 overflow-y-auto px-4">
-      <Message text="Hello, this is a message from the other user!" isUser={false} />
+    <div className="flex-1 overflow-y-auto px-4 text-2xl">
+      <Message text="Hello, this is a message from the other user! Hello, this is a message from the other user!" isUser={false} />
       <Message text="Hello! This is a message from you." isUser={true} />
       <Message text="Another message to test scrolling..." isUser={false} />
       <Message text="More messages to test scrollability." isUser={true} />
