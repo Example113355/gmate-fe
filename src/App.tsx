@@ -1,26 +1,32 @@
 import {
-  BrowserRouter as Router,
-  Routes, Route
+  Route,
+  BrowserRouter as Router, Routes
 } from 'react-router-dom'
-import Navbar from './components/navbar'
-import Footer from './components/footer'
-import HomePage from './pages/home'
-import NotFoundPage from './pages/notFound'
+import './assets/styles/base.css'
+import './assets/styles/keyframes.css'
+import MainLayout from './components/MainLayout'
 
+import HomePage from './pages/home'
+import LogIn from './pages/Login/Login'
+import NotFoundPage from './pages/notFound'
+import UserHomePage from './pages/userHomepage'
+import UserDetail from './pages/UserDetail/UserDetail'
+import TestModalPage from './pages/testpayment'
 function App() {
   return (
-    <div className="">
-      <Router>
-        <Navbar />
+    <Router>
+      <Routes>
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<HomePage />} />
+          <Route path="/user/:id" element={<UserDetail />} />
+        </Route>
+        <Route path="/login" element={<LogIn />} />
+        <Route path="*" element={<NotFoundPage />} />
+        <Route path="/test-modal" element={<TestModalPage />} /> 
 
-        <Routes>
-          <Route path="/" element={ <HomePage /> } />
-          <Route path="*" element={ <NotFoundPage /> } />
-        </Routes>
-
-        <Footer />
-      </Router>
-    </div>
+        <Route path="/user-homepage" element={<UserHomePage />} />
+      </Routes>
+    </Router>
   )
 }
 
