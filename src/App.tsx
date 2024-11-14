@@ -12,6 +12,7 @@ import NotFoundPage from './pages/notFound'
 import UserHomePage from './pages/userHomepage'
 import UserDetail from './pages/UserDetail/UserDetail'
 import TestModalPage from './pages/testpayment'
+import PlayerStat from './pages/PlayerStat/PlayerStat'
 import PlayerEdit from './pages/PlayerEdit/PlayerEdit'
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
           <Route path="/user/:id" element={<UserDetail />} />
+          <Route path="/player/stat" element={<PlayerStat />} />
         </Route>
         <Route path="/login" element={<LogIn />} />
         <Route path="*" element={<NotFoundPage />} />
