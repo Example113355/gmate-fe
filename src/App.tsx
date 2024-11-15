@@ -11,9 +11,9 @@ import LogIn from './pages/Login/Login'
 import NotFoundPage from './pages/notFound'
 import UserHomePage from './pages/userHomepage'
 import UserDetail from './pages/UserDetail/UserDetail'
-import TestModalPage from './pages/testpayment'
 import PlayerStat from './pages/PlayerStat/PlayerStat'
 import PlayerEdit from './pages/PlayerEdit/PlayerEdit'
+import PlayerProfile from './pages/PlayerProfile'
 function App() {
   return (
     <Router>
@@ -25,9 +25,9 @@ function App() {
         </Route>
         <Route path="/login" element={<LogIn />} />
         <Route path="*" element={<NotFoundPage />} />
-        <Route path="/test-modal" element={<TestModalPage />} />
 
         <Route path="/user-homepage" element={<UserHomePage />} />
+        <Route path="/player-profile" element={<PlayerProfile />} />
 
         <Route path="/playeredit/:id" element={<PlayerEdit />} />
       </Routes>
