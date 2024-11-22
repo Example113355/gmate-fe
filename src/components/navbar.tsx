@@ -55,14 +55,14 @@ const Navbar = () => {
           <div className="flex items-center space-x-4">
             <button
               style={{ width: "35px", height: "35px" }}
-              className="text-red-500 hover:text-red-600 p-2 hidden miic:flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200"
+              className="text-red-500 hover:text-red-600 p-2 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200"
               onClick={() => {}}
             >
               <CiSearch style={{ fontSize: "28px" }} />
             </button>
             <button
               style={{ width: "35px", height: "35px" }}
-              className="text-red-500 hover:text-red-600 p-2 hidden miic:flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200"
+              className="text-red-500 hover:text-red-600 p-2 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200"
               onClick={openChatBox}
             >
               <span
@@ -74,7 +74,7 @@ const Navbar = () => {
             </button>
             <button
               style={{ width: "35px", height: "35px" }}
-              className="relative  text-red-500 hover:text-red-600 p-2 hidden miic:flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200"
+              className="relative  text-red-500 hover:text-red-600 p-2 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200"
               onClick={() => {}}
             >
               <RiNotification2Line style={{ fontSize: "24px" }} />
@@ -88,7 +88,7 @@ const Navbar = () => {
 
             <div
               className="
-            flex items-center justify-center bg-background px-4 py-2 rounded-lg   
+            hidden miic:flex items-center justify-center bg-background px-4 py-2 rounded-lg   
             "
             >
               <img
