@@ -58,7 +58,6 @@ function App() {
         <Route path="/user-homepage" element={<UserHomePage />} />
         <Route path="/player-profile" element={<PlayerProfile />} />
 
-        <Route path="/playeredit/:id" element={<PlayerEdit />} />
       </Routes>
     </Router>
   );

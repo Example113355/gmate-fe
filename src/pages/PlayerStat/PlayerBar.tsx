@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const PlayerChart = () => {
+const PlayerBar = () => {
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [tooltipContent, setTooltipContent] = useState('');
   const [tooltipX, setTooltipX] = useState(0);
@@ -25,9 +25,9 @@ const PlayerChart = () => {
 
   return (
     <>
-    <div className="px-4">
+    <div>
       <div className="max-w-lg mx-auto py-24">
-        <div className="shadow p-6 rounded-lg bg-white" style={{ width: '800px' }}>
+        <div className="border-2 border-solid border-black p-6 rounded-lg bg-white" style={{ width: '600px' }}>
           <div className="md:flex md:justify-between md:items-center">
             <div>
               <h2 className="text-xl text-gray-800 font-bold leading-tight">Product Sales</h2>
@@ -59,7 +59,7 @@ const PlayerChart = () => {
             )}
 
             {/* Graph Container with Fixed Width */}
-            <div className="flex -mx-2 items-end mb-2" style={{ width: '600px' }}> {/* Fixed width for the graph */}
+            <div className="flex -mx-2 items-end mb-2" style={{ width: '500px' }}> {/* Fixed width for the graph */}
               {chartData.map((data, index) => (
                 <div key={index} className="px-2" style={{ width: `${100 / chartData.length}%` }}> {/* Dynamic width for bars */}
                   <div
@@ -107,4 +107,4 @@ const PlayerChart = () => {
   );
 };
 
-export default PlayerChart;
+export default PlayerBar;

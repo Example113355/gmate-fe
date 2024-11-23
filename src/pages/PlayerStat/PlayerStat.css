@@ -1,14 +1,21 @@
 html, body{
     height: 100%;
     margin: 0;
-    background-color: #FEFEFE;
+    background-color: #a6a7a8;
+
 }
 
 .donate-container{
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    margin: auto;
+    margin-top: 30px;
     width: 100%;
+    max-width: 1300px;
     display: grid;
-    grid-template-columns: 1fr 2fr;
-    justify-items: center;
+    grid-template-columns:1fr 1fr;
+    justify-items: start;
     align-items: center;
 }
 
@@ -59,4 +66,13 @@ html, body{
 .stat-container{
     display: grid;
     grid-template-columns: 1fr ;
+}
+
+.player-his-container{
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+    margin: auto;
+    width: 100%;
+    max-width: 1300px;
 }

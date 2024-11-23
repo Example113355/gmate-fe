@@ -14,7 +14,7 @@ const PlayerHistory = () => {
     ];
 
     return (
-        <div style={{ padding: "20px" }}>
+        <div className="player-his-container">
             <table style={{ width: "100%", borderCollapse: "collapse", backgroundColor: "white" }}>
                 <thead>
                     <tr>
