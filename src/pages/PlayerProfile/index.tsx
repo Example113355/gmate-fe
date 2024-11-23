@@ -5,7 +5,7 @@ import Footer from '../../components/footer'
 const PlayerProfile = () => {
     return (
         <div className="container-2xl">
-            <PlayerHeader/>
+            <PlayerHeader id={1} />
             <div className='container flex justify-between mx-auto my-8'>
                 <div className='w-1/6 mr-8'>
                     <img src={avt} alt='avatar'></img>
@@ -14,17 +14,17 @@ const PlayerProfile = () => {
                     <div className='flex items-center mt-8'>
                         <h3 className='text-2xl text-red-500'>GIỚI THIỆU:</h3>
                         <button
-                            style={{ width: "35px", height: "35px" }} 
+                            style={{ width: "35px", height: "35px" }}
                             className="flex items-center justify-center p-2 mb-2 text-gray-500 hover:text-red-600"
                         >
                             <span
                                 className="iconify"
-                                style={{ fontSize: "28px" }} 
+                                style={{ fontSize: "28px" }}
                                 data-icon="ic:outline-edit"
                                 data-inline="false"
                             >
                             </span>
-                        
+
 
                         </button>
                     </div>
@@ -39,12 +39,12 @@ const PlayerProfile = () => {
                             <div className='flex'>
                                 <h1 className='text-5xl'>Hươngggggg BKU</h1>
                                 <button
-                                    style={{ width: "35px", height: "35px" }} 
+                                    style={{ width: "35px", height: "35px" }}
                                     className="flex items-center justify-center p-2 mb-2 text-gray-500 hover:text-red-600"
                                 >
                                     <span
                                         className="iconify"
-                                        style={{ fontSize: "28px" }} 
+                                        style={{ fontSize: "28px" }}
                                         data-icon="ic:outline-edit"
                                         data-inline="false"
                                     >
@@ -75,12 +75,12 @@ const PlayerProfile = () => {
                                 <div className='relative px-12 py-4 text-base text-white rounded-xl bg-zinc-700'>
                                     Đấu trường chân lý
                                     <button
-                                        style={{ width: "35px", height: "35px" }} 
+                                        style={{ width: "35px", height: "35px" }}
                                         className="absolute flex items-center justify-center p-2 mb-2 text-gray-500 -right-2 -top-2 hover:text-red-600"
                                     >
                                         <span
                                             className="iconify"
-                                            style={{ fontSize: "20px" }} 
+                                            style={{ fontSize: "20px" }}
                                             data-icon="lets-icons:close-ring-light"
                                             data-inline="false"
                                         >
@@ -91,12 +91,12 @@ const PlayerProfile = () => {
                                 <div className='relative px-12 py-4 text-base text-white rounded-xl bg-zinc-700'>
                                     Đấu trường chân lý
                                     <button
-                                        style={{ width: "35px", height: "35px" }} 
+                                        style={{ width: "35px", height: "35px" }}
                                         className="absolute flex items-center justify-center p-2 mb-2 text-gray-500 -right-2 -top-2 hover:text-red-600"
                                     >
                                         <span
                                             className="iconify"
-                                            style={{ fontSize: "20px" }} 
+                                            style={{ fontSize: "20px" }}
                                             data-icon="lets-icons:close-ring-light"
                                             data-inline="false"
                                         >
@@ -107,12 +107,12 @@ const PlayerProfile = () => {
                                 <div className='relative px-12 py-4 text-base text-white rounded-xl bg-zinc-700'>
                                     Đấu trường chân lý
                                     <button
-                                        style={{ width: "35px", height: "35px" }} 
+                                        style={{ width: "35px", height: "35px" }}
                                         className="absolute flex items-center justify-center p-2 mb-2 text-gray-500 -right-2 -top-2 hover:text-red-600"
                                     >
                                         <span
                                             className="iconify"
-                                            style={{ fontSize: "20px" }} 
+                                            style={{ fontSize: "20px" }}
                                             data-icon="lets-icons:close-ring-light"
                                             data-inline="false"
                                         >
@@ -122,12 +122,12 @@ const PlayerProfile = () => {
                                 </div>
                                 <div className='bg-red-500 rounded-md'>
                                     <button
-                                        style={{ width: "35px", height: "35px" }} 
+                                        style={{ width: "35px", height: "35px" }}
                                         className="flex items-center justify-center p-2 mb-2 text-white hover:text-red-600"
                                     >
                                         <span
                                             className="iconify"
-                                            style={{ fontSize: "20px" }} 
+                                            style={{ fontSize: "20px" }}
                                             data-icon="formkit:add"
                                             data-inline="false"
                                         >
@@ -143,14 +143,14 @@ const PlayerProfile = () => {
                             </div>
                             <div className='flex gap-4'>
                                 <div className='relative'>
-                                    <img className='w-36 h-36' src={avt}/>
+                                    <img className='w-36 h-36' src={avt} />
                                     <button
-                                        style={{ width: "35px", height: "35px" }} 
+                                        style={{ width: "35px", height: "35px" }}
                                         className="absolute flex items-center justify-center p-2 mb-2 text-white -right-2 -top-2 hover:text-red-600"
                                     >
                                         <span
                                             className="iconify"
-                                            style={{ fontSize: "20px" }} 
+                                            style={{ fontSize: "20px" }}
                                             data-icon="lets-icons:close-ring-light"
                                             data-inline="false"
                                         >
@@ -158,14 +158,14 @@ const PlayerProfile = () => {
                                     </button>
                                 </div>
                                 <div className='relative'>
-                                    <img className='w-36 h-36' src={avt}/>
+                                    <img className='w-36 h-36' src={avt} />
                                     <button
-                                        style={{ width: "35px", height: "35px" }} 
+                                        style={{ width: "35px", height: "35px" }}
                                         className="absolute flex items-center justify-center p-2 mb-2 text-white -right-2 -top-2 hover:text-red-600"
                                     >
                                         <span
                                             className="iconify"
-                                            style={{ fontSize: "20px" }} 
+                                            style={{ fontSize: "20px" }}
                                             data-icon="lets-icons:close-ring-light"
                                             data-inline="false"
                                         >
@@ -173,14 +173,14 @@ const PlayerProfile = () => {
                                     </button>
                                 </div>
                                 <div className='relative'>
-                                    <img className='w-36 h-36' src={avt}/>
+                                    <img className='w-36 h-36' src={avt} />
                                     <button
-                                        style={{ width: "35px", height: "35px" }} 
+                                        style={{ width: "35px", height: "35px" }}
                                         className="absolute flex items-center justify-center p-2 mb-2 text-white -right-2 -top-2 hover:text-red-600"
                                     >
                                         <span
                                             className="iconify"
-                                            style={{ fontSize: "20px" }} 
+                                            style={{ fontSize: "20px" }}
                                             data-icon="lets-icons:close-ring-light"
                                             data-inline="false"
                                         >
@@ -188,14 +188,14 @@ const PlayerProfile = () => {
                                     </button>
                                 </div>
                                 <div className='relative'>
-                                    <img className='w-36 h-36' src={avt}/>
+                                    <img className='w-36 h-36' src={avt} />
                                     <button
-                                        style={{ width: "35px", height: "35px" }} 
+                                        style={{ width: "35px", height: "35px" }}
                                         className="absolute flex items-center justify-center p-2 mb-2 text-white -right-2 -top-2 hover:text-red-600"
                                     >
                                         <span
                                             className="iconify"
-                                            style={{ fontSize: "20px" }} 
+                                            style={{ fontSize: "20px" }}
                                             data-icon="lets-icons:close-ring-light"
                                             data-inline="false"
                                         >
@@ -203,38 +203,38 @@ const PlayerProfile = () => {
                                     </button>
                                 </div>
                                 <div className='relative'>
-                                    <img className='w-36 h-36' src={avt}/>
+                                    <img className='w-36 h-36' src={avt} />
                                     <button
-                                        style={{ width: "35px", height: "35px" }} 
+                                        style={{ width: "35px", height: "35px" }}
                                         className="absolute flex items-center justify-center p-2 mb-2 text-white -right-2 -top-2 hover:text-red-600"
                                     >
                                         <span
                                             className="iconify"
-                                            style={{ fontSize: "20px" }} 
+                                            style={{ fontSize: "20px" }}
                                             data-icon="lets-icons:close-ring-light"
                                             data-inline="false"
                                         >
                                         </span>
                                     </button>
                                 </div>
-                                    
-                                
-                                                              
+
+
+
                             </div>
                             <div className='flex items-center mt-8'>
                                 <h3 className='text-2xl'>MÔ TẢ:</h3>
                                 <button
-                                    style={{ width: "35px", height: "35px" }} 
+                                    style={{ width: "35px", height: "35px" }}
                                     className="flex items-center justify-center p-2 mb-2 text-gray-500 hover:text-red-600"
                                 >
                                     <span
                                         className="iconify"
-                                        style={{ fontSize: "28px" }} 
+                                        style={{ fontSize: "28px" }}
                                         data-icon="ic:outline-edit"
                                         data-inline="false"
                                     >
                                     </span>
-                                
+
 
                                 </button>
                             </div>
@@ -251,7 +251,7 @@ const PlayerProfile = () => {
 
                             <p className='py-4 text-2xl'>ĐÁNH GIÁ</p>
                             <div className='flex justify-between'>
-                                <img src={avt} className='w-14 h-14'/>
+                                <img src={avt} className='w-14 h-14' />
                                 <div className='flex-1 ml-4'>
                                     <p className='text-2xl text-blue-500'>Lâm Trúc</p>
                                     <div>04:22:39   27/8/2024</div>
@@ -260,7 +260,7 @@ const PlayerProfile = () => {
                                 </div>
                             </div>
                             <div className='flex justify-between'>
-                                <img src={avt} className='w-14 h-14'/>
+                                <img src={avt} className='w-14 h-14' />
                                 <div className='flex-1 ml-4'>
                                     <p className='text-2xl text-blue-500'>Lâm Trúc</p>
                                     <div>04:22:39   27/8/2024</div>
@@ -269,7 +269,7 @@ const PlayerProfile = () => {
                                 </div>
                             </div>
                             <div className='flex justify-between'>
-                                <img src={avt} className='w-14 h-14'/>
+                                <img src={avt} className='w-14 h-14' />
                                 <div className='flex-1 ml-4'>
                                     <p className='text-2xl text-blue-500'>Lâm Trúc</p>
                                     <div>04:22:39   27/8/2024</div>
@@ -278,7 +278,7 @@ const PlayerProfile = () => {
                                 </div>
                             </div>
                             <div className='flex justify-between'>
-                                <img src={avt} className='w-14 h-14'/>
+                                <img src={avt} className='w-14 h-14' />
                                 <div className='flex-1 ml-4'>
                                     <p className='text-2xl text-blue-500'>Lâm Trúc</p>
                                     <div>04:22:39   27/8/2024</div>
@@ -287,7 +287,7 @@ const PlayerProfile = () => {
                                 </div>
                             </div>
                             <div className='flex justify-between'>
-                                <img src={avt} className='w-14 h-14'/>
+                                <img src={avt} className='w-14 h-14' />
                                 <div className='flex-1 ml-4'>
                                     <p className='text-2xl text-blue-500'>Lâm Trúc</p>
                                     <div>04:22:39   27/8/2024</div>
@@ -295,21 +295,21 @@ const PlayerProfile = () => {
                                     <div className='h-0.5 bg-gray-500'></div>
                                 </div>
                             </div>
-                            
+
                         </div>
-                        
+
 
                         <div className='w-2/5 text-center'>
                             <div className='flex items-center gap-8 mx-auto'>
                                 <p className='text-3xl'>GAME YÊU THÍCH</p>
                                 <div className='flex items-center bg-red-500 rounded-md'>
                                     <button
-                                        style={{ width: "35px", height: "35px" }} 
+                                        style={{ width: "35px", height: "35px" }}
                                         className="flex items-center justify-center p-2 mb-2 text-white hover:bg-red-600"
                                     >
                                         <span
                                             className="iconify"
-                                            style={{ fontSize: "20px" }} 
+                                            style={{ fontSize: "20px" }}
                                             data-icon="formkit:add"
                                             data-inline="false"
                                         >
@@ -326,13 +326,13 @@ const PlayerProfile = () => {
                                             <p className='text-base text-white'>Kỹ Năng:</p>
                                             <span
                                                 className="text-pink-500 iconify"
-                                                style={{ fontSize: "20px" }} 
+                                                style={{ fontSize: "20px" }}
                                                 data-icon="material-symbols-light:diamond-rounded"
                                                 data-inline="false"
                                             >
                                             </span>
                                         </div>
-                                        
+
                                         <p className='ml-4 text-base text-white text-start'>Số giờ được thuê: 80</p>
                                     </div>
                                 </div>
@@ -344,13 +344,13 @@ const PlayerProfile = () => {
                                             <p className='text-base text-white'>Kỹ Năng:</p>
                                             <span
                                                 className="text-pink-500 iconify"
-                                                style={{ fontSize: "20px" }} 
+                                                style={{ fontSize: "20px" }}
                                                 data-icon="material-symbols-light:diamond-rounded"
                                                 data-inline="false"
                                             >
                                             </span>
                                         </div>
-                                        
+
                                         <p className='ml-4 text-base text-white text-start'>Số giờ được thuê: 80</p>
                                     </div>
                                 </div>
@@ -362,17 +362,17 @@ const PlayerProfile = () => {
                                             <p className='text-base text-white'>Kỹ Năng:</p>
                                             <span
                                                 className="text-pink-500 iconify"
-                                                style={{ fontSize: "20px" }} 
+                                                style={{ fontSize: "20px" }}
                                                 data-icon="material-symbols-light:diamond-rounded"
                                                 data-inline="false"
                                             >
                                             </span>
                                         </div>
-                                        
+
                                         <p className='ml-4 text-base text-white text-start'>Số giờ được thuê: 80</p>
                                     </div>
                                 </div>
-                                
+
                             </div>
                         </div>
 
@@ -388,9 +388,9 @@ const PlayerProfile = () => {
                 </div>
 
             </div>
-            <Footer/>
+            <Footer />
 
-            
+
         </div>
     )
 }

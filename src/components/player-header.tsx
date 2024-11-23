@@ -2,7 +2,7 @@ import logo from '../assets/img/image_logo.png'
 import textlogo from '../assets/img/text_logo.png'
 
 import anhmau from '../assets/img/anhmau.jpg'
-const PlayerHeader =  () => {
+const PlayerHeader = ({ id }) => {
     return (
         <div className="flex items-center justify-between px-8 py-4 shadow-xl container-2xl">
             <div className="flex items-center" >
@@ -11,29 +11,44 @@ const PlayerHeader =  () => {
             </div>
 
             <ul className='flex text-2xl gap-x-7 '>
-                <li className='text-red-500'>Hồ sơ</li>
-                <li>Dashboard</li>
-                <li>Giá và thời gian</li>
+                <li
+                    className={`${id === 1 ? 'text-red-500 font-bold' : 'text-gray-500'
+                        } hover:text-red-500`}
+                >
+                    Hồ sơ
+                </li>
+                <li
+                    className={`${id === 2 ? 'text-red-500 font-bold' : 'text-gray-500'
+                        } hover:text-red-500`}
+                >
+                    Dashboard
+                </li>
+                <li
+                    className={`${id === 3 ? 'text-red-500 font-bold' : 'text-gray-500'
+                        } hover:text-red-500`}
+                >
+                    Giá và thời gian
+                </li>
             </ul>
             <div className='flex items-center justify-between gap-2'>
                 <button
-                style={{ width: "35px", height: "35px" }} 
-                className="flex items-center justify-center p-2 text-red-500 bg-gray-100 rounded-full hover:text-red-600 hover:bg-gray-200"
+                    style={{ width: "35px", height: "35px" }}
+                    className="flex items-center justify-center p-2 text-red-500 bg-gray-100 rounded-full hover:text-red-600 hover:bg-gray-200"
                 >
                     <span
                         className="iconify"
-                        style={{ fontSize: "28px" }} 
+                        style={{ fontSize: "28px" }}
                         data-icon="fluent:chat-multiple-heart-28-regular"
                         data-inline="false"
                     ></span>
                 </button>
                 <button
-                style={{ width: "35px", height: "35px" }} 
-                className="flex items-center justify-center p-2 text-red-500 bg-gray-100 rounded-full hover:text-red-600 hover:bg-gray-200"
+                    style={{ width: "35px", height: "35px" }}
+                    className="flex items-center justify-center p-2 text-red-500 bg-gray-100 rounded-full hover:text-red-600 hover:bg-gray-200"
                 >
                     <span
                         className="iconify"
-                        style={{ fontSize: "28px" }} 
+                        style={{ fontSize: "28px" }}
                         data-icon="carbon:notification-new"
                         data-inline="false"
                     ></span>
@@ -42,7 +57,7 @@ const PlayerHeader =  () => {
             </div>
         </div>
     )
-    
+
 }
 
 export default PlayerHeader;

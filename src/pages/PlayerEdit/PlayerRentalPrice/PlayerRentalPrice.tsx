@@ -19,7 +19,7 @@ const PlayerRentalPrice = () => {
 
     return (
         <div style={{ display: 'flex', alignItems: 'center' }}>
-            <h3 style={{ marginRight: '12px' }}>Giá thuê:</h3>
+            <h3 className="section-title" style={{ marginRight: '12px' }}>Giá thuê:</h3>
             <input
                 type="text"
                 value={price}

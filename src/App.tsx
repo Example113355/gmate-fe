@@ -49,11 +49,10 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="/user/:id" element={<UserDetail />} />
           <Route path="/player/stat" element={<PlayerStat />} />
-          <Route path="/player/edit" element={<PlayerEdit />} />
         </Route>
         <Route path="/login" element={<LogIn />} />
         <Route path="*" element={<NotFoundPage />} />
-        <Route path="/test-modal" element={<TestModalPage />} /> 
+        <Route path="/test-modal" element={<TestModalPage />} />
 
         <Route path="/user-homepage" element={<UserHomePage />} />
         <Route path="/player-profile" element={<PlayerProfile />} />
