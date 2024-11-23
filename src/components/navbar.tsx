@@ -5,14 +5,13 @@ import TabBar from "./tabs/tabBar";
 import { TabState } from "./tabs/interface";
 import { CiSearch } from "react-icons/ci";
 import { RiNotification2Line } from "react-icons/ri";
-import { Button } from "antd";
 
 const Navbar = () => {
   let baseUrl = import.meta.env.VITE_API_BASE_URL;
   apiCall(baseUrl, "GET");
   const hasNoti = true;
 
-  const [isChatBoxOpen, setChatBoxOpen] = useState(false);
+  const [isChatBoxOpen, setIsChatBoxOpen] = useState(false);
   const [tabState, setTabState] = useState<TabState>({
     activeTabId: "1",
     tabs: [
@@ -26,8 +25,8 @@ const Navbar = () => {
     setTabState((prevState) => ({ ...prevState, activeTabId: id }));
   };
 
-  const openChatBox = () => setChatBoxOpen(true);
-  const closeChatBox = () => setChatBoxOpen(false);
+  const openChatBox = () => setIsChatBoxOpen(true);
+  const closeChatBox = () => setIsChatBoxOpen(false);
 
   return (
     <>

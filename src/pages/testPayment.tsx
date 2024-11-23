@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import PaymentModal from '../components/payment-modal';
 import WithdrawModal from '../components/withdraw-modal';
 
