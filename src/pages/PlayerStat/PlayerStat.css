@@ -9,11 +9,12 @@ html, body{
     display: grid;
     grid-template-columns: 1fr 2fr;
     justify-items: center;
+    align-items: center;
 }
 
 .donate-banner{
     background-color: #F89893;
-    width: 350px;
+    width: 300px;
     aspect-ratio: 3 / 1;
     border-radius: 10px;
     display: flex;
@@ -41,8 +42,21 @@ html, body{
     color: black;
 }
 
+.donate-top-container{
+    display: flex;
+    width: 100%;
+    gap: 20px;
+    justify-content: center; /* Horizontal center */
+    align-items: end; 
+}
+
 .donate-top p{
     margin-top: 10px;
     color: #F13D33;
     font-size: 20px;
+}
+
+.stat-container{
+    display: grid;
+    grid-template-columns: 1fr ;
 }
