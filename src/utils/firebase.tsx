@@ -1,5 +1,10 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getMessaging, Messaging, getToken, onMessage } from "firebase/messaging";
+import {
+  getMessaging,
+  Messaging,
+  getToken,
+  onMessage,
+} from "firebase/messaging";
 const firebaseConfig = {
   apiKey: "AIzaSyCs6KQ3EExh9eIA7GfuA_FMycn50iUCDWk",
   authDomain: "gmate-8e2fc.firebaseapp.com",
@@ -14,24 +19,31 @@ let messaging: Messaging;
 messaging = getMessaging(app);
 
 export const fetchToken = (setTokenFound: (arg0: boolean) => void) => {
-  return getToken(messaging, {
-    vapidKey:
-      "BAvZFFZAYXsXWsuwYeiOahuBLOw-VudvwPyAy9sT0FCuDOnq0UZro1Z0tk_6_NlGlm_ydFjnC1wchuwgm2yQYvw",
-  })
-    .then((currentToken) => {
-      if (currentToken) {
-        console.log("current token for client: ", currentToken);
-        setTokenFound(true);
-      } else {
-        console.log(
-          "No registration token available. Request permission to generate one."
-        );
-        setTokenFound(false);
-      }
-    })
-    .catch((err) => {
-      console.log("An error occurred while retrieving token. ", err);
-    });
+  Notification.requestPermission().then((permission) => {
+    // If the user accepts, let's create a notification
+    if (permission === "granted") {
+      return getToken(messaging, {
+        vapidKey:
+          "BAvZFFZAYXsXWsuwYeiOahuBLOw-VudvwPyAy9sT0FCuDOnq0UZro1Z0tk_6_NlGlm_ydFjnC1wchuwgm2yQYvw",
+      })
+        .then((currentToken) => {
+          if (currentToken) {
+            console.log("current token for client: ", currentToken);
+            setTokenFound(true);
+          } else {
+            console.log(
+              "No registration token available. Request permission to generate one."
+            );
+            setTokenFound(false);
+          }
+        })
+        .catch((err) => {
+          console.log("An error occurred while retrieving token. ", err);
+        });
+    } else {
+      console.log("Unable to get permission to notify.");
+    }
+  });
 };
 
 export const onMessageListener = () =>

@@ -39,7 +39,7 @@ const Navbar = () => {
               onTabChange={handleTabChange}
             />
             <a className="navbar-brand flex items-center shrink-0" href="/">
-              <img src="src/assets/img/Logo@2x.png" width="140" alt=""></img>
+              <img src="./assets/img/Logo@2x.png" width="140" alt=""></img>
             </a>
           </div>
 
