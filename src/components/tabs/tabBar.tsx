@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TabState, TabProps } from "./interface"; // Adjust the import path to match your project structure
 import { IoMenu } from "react-icons/io5";
 

@@ -15,10 +15,10 @@ import { fetchToken, onMessageListener } from "./utils/firebase";
 function App() {
   const [show, setShow] = useState(false);
   const [notification, setNotification] = useState({ title: "", body: "" });
-  const [isTokenFound, setTokenFound] = useState(false);
+  const [isTokenFound, setIsTokenFound] = useState(false);
 
   useEffect(() => {
-    fetchToken(setTokenFound);
+    fetchToken(setIsTokenFound);
   }, []);
 
   onMessageListener()
@@ -32,13 +32,14 @@ function App() {
     })
     .catch((err) => console.log("failed: ", err));
 
-  const onShowNotificationClicked = () => {
-    setNotification({
-      title: "Notification",
-      body: "This is a test notification",
-    });
-    setShow(true);
-  };
+  // const onShowNotificationClicked = () => {
+  //   setNotification({
+  //     title: "Notification",
+  //     body: "This is a test notification",
+  //   });
+  //   setShow(true);
+  // };
+  console.log(isTokenFound, notification, show);
 
   return (
     <Router>
