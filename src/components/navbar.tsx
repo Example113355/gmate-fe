@@ -91,14 +91,14 @@ const Navbar = () => {
             "
             >
               <img
-                src="src/assets/img/token-branded_bcoin.png"
+                src="./assets/img/token-branded_bcoin.png"
                 alt=""
                 className="w-10 h-10"
               ></img>
               <h1 className="font-suez text-black text-xl ml-2">20.000đ</h1>
               <button className="flex items-center justify-center ml-3">
                 <img
-                  src="src/assets/img/PlusIcon.png"
+                  src="./assets/img/PlusIcon.png"
                   alt=""
                   className="w-6 h-6"
                 ></img>
@@ -107,7 +107,7 @@ const Navbar = () => {
 
             <div className="flex items-center shrink-0">
               <img
-                src="src/assets/img/Player Image.png"
+                src="./assets/img/Player Image.png"
                 alt="Player"
                 className="w-20 h-20 rounded-full ml-4 border-3 border-primary" // Adds a border
               />

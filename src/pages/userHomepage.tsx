@@ -2,9 +2,9 @@ import './userHomepageStyle.css'
 import React, { useState } from 'react';
 
 const banners = [
-    { id: 1, image: 'src/assets/img/Group 2.png', text: 'Miễn phí cho lần đầu tiên' },
-    { id: 2, image: 'src/assets/img/Group 2.png', text: 'Khuyến mãi đặc biệt cực hot' },
-    { id: 3, image: 'src/assets/img/Group 2.png', text: 'Mua 1 tặng 1 ngay hôm nay' }
+    { id: 1, image: './assets/img/Group 2.png', text: 'Miễn phí cho lần đầu tiên' },
+    { id: 2, image: './assets/img/Group 2.png', text: 'Khuyến mãi đặc biệt cực hot' },
+    { id: 3, image: './assets/img/Group 2.png', text: 'Mua 1 tặng 1 ngay hôm nay' }
 ];
 
 const playersByRating = [
