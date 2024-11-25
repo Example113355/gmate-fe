@@ -1,23 +1,71 @@
 import "./userHomepageStyle.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
 
-const banners = [
-  {
-    id: 1,
-    image: "/assets/img/Group 2.png",
-    text: "Miễn phí cho lần đầu tiên",
-  },
-  {
-    id: 2,
-    image: "/assets/img/Group 2.png",
-    text: "Khuyến mãi đặc biệt cực hot",
-  },
-  {
-    id: 3,
-    image: "/assets/img/Group 2.png",
-    text: "Mua 1 tặng 1 ngay hôm nay",
-  },
-];
+// Định nghĩa kiểu cho game
+interface Game {
+    id: number;
+    name: string;
+    img: string;
+}
+
+const fetchGamesFromAPI = () => {
+    return new Promise<Game[]>((resolve) => {
+        setTimeout(() => {
+        resolve([
+            { id: 1, name: 'Liên quân Mobile', img: 'src/assets/img/lq.png' },
+            { id: 2, name: 'Đấu trường chân lý', img: 'src/assets/img/lq.png' },
+            { id: 3, name: 'Liên minh huyền thoại', img: 'src/assets/img/lq.png' },
+            { id: 4, name: 'PlayerUnknown\'s Battlegrounds', img: 'src/assets/img/lq.png' },
+            { id: 5, name: 'CS:GO', img: 'src/assets/img/lq.png' }
+        ]);
+        }, 1000); // Giả lập thời gian trễ từ API (1 giây)
+    });
+};
+
+// Định nghĩa kiểu dữ liệu cho một người chơi
+interface DPlayerRanking {
+    id: number;
+    name: string;
+    phone: string;
+    avatar: string;
+    donationAmount: string;
+}
+
+interface GPlayerRanking {
+    id: number;
+    name: string;
+    phone: string;
+    avatar: string;
+    starRating: number;
+}
+
+const fetchDonatePlayerRankingFromAPI = () => {
+    return new Promise<DPlayerRanking[]>((resolve) => {
+        setTimeout(() => {
+        resolve([
+            { id: 1, name: 'Jjn wein', phone: '0909****', avatar: 'src/assets/img/lq.png', donationAmount: '20000đ'},
+            { id: 2, name: 'You', phone: '0909****', avatar: 'src/assets/img/lq.png', donationAmount: '15000đ'},
+            { id: 3, name: 'Player 3', phone: '0909****', avatar: 'src/assets/img/lq.png', donationAmount: '10000đ'},
+            { id: 4, name: 'Player 4', phone: '0909****', avatar: 'src/assets/img/lq.png', donationAmount: '5000đ'},
+        ]);
+        }, 1000); // Giả lập thời gian trễ từ API (1 giây)
+    });
+};
+
+const fetchGmasterPlayerRankingFromAPI = () => {
+    return new Promise<GPlayerRanking[]>((resolve) => {
+        setTimeout(() => {
+        resolve([
+            { id: 1, name: 'Jjn wein', phone: '0909****', avatar: 'src/assets/img/lq.png', starRating: 4 },
+            { id: 2, name: 'You', phone: '0909****', avatar: 'src/assets/img/lq.png', starRating: 3 },
+            { id: 3, name: 'Player 3', phone: '0909****', avatar: 'src/assets/img/lq.png',  starRating: 3 },
+            { id: 4, name: 'Player 4', phone: '0909****', avatar: 'src/assets/img/lq.png',  starRating: 3 },
+        ]);
+        }, 1000); // Giả lập thời gian trễ từ API (1 giây)
+    });
+};
+
+
 
 const playersByRating = [
   { name: "Player 1", rating: 3 },
@@ -93,21 +141,36 @@ const Star: React.FC<StarProps> = ({ filled }) => (
 );
 
 const UserHomePage = () => {
-  const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+    const id = 2; // ID của user
 
-  const nextBanner = () => {
-    setCurrentBannerIndex((prevIndex) => (prevIndex + 1) % banners.length);
-  };
+    const [games, setGames] = useState<Game[]>([]); // Chỉ định kiểu mảng các game
+    const [, setLoading] = useState(true); // Trạng thái loading
 
-  const prevBanner = () => {
-    setCurrentBannerIndex(
-      (prevIndex) => (prevIndex - 1 + banners.length) % banners.length
-    );
-  };
+    useEffect(() => {
+        // Gọi API và cập nhật dữ liệu
+        fetchGamesFromAPI().then((data) => {
+        setGames(data); // Dữ liệu phải có kiểu Game[]
+        setLoading(false); // Đặt loading thành false khi nhận được dữ liệu
+        });
+    }, []); // Chạy chỉ một lần khi component được mount
 
-  const goToBanner = (index: React.SetStateAction<number>) => {
-    setCurrentBannerIndex(index);
-  };
+    const [topDonate, setTopDonate] = useState<DPlayerRanking[]>([]);
+    const [topGmaster, setTopGmaster] = useState<GPlayerRanking[]>([]);
+
+    useEffect(() => {
+        // Gọi API và cập nhật dữ liệu
+        fetchDonatePlayerRankingFromAPI().then((data) => {
+        setTopDonate(data); // Dữ liệu phải có kiểu Game[]
+        setLoading(false); // Đặt loading thành false khi nhận được dữ liệu
+        });
+
+        fetchGmasterPlayerRankingFromAPI().then((data) => {
+        setTopGmaster(data); // Dữ liệu phải có kiểu Game[]
+        setLoading(false); // Đặt loading thành false khi nhận được dữ liệu
+        });
+    }, []);
+
+    const you = topDonate.find((player) => player.id === id);
 
   return (
     <div className="h-full w-full">
@@ -123,57 +186,32 @@ const UserHomePage = () => {
       <div className="banner">
         <div className="content">
           <img
-            src={banners[currentBannerIndex].image}
+            src={"/assets/img/Group 2.png"}
             alt="Banner"
             className="banner-image"
             style={{ width: "50%", height: "auto" }}
           />
           <div className="text">
-            <h1>{banners[currentBannerIndex].text}</h1>
+            <h1>Miễn phí cho lần đầu tiên</h1>
             <button>Đăng ký ngay</button>
           </div>
-        </div>
-        <div className="pagination">
-          <button id="left" onClick={prevBanner}>
-            &lt;
-          </button>
-          {banners.map((_, index) => (
-            <span
-              key={index}
-              className={`dot ${index === currentBannerIndex ? "active" : ""}`}
-              onClick={() => goToBanner(index)}
-            ></span>
-          ))}
-          <button id="right" onClick={nextBanner}>
-            &gt;
-          </button>
         </div>
       </div>
 
       <div className="game-filter">
         <h1>TÌM BẠN THEO GAME</h1>
         <div className="game-list">
-          <div className="game">
-            <img src="src/assets/img/lq.png" alt="game" />
-            <p>Liên quân moible</p>
-          </div>
-          <div className="game">
-            <img src="src/assets/img/lq.png" alt="game" />
-            <p>Đấu trường chân lý</p>
-          </div>
-          <div className="game">
-            <img src="src/assets/img/lq.png" alt="game" />
-            <p>Liên minh huyền thoại</p>
-          </div>
-          <div className="game">
-            <img src="src/assets/img/lq.png" alt="game" />
-            <p>Player Unknow: Battleground</p>
-          </div>
-          <div className="game">
-            <img src="src/assets/img/lq.png" alt="game" />
-            <p>CS:GO</p>
-          </div>
-        </div>
+            {games.length === 0 ? (
+                <p>Loading...</p>
+            ) : (
+                games.map((game) => (
+                <div key={game.id} className="game">
+                    <img src={game.img} alt={game.name} />
+                    <p>{game.name}</p>
+                </div>
+                ))
+            )}
+            </div>
       </div>
 
       <div className="ranking">
@@ -181,223 +219,52 @@ const UserHomePage = () => {
         <div className="ranking-section">
           <div className="ranking-table">
             <h2>Top Donate</h2>
-            <div className="ranking-child" id="you">
-              <h4>12</h4>
-              <img src="src/assets/img/lq.png" alt="avatar" />
-              <div className="ranking-child-info">
-                <h4>You</h4>
-                <h6>0909****</h6>
-              </div>
-              <div className="ranking-child-donate">
-                <img
-                  src="src\assets\img\token-branded_bcoin.png"
-                  alt="dollar"
-                />
-                <h5>20000đ</h5>
-              </div>
-            </div>
+            {you && (
+                <div className="ranking-child" id="you">
+                {you.id < 3 ? <img src={`src/assets/img/${you.id}.png`} alt="avatar" style={{ width: "25px", height: "25px" }} /> : <h4>{you.id}</h4>}
+                <img src={you.avatar} alt="avatar" />
+                <div className="ranking-child-info">
+                    <h4>{you.name}</h4>
+                    <h6>{you.phone}</h6>
+                </div>
+                <div className="ranking-child-donate">
+                    <img src='src/assets/img/token-branded_bcoin.png' alt="dollar" />
+                    <h5>{you.donationAmount}</h5>
+                </div>
+                </div>
+            )}
             <h3>Đại gia tuần này</h3>
             <div className="ranking-table-2">
-              <div className="ranking-child" id="top1">
-                <img
-                  src="src/assets/img/1.png"
-                  alt="avatar"
-                  style={{ width: "25px", height: "25px" }}
-                />
-                <img src="src/assets/img/lq.png" alt="avatar" />
-                <div className="ranking-child-info">
-                  <h4>Jjn wein</h4>
-                  <h6>0909****</h6>
-                </div>
-                <div className="ranking-child-donate">
-                  <img
-                    src="src\assets\img\token-branded_bcoin.png"
-                    alt="dollar"
-                  />
-                  <h5>20000đ</h5>
-                </div>
-              </div>
-              <div className="ranking-child" id="top2">
-                <img
-                  src="src/assets/img/2.png"
-                  alt="avatar"
-                  style={{ width: "25px", height: "25px" }}
-                />
-                <img src="src/assets/img/lq.png" alt="avatar" />
-                <div className="ranking-child-info">
-                  <h4>You</h4>
-                  <h6>0909****</h6>
-                </div>
-                <div className="ranking-child-donate">
-                  <img
-                    src="src\assets\img\token-branded_bcoin.png"
-                    alt="dollar"
-                  />
-                  <h5>20000đ</h5>
-                </div>
-              </div>
-              <div className="ranking-child" id="top3">
-                <img
-                  src="src/assets/img/3.png"
-                  alt="avatar"
-                  style={{ width: "25px", height: "25px" }}
-                />
-                <img src="src/assets/img/lq.png" alt="avatar" />
-                <div className="ranking-child-info">
-                  <h4>You</h4>
-                  <h6>0909****</h6>
-                </div>
-                <div className="ranking-child-donate">
-                  <img
-                    src="src\assets\img\token-branded_bcoin.png"
-                    alt="dollar"
-                  />
-                  <h5>20000đ</h5>
-                </div>
-              </div>
-              <div className="ranking-child">
-                <h4>12</h4>
-                <img src="src/assets/img/lq.png" alt="avatar" />
-                <div className="ranking-child-info">
-                  <h4>You</h4>
-                  <h6>0909****</h6>
-                </div>
-                <div className="ranking-child-donate">
-                  <img
-                    src="src\assets\img\token-branded_bcoin.png"
-                    alt="dollar"
-                  />
-                  <h5>20000đ</h5>
-                </div>
-              </div>
-              <div className="ranking-child">
-                <h4>12</h4>
-                <img src="src/assets/img/lq.png" alt="avatar" />
-                <div className="ranking-child-info">
-                  <h4>You</h4>
-                  <h6>0909****</h6>
-                </div>
-                <div className="ranking-child-donate">
-                  <img
-                    src="src\assets\img\token-branded_bcoin.png"
-                    alt="dollar"
-                  />
-                  <h5>20000đ</h5>
-                </div>
-              </div>
-              <div className="ranking-child">
-                <h4>12</h4>
-                <img src="src/assets/img/lq.png" alt="avatar" />
-                <div className="ranking-child-info">
-                  <h4>You</h4>
-                  <h6>0909****</h6>
-                </div>
-                <div className="ranking-child-donate">
-                  <img
-                    src="src\assets\img\token-branded_bcoin.png"
-                    alt="dollar"
-                  />
-                  <h5>20000đ</h5>
-                </div>
-              </div>
+                {topDonate.map((player, index) => (
+                    <div key={player.id} className="ranking-child" id={`top${index + 1}`}>
+                        {index < 3 ? <img src={`src/assets/img/${index + 1}.png`} alt="avatar" style={{ width: "25px", height: "25px" }} /> : <h4>{index + 1}</h4>}
+                        <img src={player.avatar} alt="avatar" />
+                        <div className="ranking-child-info">
+                            <h4>{player.name}</h4>
+                            <h6>{player.phone}</h6>
+                        </div>
+                        <div className="ranking-child-donate">
+                            <img src='src/assets/img/token-branded_bcoin.png' alt="dollar" />
+                            <h5>{player.donationAmount}</h5>
+                        </div>
+                    </div>
+                ))}
             </div>
           </div>
           <div className="ranking-table">
             <h2>Top Gmaster</h2>
             <div className="ranking-table-2" id="ranking-gmaster">
-              <div className="ranking-child" id="top1">
-                <img
-                  src="src/assets/img/1.png"
-                  alt="avatar"
-                  style={{ width: "25px", height: "25px" }}
-                />
-                <img src="src/assets/img/lq.png" alt="avatar" />
-                <div className="ranking-child-info">
-                  <h4>Jjn wein</h4>
-                  <h6>0909****</h6>
-                </div>
-                <StarRating rating={4} totalStars={5} />
-              </div>
-              <div className="ranking-child" id="top2">
-                <img
-                  src="src/assets/img/2.png"
-                  alt="avatar"
-                  style={{ width: "25px", height: "25px" }}
-                />
-                <img src="src/assets/img/lq.png" alt="avatar" />
-                <div className="ranking-child-info">
-                  <h4>You</h4>
-                  <h6>0909****</h6>
-                </div>
-                <StarRating rating={3} totalStars={5} />
-              </div>
-              <div className="ranking-child" id="top3">
-                <img
-                  src="src/assets/img/3.png"
-                  alt="avatar"
-                  style={{ width: "25px", height: "25px" }}
-                />
-                <img src="src/assets/img/lq.png" alt="avatar" />
-                <div className="ranking-child-info">
-                  <h4>You</h4>
-                  <h6>0909****</h6>
-                </div>
-                <StarRating rating={3} totalStars={5} />
-              </div>
-              <div className="ranking-child">
-                <h4>12</h4>
-                <img src="src/assets/img/lq.png" alt="avatar" />
-                <div className="ranking-child-info">
-                  <h4>You</h4>
-                  <h6>0909****</h6>
-                </div>
-                <StarRating rating={3} totalStars={5} />
-              </div>
-              <div className="ranking-child">
-                <h4>12</h4>
-                <img src="src/assets/img/lq.png" alt="avatar" />
-                <div className="ranking-child-info">
-                  <h4>You</h4>
-                  <h6>0909****</h6>
-                </div>
-                <StarRating rating={3} totalStars={5} />
-              </div>
-              <div className="ranking-child">
-                <h4>12</h4>
-                <img src="src/assets/img/lq.png" alt="avatar" />
-                <div className="ranking-child-info">
-                  <h4>You</h4>
-                  <h6>0909****</h6>
-                </div>
-                <StarRating rating={3} totalStars={5} />
-              </div>
-              <div className="ranking-child">
-                <h4>12</h4>
-                <img src="src/assets/img/lq.png" alt="avatar" />
-                <div className="ranking-child-info">
-                  <h4>You</h4>
-                  <h6>0909****</h6>
-                </div>
-                <StarRating rating={3} totalStars={5} />
-              </div>
-              <div className="ranking-child">
-                <h4>12</h4>
-                <img src="src/assets/img/lq.png" alt="avatar" />
-                <div className="ranking-child-info">
-                  <h4>You</h4>
-                  <h6>0909****</h6>
-                </div>
-                <StarRating rating={3} totalStars={5} />
-              </div>
-              <div className="ranking-child">
-                <h4>12</h4>
-                <img src="src/assets/img/lq.png" alt="avatar" />
-                <div className="ranking-child-info">
-                  <h4>You</h4>
-                  <h6>0909****</h6>
-                </div>
-                <StarRating rating={3} totalStars={5} />
-              </div>
+                {topGmaster.map((player, index) => (
+                    <div key={player.id} className="ranking-child" id={`top${index + 1}`}>
+                        {index < 3 ? <img src={`src/assets/img/${index + 1}.png`} alt="avatar" style={{ width: "25px", height: "25px" }} /> : <h4>{index + 1}</h4>}
+                        <img src={player.avatar} alt="avatar" />
+                        <div className="ranking-child-info">
+                            <h4>{player.name}</h4>
+                            <h6>{player.phone}</h6>
+                        </div>
+                        <StarRating rating={player.starRating} totalStars={5} />
+                    </div>
+                ))}
             </div>
           </div>
         </div>
@@ -406,7 +273,7 @@ const UserHomePage = () => {
       <div className="pro-player">
         <div className="name-title">
           <h1>NGƯỜI CHƠI PHỔ BIẾN</h1>
-          <img src="src\assets\img\ToolTip1.png" alt="" />
+          <img src="src\assets\img\ToolTip1.png" alt="" className="tooltip"/>
         </div>
         <div className="pro-player-list">
           {playersByRating.map((player, index) => (
@@ -444,7 +311,7 @@ const UserHomePage = () => {
               </div>
               <div className="money">
                 <img src="src\assets\img\token-branded_bcoin.png" />
-                <h6>20000đ</h6>
+                <h6>20.000đ</h6>
               </div>
             </div>
           ))}
@@ -454,7 +321,7 @@ const UserHomePage = () => {
       <div className="pro-player">
         <div className="name-title">
           <h1>PRO PLAYER COACHING</h1>
-          <img src="src\assets\img\ToolTip (1).png" alt="" />
+          <img src="src\assets\img\ToolTip (1).png" alt="" className="tooltip"/>
         </div>
         <div className="pro-player-list">
           {playersByRating.map((player, index) => (
