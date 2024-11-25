@@ -45,8 +45,9 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<MainLayout />}>
-          <Route index element={<HomePage />} />
+          <Route index element={<UserHomePage />} />
           <Route path="/user/:id" element={<UserDetail />} />
+          <Route path="/user-homepage" element={<UserHomePage />} />
         </Route>
         <Route path="/login" element={<LogIn />} />
         <Route path="*" element={<NotFoundPage />} />

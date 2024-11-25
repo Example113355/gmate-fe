@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { TabState, TabProps } from "./interface"; // Adjust the import path to match your project structure
 import { IoMenu } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 const TabBar = ({
   tabState,
@@ -13,6 +14,7 @@ const TabBar = ({
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const navigate = useNavigate();
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -91,7 +93,6 @@ const TabBar = ({
                 ? "opacity-100 scale-100"
                 : "opacity-0 scale-95 pointer-events-none"
             }`}
-
           >
             {tabState.tabs.map((tab) => (
               <h1
@@ -99,6 +100,7 @@ const TabBar = ({
                 onClick={() => {
                   onTabChange(tab.id);
                   setIsDropdownOpen(false);
+                  
                 }}
                 className="block px-4 py-4 text-2xl text-gray-700 font-semibold hover:bg-gray-100 hover:text-primary"
                 style={{ cursor: "pointer" }}
