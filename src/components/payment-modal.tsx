@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 interface ModalProps {
   show: boolean;
@@ -7,7 +8,62 @@ interface ModalProps {
 
 const PaymentModal: React.FC<ModalProps> = ({ show, onClose }) => {
   const [inputValue, setInputValue] = useState('');
+  const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
+  const [orderCode, setOrderCode] = useState<number | null>(null);
+  const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
   const amounts = [20000, 30000, 50000, 100000, 200000, 500000];
+
+  const handlePayment = async () => {
+    try {
+      const amount = Number(inputValue.replace(/,/g, ''));
+      if (isNaN(amount)) {
+        console.error('Invalid amount:', inputValue);
+        return;
+      }
+
+      console.log('amount:', amount);
+      const response = await axios.post('http://localhost:3000/api/v1/payos/create-payment-link', { amount });
+      if (response.data && response.data.checkoutUrl) {
+        setCheckoutUrl(response.data.checkoutUrl);
+        setOrderCode(response.data.orderCode);
+      }
+    } catch (error) {
+      console.error('Error creating payment link:', error);
+    }
+  };
+
+  const handleCancel = async () => {
+    if (orderCode) {
+      try {
+        await axios.post(`http://localhost:3000/api/v1/payos/cancel-payment/${orderCode}`);
+        setCheckoutUrl(null);
+        setOrderCode(null);
+      } catch (error) {
+        console.error('Error canceling payment link:', error);
+      }
+    }
+  };
+
+  const handleClose = () => {
+    onClose();
+  };
+
+  const formatNumber = (value: string) => {
+    return value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/,/g, '');
+    if (!isNaN(Number(value))) {
+      setInputValue(formatNumber(value));
+      setSelectedAmount(null);
+    }
+  };
+
+  const handleAmountClick = (amount: number) => {
+    setInputValue(formatNumber(amount.toString()));
+    setSelectedAmount(amount);
+  };
 
   if (!show) {
     return null;
@@ -15,58 +71,47 @@ const PaymentModal: React.FC<ModalProps> = ({ show, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-start pt-20">
-      <div className="bg-white rounded-3xl shadow-lg relative border border-gray-300 w-[500px] md:w-[500px]"
-           style={{ backgroundClip: 'padding-box', boxShadow: '0 3px 9px #00000080', outline: 0 }}>
-
-        {/* Header */}
-        <div className="flex justify-center items-center p-4 border-b border-gray-300"
-        > 
-          <h2 className="text-2xl font-bold text-gray-700
-          ">NẠP TIỀN VÀO GMATE</h2>
-          <button
-            className="absolute top-2 right-6 text-gray-600 hover:text-gray-900 text-4xl"
-            onClick={onClose}
-          >
+      <div className="bg-white rounded-3xl shadow-lg relative border border-gray-300 w-[500px] md:w-[500px] h-auto" style={{ backgroundClip: 'padding-box', boxShadow: '0 3px 9px #00000080', outline: 0 }}>
+        <div className="flex justify-center items-center p-4 border-b border-gray-300">
+          <h2 className="text-2xl font-bold text-gray-700">NẠP TIỀN VÀO GMATE</h2>
+          <button className="absolute top-2 right-6 text-gray-600 hover:text-gray-900 text-4xl" onClick={handleClose}>
             ×
           </button>
         </div>
-
-
-        {/* Body */}
-        <div className="px-16 py-10 "> 
-          <input
-            type="text"
-            className="border border-gray-300 rounded px-4 py-3 w-full mb-10 text-2xl"
-            placeholder="Số tiền muốn nạp (VND)"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-          />
-
-          <div className="grid grid-cols-2 gap-6">
-            {amounts.map((amount) => (
-              <button
-                key={amount}
-                className="bg-gray-200 text-red-400 border-red-400 border rounded px-6 py-3 text-2xl font-medium hover:bg-red-500 hover:text-white"
-                onClick={() => {}}
-              >
-                {amount.toLocaleString()} VND
+        <div className="px-16 py-10">
+          {checkoutUrl ? (
+            <>
+              <iframe src={checkoutUrl} className="w-full h-[700px]" title="Payment Checkout"></iframe>
+              <button className="bg-red-500 text-white rounded px-6 py-3 w-full hover:bg-red-600 text-2xl mt-10 font-medium" onClick={handleCancel}>
+                Hủy
               </button>
-            ))}
-          </div>
-          <button className="bg-red-500 text-white rounded px-6 py-3 w-full hover:bg-red-600 text-2xl mt-10 font-medium"
-                  onClick={() => {}}>
-            Nạp tiền
-          </button>
+            </>
+          ) : (
+            <>
+              <input
+                type="text"
+                className="border border-gray-300 rounded px-4 py-3 w-full mb-10 text-2xl"
+                placeholder="Số tiền muốn nạp (VND)"
+                value={inputValue}
+                onChange={handleInputChange}
+              />
+              <div className="grid grid-cols-2 gap-6">
+                {amounts.map((amount) => (
+                  <button
+                    key={amount}
+                    className={`border rounded px-6 py-3 text-2xl font-medium ${selectedAmount === amount ? 'bg-red-500 text-white' : 'bg-gray-200 text-red-400 border-red-400 hover:bg-red-500 hover:text-white'}`}
+                    onClick={() => handleAmountClick(amount)}
+                  >
+                    {amount.toLocaleString()} VND
+                  </button>
+                ))}
+              </div>
+              <button className="bg-red-500 text-white rounded px-6 py-3 w-full hover:bg-red-600 text-2xl mt-10 font-medium" onClick={handlePayment}>
+                Nạp tiền
+              </button>
+            </>
+          )}
         </div>
-
-
-        {/* Footer */}
-        <div className="px-8 py-4 border-t border-gray-300 flex justify-end">
-        <button className="bg-gray-100 text-gray-500 text-xl py-4 w-24 border border-gray-200 rounded-xl font-medium hover:text-gray-700" onClick={onClose}> {/* Close button in footer */}
-             Đóng
-          </button>
-        </div>
-
       </div>
     </div>
   );
