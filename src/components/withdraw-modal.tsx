@@ -9,7 +9,7 @@ const WithdrawModal: React.FC<ModalProps> = ({ show, onClose }) => {
     const [bank, setBank] = useState('Vietcombank');
     const [accountHolder, setAccountHolder] = useState('B');
     const [accountNumber, setAccountNumber] = useState('D');
-    const [withdrawableAmount, setWithdrawableAmount] = useState(0);
+    const [withdrawableAmount, ] = useState(0);
     const [withdrawalAmount, setWithdrawalAmount] = useState('');
 
 

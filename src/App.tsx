@@ -17,10 +17,10 @@ import { fetchToken, onMessageListener } from "./utils/firebase";
 function App() {
   const [show, setShow] = useState(false);
   const [notification, setNotification] = useState({ title: "", body: "" });
-  const [isTokenFound, setTokenFound] = useState(false);
+  const [isTokenFound, setIsTokenFound] = useState(false);
 
   useEffect(() => {
-    fetchToken(setTokenFound);
+    fetchToken(setIsTokenFound);
   }, []);
 
   onMessageListener()
@@ -34,20 +34,22 @@ function App() {
     })
     .catch((err) => console.log("failed: ", err));
 
-  const onShowNotificationClicked = () => {
-    setNotification({
-      title: "Notification",
-      body: "This is a test notification",
-    });
-    setShow(true);
-  };
+  // const onShowNotificationClicked = () => {
+  //   setNotification({
+  //     title: "Notification",
+  //     body: "This is a test notification",
+  //   });
+  //   setShow(true);
+  // };
+  console.log(isTokenFound, notification, show);
 
   return (
     <Router>
       <Routes>
         <Route path="/" element={<MainLayout />}>
-          <Route index element={<HomePage />} />
+          <Route index element={<UserHomePage />} />
           <Route path="/user/:id" element={<UserDetail />} />
+          <Route path="/user-homepage" element={<UserHomePage />} />
           <Route path="/player/stat" element={<PlayerStat />} />
         </Route>
         <Route path="/login" element={<LogIn />} />

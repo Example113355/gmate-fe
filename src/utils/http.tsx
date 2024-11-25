@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 
-export const apiCall = async (url: string, method: string, body: any = null) => {
+export const apiCall = async (method: string, url: string = "", body: any = null) => {
     try {
         const config: AxiosRequestConfig = {
             method: method,
@@ -13,7 +13,6 @@ export const apiCall = async (url: string, method: string, body: any = null) => 
         const response = await axios(config);
         return response.data;
     } catch (error) {
-        console.error(error);
         throw error;
     }
 }
