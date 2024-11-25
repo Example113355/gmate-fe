@@ -1,0 +1,76 @@
+html, body{
+    height: 100%;
+    margin: 0;
+}
+
+.donate-container{
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    margin: auto;
+    margin-top: 30px;
+    width: 100%;
+    max-width: 1300px;
+    display: grid;
+    grid-template-columns:1fr 1fr;
+    justify-items: start;
+    align-items: center;
+}
+
+.donate-banner{
+    background-color: #F89893;
+    width: 300px;
+    aspect-ratio: 3 / 1;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center; /* Horizontal center */
+    align-items: center; 
+    color: white;
+    font-size: 20px;
+}
+
+.donate-top{
+    background-color: #F0ECEC;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    border-radius: 5px;
+    aspect-ratio: 1.55 / 1;
+    flex-direction: column;  
+}
+
+.donate-top img{
+    width: 70px;
+}
+.donate-top i{
+    margin-top: 10px;
+    color: black;
+}
+
+.donate-top-container{
+    display: flex;
+    width: 100%;
+    gap: 20px;
+    justify-content: center; /* Horizontal center */
+    align-items: end; 
+}
+
+.donate-top p{
+    margin-top: 10px;
+    color: #F13D33;
+    font-size: 20px;
+}
+
+.stat-container{
+    display: grid;
+    grid-template-columns: 1fr ;
+}
+
+.player-his-container{
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+    margin: auto;
+    width: 100%;
+    max-width: 1300px;
+}

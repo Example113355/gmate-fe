@@ -9,20 +9,15 @@ import { Button } from "antd";
 import PaymentModal from '../components/payment-modal';
 import { useNavigate } from "react-router-dom";
 
-const Navbar = () => {
-  let baseUrl = import.meta.env.VITE_API_BASE_URL;
-  apiCall(baseUrl, "GET");
-  const hasNoti = true;
+interface NavbarProps {
+  tabState: TabState;
+  setTabState: React.Dispatch<React.SetStateAction<TabState>>;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ tabState, setTabState }) => {
   const navigate = useNavigate();
   const [isChatBoxOpen, setIsChatBoxOpen] = useState(false);
-  const [tabState, setTabState] = useState<TabState>({
-    activeTabId: "1",
-    tabs: [
-      { id: "1", title: "Trang chủ", to: "/" },
-      { id: "2", title: "Trở thành GMater", to: "/user-homepage" },
-      { id: "3", title: "Cài đặt", to: "/settings" },
-    ],
-  });
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   const handleTabChange = (id: string) => {
     setTabState((prevState) => ({ ...prevState, activeTabId: id }));
@@ -31,15 +26,8 @@ const Navbar = () => {
 
   const openChatBox = () => setIsChatBoxOpen(true);
   const closeChatBox = () => setIsChatBoxOpen(false);
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
-
-  const handleOpenPaymentModal = () => {
-    setShowPaymentModal(true);
-  };
-
-  const handleClosePaymentModal = () => {
-    setShowPaymentModal(false);
-  };
+  const handleOpenPaymentModal = () => setShowPaymentModal(true);
+  const handleClosePaymentModal = () => setShowPaymentModal(false);
 
   return (
     <>
@@ -94,16 +82,14 @@ const Navbar = () => {
               <RiNotification2Line style={{ fontSize: "24px" }} />
               {
                 // Notification badge
-                hasNoti ? (
+                true ? (
                   <div className="absolute top-3 right-3 w-3 h-3 bg-red-500 rounded-full" />
                 ) : null
               }
             </button>
 
             <div
-              className="
-            hidden miic:flex items-center justify-center bg-background px-4 py-2 rounded-lg   
-            "
+              className="hidden miic:flex items-center justify-center bg-background px-4 py-2 rounded-lg"
             >
               <img
                 src="/assets/img/token-branded_bcoin.png"
@@ -124,14 +110,13 @@ const Navbar = () => {
               <img
                 src="/assets/img/Player Image.png"
                 alt="Player"
-                className="w-20 h-20 rounded-full ml-4 border-3 border-primary" // Adds a border
+                className="w-20 h-20 rounded-full ml-4 border-3 border-primary"
               />
             </div>
           </div>
         </div>
       </nav>
       <PaymentModal show={showPaymentModal} onClose={handleClosePaymentModal} />
-
       <ChatBox isOpen={isChatBoxOpen} onClose={closeChatBox} />
     </>
   );
