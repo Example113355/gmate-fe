@@ -9,7 +9,6 @@ import "./PlayerEdit.css";
 const PlayerEdit = () => {
     return (
         <div>
-            <PlayerHeader id={3} />
 
             <div className="player-edit-container">
                 {/* Phần trên: Thông tin người chơi */}

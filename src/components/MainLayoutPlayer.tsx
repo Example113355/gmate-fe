@@ -4,13 +4,14 @@ import Navbar from "../components/navbar"
 import { useState } from "react";
 import { TabState } from "./tabs/interface"
 
-const MainLayout = () => {
+const MainLayoutPlayer = () => {
     const [tabState, setTabState] = useState<TabState>({
         activeTabId: "1",
         tabs: [
             { id: "1", title: "Trang chủ", to: "/" },
-            { id: "2", title: "Trở thành GMater", to: "/user-homepage" },
-            { id: "3", title: "Cài đặt", to: "/settings" },
+            { id: "4", title: "Hồ sơ", to: "/player/profile" },
+            { id: "5", title: "Thông số", to: "/player/stat" },
+            { id: "6", title: "Giá và thời gian", to: "/player/edit" },
         ],
     });
     return (
@@ -22,4 +23,4 @@ const MainLayout = () => {
     )
 }
 
-export default MainLayout
+export default MainLayoutPlayer
