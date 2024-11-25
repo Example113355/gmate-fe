@@ -5,6 +5,8 @@ import TabBar from "./tabs/tabBar";
 import { TabState } from "./tabs/interface";
 import { CiSearch } from "react-icons/ci";
 import { RiNotification2Line } from "react-icons/ri";
+import { Button } from "antd";
+import PaymentModal from '../components/payment-modal';
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
@@ -29,6 +31,15 @@ const Navbar = () => {
 
   const openChatBox = () => setIsChatBoxOpen(true);
   const closeChatBox = () => setIsChatBoxOpen(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+
+  const handleOpenPaymentModal = () => {
+    setShowPaymentModal(true);
+  };
+
+  const handleClosePaymentModal = () => {
+    setShowPaymentModal(false);
+  };
 
   return (
     <>
@@ -100,12 +111,12 @@ const Navbar = () => {
                 className="w-10 h-10"
               ></img>
               <h1 className="font-suez text-black text-xl ml-2">20.000đ</h1>
-              <button className="flex items-center justify-center ml-3">
+              <button className="flex items-center justify-center ml-3" onClick={handleOpenPaymentModal}>
                 <img
-                  src="/assets/img/PlusIcon.png"
+                  src="src/assets/img/PlusIcon.png"
                   alt=""
                   className="w-6 h-6"
-                ></img>
+                />
               </button>
             </div>
 
@@ -119,6 +130,7 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
+      <PaymentModal show={showPaymentModal} onClose={handleClosePaymentModal} />
 
       <ChatBox isOpen={isChatBoxOpen} onClose={closeChatBox} />
     </>
