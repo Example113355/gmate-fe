@@ -5,7 +5,6 @@ import Footer from '../../components/footer'
 const PlayerProfile = () => {
     return (
         <div className="container-2xl">
-            <PlayerHeader id={1} />
             <div className='container flex justify-between mx-auto my-8'>
                 <div className='w-1/6 mr-8'>
                     <img src={avt} alt='avatar'></img>
