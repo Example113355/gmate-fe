@@ -51,7 +51,6 @@ function App() {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<UserHomePage />} />
           <Route path="/user/:id" element={<UserDetail />} />
-          <Route path="/user-homepage" element={<UserHomePage />} />
         </Route>
 
         <Route path="/" element={<MainLayoutPlayer />}>
@@ -64,8 +63,6 @@ function App() {
         <Route path="/login" element={<LogIn />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/test-modal" element={<TestModalPage />} />
-
-        <Route path="/user-homepage" element={<UserHomePage />} />
 
       </Routes>
     </Router>

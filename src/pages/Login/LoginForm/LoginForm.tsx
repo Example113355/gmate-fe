@@ -1,8 +1,9 @@
 import { Button, Form, Input } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import openNotification from '../../../components/notify';
 import { post } from '../../../utils/http_2';
 import { useUser } from '../../../contexts/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 interface LoginResponse {
     status: number;
@@ -41,10 +42,18 @@ const LogInForm = () => {
     const [loading, setLoading] = useState(false)
     const [form] = Form.useForm()
     const { user, setUser } = useUser()
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (user.email!=='') {
+            navigate('/');
+        }
+    }, [user]);
+
 
     function handleSubmit() {
         form.validateFields().then(() => {
-            post('auth/login', {
+            post('api/v1/public/auth/login', {
                 email: email,
                 password: password
             }).then((response) => {
@@ -55,8 +64,9 @@ const LogInForm = () => {
                     console.log(loginResponse.data.data.user)
                     const newUser = loginResponse.data.data.user as User
                     setUser(newUser)
+                    localStorage.setItem('user', JSON.stringify(newUser))
                     console.log(user)
-                    openNotification('success', 'Success', 'Logged in successfully!')
+                    openNotification('success', 'Success', 'Logged in successfully!') 
                 }
             }).catch(() => {
                 setLoading(false)
