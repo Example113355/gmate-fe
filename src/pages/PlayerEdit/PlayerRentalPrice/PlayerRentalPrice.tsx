@@ -1,19 +1,29 @@
-import { useState } from "react";
-const PlayerRentalPrice = () => {
-
+import { useEffect, useState } from "react";
+const PlayerRentalPrice = ({ player }) => {
     const formatPrice = (value) => {
         // Remove non-numeric characters, then add commas
-        return value.toString().replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        if (value == null || isNaN(value)) return '';
+        return value.toLocaleString('en-US');
+        // return value.toString().replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     };
 
-    const [price, setPrice] = useState(formatPrice(100000));
+    const curPrice = formatPrice(player?.rentPrice || 0);
+    const [price, setPrice] = useState(curPrice);
+    // console.log(player);
+    useEffect(() => {
+        const curPrice = formatPrice(player?.rentPrice || 0);
+        setPrice(curPrice);
+    }, [player]);
 
     const handleSavePrice = () => {
         setPrice(price);
     };
 
     const handleChange = (e) => {
-        const formattedPrice = formatPrice(e.target.value);
+        // const formattedPrice = formatPrice(e.target.value);
+        // setPrice(formattedPrice);
+        const numericValue = parseInt(e.target.value.replace(/\D/g, '') || 0, 10); // Chuyển giá trị nhập vào thành số
+        const formattedPrice = formatPrice(numericValue);
         setPrice(formattedPrice);
     };
 

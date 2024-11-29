@@ -48,12 +48,12 @@ function App() {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
           <Route path="/user/:id" element={<UserDetail />} />
+          <Route path="/playeredit/:id" element={<PlayerEdit />} />
           <Route path="/player/stat" element={<PlayerStat />} />
         </Route>
         <Route path="/login" element={<LogIn />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/test-modal" element={<TestModalPage />} />
-
         <Route path="/user-homepage" element={<UserHomePage />} />
         <Route path="/player-profile" element={<PlayerProfile />} />
 

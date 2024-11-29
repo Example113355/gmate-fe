@@ -1,15 +1,35 @@
-import PlayerFreeTime from "./PlayerFreeTime/playerfreetime";
-import avt from '../../assets/img/anhmau.jpg';
 import PlayerRentalPrice from "./PlayerRentalPrice/PlayerRentalPrice";
 import PlayerBookingList from "./PlayerBookingList/PlayerBookingList";
-import PlayerHeader from "../../components/player-header";
+import PlayerFreeTime from "./PlayerFreeTime/PlayerFreeTime";
+import { useEffect, useState } from "react";
+import { getPlayerById } from "./ApiService";
+import { useParams } from "react-router-dom";
 
 import "./PlayerEdit.css";
 
 const PlayerEdit = () => {
+    const [player, setPlayer] = useState({});
+    const { id } = useParams();
+    // console.log(id);
+
+    //Lấy thông tin player từ id trên path
+    useEffect(() => {
+        const fetchPlayer = async () => {
+            try {
+                const playerData = await getPlayerById(id);
+                // console.log(playerData);
+                setPlayer(playerData);
+            } catch (error) {
+                console.error('Error fetching player:', error);
+            }
+        };
+        fetchPlayer();
+    }, [id]);
+
+    console.log(player);
+
     return (
         <div>
-            <PlayerHeader id={3} />
 
             <div className="player-edit-container">
                 {/* Phần trên: Thông tin người chơi */}
@@ -17,11 +37,11 @@ const PlayerEdit = () => {
                     <h3 className="player-title">THÔNG TIN</h3>
                     <div className="player-top-content">
                         <div className="player-avatar-container">
-                            <img src={avt} alt="avatar" className="player-avatar" />
+                            <img src={player.avatar} alt="avatar" className="player-avatar" />
                         </div>
                         <div className="player-info-container">
-                            <h2 className="player-name">Dũnggggggg Kaka</h2>
-                            <PlayerRentalPrice />
+                            <h2 className="player-name">{player.nameDisplay}</h2>
+                            <PlayerRentalPrice player={player} />
                             <h3 className="section-title">Thời gian rãnh</h3>
                             <div className="game-list">
                                 <PlayerFreeTime id={1} />
