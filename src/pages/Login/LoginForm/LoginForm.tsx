@@ -61,6 +61,7 @@ const LogInForm = () => {
                 if (loginResponse.status === 200) {
                     localStorage.setItem('accessToken', loginResponse.data.data.accessToken)
                     const newUser = loginResponse.data.data.user as User
+                    setUser(newUser)
                     localStorage.setItem('user', JSON.stringify(newUser))
                     openNotification('success', 'Success', 'Logged in successfully!') 
                 }
