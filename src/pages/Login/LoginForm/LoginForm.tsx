@@ -60,12 +60,8 @@ const LogInForm = () => {
                 const loginResponse = response as LoginResponse;
                 if (loginResponse.status === 200) {
                     localStorage.setItem('accessToken', loginResponse.data.data.accessToken)
-                    console.log(user)
-                    console.log(loginResponse.data.data.user)
                     const newUser = loginResponse.data.data.user as User
-                    setUser(newUser)
                     localStorage.setItem('user', JSON.stringify(newUser))
-                    console.log(user)
                     openNotification('success', 'Success', 'Logged in successfully!') 
                 }
             }).catch(() => {
