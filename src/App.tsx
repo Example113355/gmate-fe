@@ -51,10 +51,7 @@ function App() {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<UserHomePage />} />
           <Route path="/user/:id" element={<UserDetail />} />
-        </Route>
 
-        <Route path="/" element={<MainLayoutPlayer />}>
-          <Route index element={<UserHomePage />} />
           <Route path="/player/profile" element={<PlayerProfile />} />
           <Route path="/player/stat" element={<PlayerStat />} />
           <Route path="/player/edit" element={<PlayerEdit />} />

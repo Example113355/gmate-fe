@@ -56,14 +56,16 @@ const Navbar: React.FC<NavbarProps> = ({ tabState, setTabState, onLogout }) => {
           </div>
           {user.email === "" ? (
             //login button
-            <span className="text-primary  text-2xl "
-            //set cursor to pointer
-            style={{ cursor: "pointer" }}
-            onClick={
-              () => {
+            <span
+              className="text-primary  text-2xl "
+              //set cursor to pointer
+              style={{ cursor: "pointer" }}
+              onClick={() => {
                 navigate("/login");
-              }
-            }>Đăng nhập</span>
+              }}
+            >
+              Đăng nhập
+            </span>
           ) : (
             <div className="flex items-center space-x-4">
               <button
@@ -113,7 +115,7 @@ const Navbar: React.FC<NavbarProps> = ({ tabState, setTabState, onLogout }) => {
                   onClick={handleOpenPaymentModal}
                 >
                   <img
-                    src="src/assets/img/PlusIcon.png"
+                    src="/assets/img/PlusIcon.png"
                     alt=""
                     className="w-6 h-6"
                   />
@@ -128,7 +130,7 @@ const Navbar: React.FC<NavbarProps> = ({ tabState, setTabState, onLogout }) => {
                 }}
               >
                 <img
-                  src="/assets/img/Player Image.png"
+                  src= {user.avatar}
                   alt="Player"
                   className="w-20 h-20 rounded-full ml-4 border-3 border-primary"
                 />
