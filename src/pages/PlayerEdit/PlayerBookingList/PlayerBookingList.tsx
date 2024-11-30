@@ -1,40 +1,40 @@
-import React from "react";
+import { useState, useEffect } from "react";
+import { getBookingListById, getUserById } from "../ApiService";
 
-const PlayerBookingList = () => {
-    const bookings = [
-        {
-            id: 1,
-            profileImage: "https://pixwares.com/storage/2023/07/anh-gai-xinh.jpg", // Placeholder image URL
-            name: "Dũnggggggggg",
-            phone: "+1 212 121 212",
-            email: "dungdeptrai@example.com",
-            time: "08:00 - 10:00 Mon",
-        },
-        {
-            id: 2,
-            profileImage: "https://pixwares.com/storage/2023/07/anh-gai-xinh.jpg", // Placeholder image URL
-            name: "Dũnggggggggg",
-            phone: "+1 212 121 212",
-            email: "dungdeptrai@example.com",
-            time: "08:00 - 10:00 Mon",
-        },
-        {
-            id: 3,
-            profileImage: "https://pixwares.com/storage/2023/07/anh-gai-xinh.jpg", // Placeholder image URL
-            name: "Dũnggggggggg",
-            phone: "+1 212 121 212",
-            email: "dungdeptrai@example.com",
-            time: "08:00 - 10:00 Mon",
-        },
-        {
-            id: 4,
-            profileImage: "https://pixwares.com/storage/2023/07/anh-gai-xinh.jpg", // Placeholder image URL
-            name: "Dũnggggggggg",
-            phone: "+1 212 121 212",
-            email: "dungdeptrai@example.com",
-            time: "08:00 - 10:00 Mon",
-        },
-    ];
+const PlayerBookingList = ({ playerId }) => {
+    const [bookings, setBookings] = useState([]);
+
+    useEffect(() => {
+        const fetchBookings = async () => {
+            try {
+                // console.log(playerId);
+
+                const bookingList = await getBookingListById(playerId);
+                // console.log(bookings);
+                setBookings(bookingList);
+            } catch (error) {
+                console.error('Error fetching bookings:', error);
+            }
+        };
+
+        fetchBookings();
+
+    }, [playerId]);
+
+    const getStatusTag = (status) => {
+        switch (status) {
+            case "Pending":
+                return <span style={{ backgroundColor: "#f7dc6f", padding: "2px 5px", borderRadius: "4px", color: "#333" }}>Đang chờ</span>;
+            case "Accepted":
+                return <span style={{ backgroundColor: "#8bc34a", padding: "2px 5px", borderRadius: "4px", color: "#fff" }}>Đã chấp nhận</span>;
+            case "Rejected":
+                return <span style={{ backgroundColor: "#e74c3c", padding: "2px 5px", borderRadius: "4px", color: "#fff" }}>Đã từ chối</span>;
+            default:
+                return <span style={{ backgroundColor: "#ccc", padding: "2px 5px", borderRadius: "4px", color: "#333" }}>Không xác định</span>;
+        }
+    };
+
+
 
     return (
         <div style={{ padding: "20px" }}>
@@ -45,33 +45,31 @@ const PlayerBookingList = () => {
                         <th style={{ padding: "12px", borderBottom: "2px solid #888", color: "red" }}>Tên người thuê</th>
                         <th style={{ padding: "12px", borderBottom: "2px solid #888", color: "red" }}>SĐT</th>
                         <th style={{ padding: "12px", borderBottom: "2px solid #888", color: "red" }}>Email</th>
-                        <th style={{ padding: "12px", borderBottom: "2px solid #888", color: "red" }}>Giờ</th>
+                        <th style={{ padding: "12px", borderBottom: "2px solid #888", color: "red" }}>Trang thái</th>
                         <th style={{ padding: "12px", borderBottom: "2px solid #888", color: "red" }}>Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
                     {bookings.map((booking) => (
-                        <tr key={booking.id}>
+                        <tr key={booking._id}>
                             <td style={{ padding: "12px", borderBottom: "1px solid #ddd", textAlign: "center" }}>
                                 <img
-                                    src={booking.profileImage}
+                                    src={booking.user.avatar}
                                     alt="Profile"
                                     style={{ width: "40px", height: "40px", borderRadius: "50%" }}
                                 />
                             </td>
                             <td style={{ padding: "12px", borderBottom: "1px solid #ddd", textAlign: "center" }}>
-                                {booking.name}
+                                {booking.user.lastName}
                             </td>
                             <td style={{ padding: "12px", borderBottom: "1px solid #ddd", textAlign: "center" }}>
-                                {booking.phone}
+                                {booking.user.dateOfBirth}
                             </td>
                             <td style={{ padding: "12px", borderBottom: "1px solid #ddd", textAlign: "center" }}>
-                                {booking.email}
+                                {booking.user.email}
                             </td>
                             <td style={{ padding: "12px", borderBottom: "1px solid #ddd", textAlign: "center" }}>
-                                <span style={{ backgroundColor: "#d4edda", padding: "6px 12px", borderRadius: "4px" }}>
-                                    {booking.time}
-                                </span>
+                                {getStatusTag(booking.status)}
                             </td>
                             <td style={{ padding: "12px", borderBottom: "1px solid #ddd", textAlign: "center" }}>
                                 <button

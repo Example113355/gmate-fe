@@ -51,15 +51,21 @@ function App() {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<UserHomePage />} />
           <Route path="/user/:id" element={<UserDetail />} />
+          <Route path="/user-homepage" element={<UserHomePage />} />
+        </Route>
 
+        <Route path="/" element={<MainLayoutPlayer />}>
+          <Route index element={<UserHomePage />} />
           <Route path="/player/profile" element={<PlayerProfile />} />
           <Route path="/player/stat" element={<PlayerStat />} />
-          <Route path="/player/edit" element={<PlayerEdit />} />
+          <Route path="/playeredit/:id" element={<PlayerEdit />} />
         </Route>
-        
+
         <Route path="/login" element={<LogIn />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/test-modal" element={<TestModalPage />} />
+
+        <Route path="/user-homepage" element={<UserHomePage />} />
 
       </Routes>
     </Router>
