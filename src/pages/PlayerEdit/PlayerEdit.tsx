@@ -26,7 +26,7 @@ const PlayerEdit = () => {
         fetchPlayer();
     }, [id]);
 
-    console.log(player);
+    // console.log(player);
 
     return (
         <div>
@@ -41,7 +41,7 @@ const PlayerEdit = () => {
                         </div>
                         <div className="player-info-container">
                             <h2 className="player-name">{player.nameDisplay}</h2>
-                            <PlayerRentalPrice player={player} />
+                            <PlayerRentalPrice player={player} id={id} />
                             <h3 className="section-title">Thời gian rãnh</h3>
                             <div className="game-list">
                                 <PlayerFreeTime id={1} />
@@ -56,7 +56,7 @@ const PlayerEdit = () => {
                 {/* Phần dưới: Danh sách yêu cầu */}
                 <div className="player-bottom-section">
                     <h3 className="player-title">YÊU CẦU THUÊ</h3>
-                    <PlayerBookingList />
+                    <PlayerBookingList playerId={id} />
                 </div>
             </div>
         </div>

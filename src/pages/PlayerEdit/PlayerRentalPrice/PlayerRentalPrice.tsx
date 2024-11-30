@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-const PlayerRentalPrice = ({ player }) => {
+import { updatePlayer } from "../ApiService";
+const PlayerRentalPrice = ({ player, id }) => {
     const formatPrice = (value) => {
         // Remove non-numeric characters, then add commas
         if (value == null || isNaN(value)) return '';
@@ -19,11 +20,12 @@ const PlayerRentalPrice = ({ player }) => {
         setPrice(price);
     };
 
-    const handleChange = (e) => {
+    const handleChange = async (e) => {
         // const formattedPrice = formatPrice(e.target.value);
         // setPrice(formattedPrice);
         const numericValue = parseInt(e.target.value.replace(/\D/g, '') || 0, 10); // Chuyển giá trị nhập vào thành số
-        const formattedPrice = formatPrice(numericValue);
+        const newPlayer = await updatePlayer(id, { ...player, rentPrice: numericValue });
+        const formattedPrice = formatPrice(newPlayer.rentPrice);
         setPrice(formattedPrice);
     };
 
