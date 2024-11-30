@@ -84,7 +84,7 @@ const RegisterForm = () => {
                         message: 'Please confirm your password!',
                     },
                     {
-                        validator: (rule, value) => {
+                        validator: (value) => {
                             if (value !== password) {
                                 return Promise.reject('The two passwords that you entered do not match!')
                             }

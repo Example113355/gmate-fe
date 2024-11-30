@@ -2,6 +2,7 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./assets/styles/base.css";
 import "./assets/styles/keyframes.css";
 import MainLayout from "./components/MainLayout";
+import MainLayoutPlayer from "./components/MainLayoutPlayer";
 
 import HomePage from "./pages/home";
 import LogIn from "./pages/Login/Login";
@@ -14,13 +15,14 @@ import PlayerEdit from './pages/PlayerEdit/PlayerEdit'
 import PlayerProfile from './pages/PlayerProfile'
 import { useEffect, useState } from "react";
 import { fetchToken, onMessageListener } from "./utils/firebase";
+
 function App() {
   const [show, setShow] = useState(false);
   const [notification, setNotification] = useState({ title: "", body: "" });
-  const [isTokenFound, setTokenFound] = useState(false);
+  const [isTokenFound, setIsTokenFound] = useState(false);
 
   useEffect(() => {
-    fetchToken(setTokenFound);
+    fetchToken(setIsTokenFound);
   }, []);
 
   onMessageListener()
@@ -34,28 +36,33 @@ function App() {
     })
     .catch((err) => console.log("failed: ", err));
 
-  const onShowNotificationClicked = () => {
-    setNotification({
-      title: "Notification",
-      body: "This is a test notification",
-    });
-    setShow(true);
-  };
+  // const onShowNotificationClicked = () => {
+  //   setNotification({
+  //     title: "Notification",
+  //     body: "This is a test notification",
+  //   });
+  //   setShow(true);
+  // };
+  console.log(isTokenFound, notification, show);
 
   return (
     <Router>
       <Routes>
         <Route path="/" element={<MainLayout />}>
-          <Route index element={<HomePage />} />
+          <Route index element={<UserHomePage />} />
           <Route path="/user/:id" element={<UserDetail />} />
-          <Route path="/playeredit/:id" element={<PlayerEdit />} />
-          <Route path="/player/stat" element={<PlayerStat />} />
+          <Route path="/user-homepage" element={<UserHomePage />} />
         </Route>
+        <Route path="/player" element={<MainLayoutPlayer />}>
+          <Route path="/player/profile" element={<PlayerProfile />} />
+          <Route path="/player/stat" element={<PlayerStat />} />
+          <Route path="/playeredit/:id" element={<PlayerEdit />} />
+        </Route>
+
         <Route path="/login" element={<LogIn />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/test-modal" element={<TestModalPage />} />
         <Route path="/user-homepage" element={<UserHomePage />} />
-        <Route path="/player-profile" element={<PlayerProfile />} />
 
       </Routes>
     </Router>

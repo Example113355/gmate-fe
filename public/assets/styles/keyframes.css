@@ -1,0 +1,21 @@
+@keyframes wave {
+    0% {
+        margin-left: 0;
+    }
+
+    100% {
+        margin-left: -1600px;
+    }
+}
+
+@keyframes swell {
+
+    0%,
+    100% {
+        transform: translate(0, -30px);
+    }
+
+    50% {
+        transform: translate(0, 5px);
+    }
+}
