@@ -53,7 +53,9 @@ function App() {
           <Route path="/user/:id" element={<UserDetail />} />
           <Route path="/user-homepage" element={<UserHomePage />} />
         </Route>
-        <Route path="/player" element={<MainLayoutPlayer />}>
+
+        <Route path="/" element={<MainLayoutPlayer />}>
+          <Route index element={<UserHomePage />} />
           <Route path="/player/profile" element={<PlayerProfile />} />
           <Route path="/player/stat" element={<PlayerStat />} />
           <Route path="/playeredit/:id" element={<PlayerEdit />} />
@@ -62,6 +64,7 @@ function App() {
         <Route path="/login" element={<LogIn />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/test-modal" element={<TestModalPage />} />
+
         <Route path="/user-homepage" element={<UserHomePage />} />
 
       </Routes>
