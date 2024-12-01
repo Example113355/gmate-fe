@@ -1,3 +1,4 @@
+import { useUser } from "../contexts/UserContext";
 import "./userHomepageStyle.css";
 import React, { useState, useEffect } from 'react';
 
@@ -142,9 +143,10 @@ const Star: React.FC<StarProps> = ({ filled }) => (
 
 const UserHomePage = () => {
     const id = 2; // ID của user
-
+    const { user, setUser } = useUser();
     const [games, setGames] = useState<Game[]>([]); // Chỉ định kiểu mảng các game
     const [, setLoading] = useState(true); // Trạng thái loading
+
 
     useEffect(() => {
         // Gọi API và cập nhật dữ liệu
@@ -152,7 +154,7 @@ const UserHomePage = () => {
         setGames(data); // Dữ liệu phải có kiểu Game[]
         setLoading(false); // Đặt loading thành false khi nhận được dữ liệu
         });
-    }, []); // Chạy chỉ một lần khi component được mount
+    }, [user]); 
 
     const [topDonate, setTopDonate] = useState<DPlayerRanking[]>([]);
     const [topGmaster, setTopGmaster] = useState<GPlayerRanking[]>([]);
@@ -168,7 +170,7 @@ const UserHomePage = () => {
         setTopGmaster(data); // Dữ liệu phải có kiểu Game[]
         setLoading(false); // Đặt loading thành false khi nhận được dữ liệu
         });
-    }, []);
+    }, [user]);
 
     const you = topDonate.find((player) => player.id === id);
 
@@ -182,6 +184,9 @@ const UserHomePage = () => {
         @import
         url('https://fonts.googleapis.com/css2?family=Suez+One&display=swap');
       </style>
+      <h1>
+        user: {user._id} {user.lastName}
+      </h1>
 
       <div className="banner">
         <div className="content">

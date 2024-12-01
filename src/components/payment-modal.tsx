@@ -21,8 +21,11 @@ const PaymentModal: React.FC<ModalProps> = ({ show, onClose }) => {
         return;
       }
 
+      const userId = '673eb14388834d5bb4566d01';
+      const walletId = '67454283f72b04ec30a06713';
+
       console.log('amount:', amount);
-      const response = await axios.post('http://localhost:3000/api/v1/payos/create-payment-link', { amount });
+      const response = await axios.post('http://localhost:3000/api/v1/payos/create-payment-link', { userId, walletId, amount });
       if (response.data && response.data.checkoutUrl) {
         setCheckoutUrl(response.data.checkoutUrl);
         setOrderCode(response.data.orderCode);
