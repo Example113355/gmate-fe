@@ -1,6 +1,7 @@
 import { Button, Checkbox, Form, Input } from 'antd';
 import { useState } from 'react';
 import openNotification from '../../../components/notify';
+import { post } from '../../../utils/http_2';
 
 const RegisterForm = () => {
     const [email, setEmail] = useState('')
@@ -11,7 +12,19 @@ const RegisterForm = () => {
 
     function handleSubmit() {
         form.validateFields().then(() => {
-            openNotification('success', 'Success', 'You have successfully registered!')
+            post('/auth/register', {
+                email,
+                password,
+                name
+            }).then((response: any) => {
+                if (response.status === 200) {
+                    form.resetFields()
+                    openNotification('success', 'Success', 'Account created successfully!')
+                }
+                else {
+                    openNotification('error', 'Error', response.response.data.errors[0].title)
+                }
+            })
         }
         ).catch(() => {
             openNotification('error', 'Error', 'Please fill in all the fields!')
@@ -84,8 +97,8 @@ const RegisterForm = () => {
                         message: 'Please confirm your password!',
                     },
                     {
-                        validator: (value) => {
-                            if (value !== password) {
+                        validator: () => {
+                            if (confirmPassword != password) {
                                 return Promise.reject('The two passwords that you entered do not match!')
                             }
                             return Promise.resolve()
