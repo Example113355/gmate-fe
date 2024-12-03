@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getBookingListById, getUserById } from "../ApiService";
+import { getBookingListById, getUserById, updateBookingStatus } from "../ApiService";
 
 const PlayerBookingList = ({ playerId }) => {
     const [bookings, setBookings] = useState([]);
@@ -33,6 +33,48 @@ const PlayerBookingList = ({ playerId }) => {
                 return <span style={{ backgroundColor: "#ccc", padding: "2px 5px", borderRadius: "4px", color: "#333" }}>Không xác định</span>;
         }
     };
+
+    const handleAcceptBooking = async (bookingId) => {
+        try {
+            // Gọi API để chấp nhận đặt chơi
+            await updateBookingStatus(playerId, bookingId, "Accepted");
+            // Đổi trạng thái để sort
+            const updatedBookings = bookings.map((booking) => {
+                if (booking.id === bookingId) {
+                    return { ...booking, processed: true };
+                }
+                return booking;
+            });
+            setBookings(updatedBookings);
+        } catch (error) {
+            console.error('Error accepting booking:', error);
+        }
+    }
+
+    const handleRejectBooking = async (bookingId) => {
+        try {
+            // Gọi API để từ chối đặt chơi
+            await updateBookingStatus(playerId, bookingId, "Rejected");
+            const updatedBookings = bookings.map((booking) => {
+                if (booking.id === bookingId) {
+                    return { ...booking, processed: true };
+                }
+                return booking;
+            });
+            setBookings(updatedBookings);
+        } catch (error) {
+            console.error('Error rejecting booking:', error);
+        }
+    }
+
+    useEffect(() => {
+        const sortedBookings = bookings.sort((a, b) => {
+            if (a.processed && !b.processed) return 1;
+            if (!a.processed && b.processed) return -1;
+            return 0;
+        });
+        setBookings(sortedBookings);
+    }, [bookings]);
 
 
 
@@ -82,6 +124,8 @@ const PlayerBookingList = ({ playerId }) => {
                                         marginRight: "5px",
                                         cursor: "pointer"
                                     }}
+                                    onClick={() => handleAcceptBooking(booking._id)}
+                                    disabled={booking.status === "accepted" || booking.status === "rejected"}
                                 >
                                     Nhận
                                 </button>
@@ -94,6 +138,8 @@ const PlayerBookingList = ({ playerId }) => {
                                         padding: "6px 12px",
                                         cursor: "pointer"
                                     }}
+                                    onClick={() => handleRejectBooking(booking._id)}
+                                    disabled={booking.status === "accepted" || booking.status === "rejected"}
                                 >
                                     Từ chối
                                 </button>

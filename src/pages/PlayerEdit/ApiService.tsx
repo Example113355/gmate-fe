@@ -45,3 +45,13 @@ export const getBookingListById = async (playerId: string) => {
         throw error;
     }
 };
+
+export const updateBookingStatus = async (playerId: string, bookingId: string, status: string) => {
+    try {
+        const response = await axios.patch(`${apiUrl}players/${playerId}/bookings`, { id: bookingId, status: status });
+        return response.data;
+    } catch (error) {
+        console.error('Error updating booking status:', error);
+        throw error;
+    }
+};
