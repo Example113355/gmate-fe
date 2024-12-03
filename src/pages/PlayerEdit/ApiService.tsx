@@ -14,16 +14,6 @@ export const getPlayerById = async (playerId: string) => {
     }
 }
 
-export const getUserById = async (userId: string) => {
-    try {
-        const response = await axios.get(`${apiUrl}/players/getUsers/${userId}`);
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching user:', error);
-        throw error;
-    }
-}
-
 export const updatePlayer = async (playerId: string, updatedPlayer: any) => {
     try {
         const response = await axios.put(`${apiUrl}/players/${playerId}`, updatedPlayer);
@@ -48,7 +38,7 @@ export const getBookingListById = async (playerId: string) => {
 
 export const updateBookingStatus = async (playerId: string, bookingId: string, status: string) => {
     try {
-        const response = await axios.patch(`${apiUrl}players/${playerId}/bookings`, { id: bookingId, status: status });
+        const response = await axios.put(`${apiUrl}/players/${playerId}/bookings`, { id: bookingId, status: status });
         return response.data;
     } catch (error) {
         console.error('Error updating booking status:', error);
