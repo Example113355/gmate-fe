@@ -41,7 +41,7 @@ const TabBar = ({
     return (
       <>
         <div className="hidden md:flex items-center justify-between ">
-          {tabState.tabs.map((tab: TabProps) => (
+          {tabState.tabs?.map((tab: TabProps) => (
             <div
               key={tab.id}
               className="flex items-center"
@@ -94,7 +94,7 @@ const TabBar = ({
                 : "opacity-0 scale-95 pointer-events-none"
             }`}
           >
-            {tabState.tabs.map((tab) => (
+            {tabState.tabs?.map((tab) => (
               <h1
                 key={tab.id}
                 onClick={() => {
