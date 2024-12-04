@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { updatePlayer } from "../ApiService";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const PlayerRentalPrice = ({ player, id }) => {
-    const formatPrice = (value) => {
+    const formatPrice = (value: number) => {
         // Remove non-numeric characters, then add commas
         if (value == null || isNaN(value)) return '';
         return value.toLocaleString('en-US');
@@ -16,16 +18,21 @@ const PlayerRentalPrice = ({ player, id }) => {
         setPrice(curPrice);
     }, [player]);
 
-    const handleSavePrice = () => {
-        setPrice(price);
+    const handleSavePrice = async () => {
+        try {
+            const numericValue = parseInt(price.replace(/\D/g, '') || 0, 10); // Lấy giá trị số từ input
+            const newPlayer = await updatePlayer(id, { ...player, rentPrice: numericValue });
+            const formattedPrice = formatPrice(newPlayer.rentPrice);
+            setPrice(formattedPrice);
+            toast.success("Giá đã được cập nhật thành công!"); // Hiện thông báo thành công
+        } catch (error) {
+            toast.error("Cập nhật giá thất bại. Vui lòng thử lại."); // Hiện thông báo lỗi nếu xảy ra vấn đề
+        }
     };
 
     const handleChange = async (e) => {
-        // const formattedPrice = formatPrice(e.target.value);
-        // setPrice(formattedPrice);
-        const numericValue = parseInt(e.target.value.replace(/\D/g, '') || 0, 10); // Chuyển giá trị nhập vào thành số
-        const newPlayer = await updatePlayer(id, { ...player, rentPrice: numericValue });
-        const formattedPrice = formatPrice(newPlayer.rentPrice);
+        const numericValue = e.target.value.replace(/\D/g, ''); // Chỉ cho phép nhập số
+        const formattedPrice = formatPrice(parseInt(numericValue || '0', 10));
         setPrice(formattedPrice);
     };
 
@@ -63,6 +70,7 @@ const PlayerRentalPrice = ({ player, id }) => {
             >
                 Lưu
             </button>
+            <ToastContainer />
         </div>
     );
 }

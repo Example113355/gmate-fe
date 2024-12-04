@@ -1,6 +1,6 @@
 import PlayerRentalPrice from "./PlayerRentalPrice/PlayerRentalPrice";
 import PlayerBookingList from "./PlayerBookingList/PlayerBookingList";
-import PlayerFreeTime from "./PlayerFreeTime/PlayerFreeTime";
+import PlayerCategory from "./PlayerCategory/PlayerCategory";
 import { useEffect, useState } from "react";
 import { getPlayerById } from "./ApiService";
 import { useParams } from "react-router-dom";
@@ -9,6 +9,7 @@ import "./PlayerEdit.css";
 
 const PlayerEdit = () => {
     const [player, setPlayer] = useState({});
+    const [playerAvt, setPlayerAvt] = useState('');
     const { id } = useParams();
     // console.log(id);
 
@@ -16,9 +17,10 @@ const PlayerEdit = () => {
     useEffect(() => {
         const fetchPlayer = async () => {
             try {
-                const playerData = await getPlayerById(id);
+                const playerData = await getPlayerById(id!);
                 // console.log(playerData);
                 setPlayer(playerData);
+                setPlayerAvt(playerData.pics[0].url);
             } catch (error) {
                 console.error('Error fetching player:', error);
             }
@@ -26,7 +28,10 @@ const PlayerEdit = () => {
         fetchPlayer();
     }, [id]);
 
-    // console.log(player);
+    // console.log(playerAvt);
+
+
+
 
     return (
         <div>
@@ -37,17 +42,14 @@ const PlayerEdit = () => {
                     <h3 className="player-title">THÔNG TIN</h3>
                     <div className="player-top-content">
                         <div className="player-avatar-container">
-                            <img src={player.avatar} alt="avatar" className="player-avatar" />
+                            <img src={playerAvt} alt="avatar" className="player-avatar" />
                         </div>
                         <div className="player-info-container">
                             <h2 className="player-name">{player.nameDisplay}</h2>
                             <PlayerRentalPrice player={player} id={id} />
-                            <h3 className="section-title">Thời gian rãnh</h3>
+                            <h3 className="section-title">Thể loại game:</h3>
                             <div className="game-list">
-                                <PlayerFreeTime id={1} />
-                                <PlayerFreeTime id={2} />
-                                <PlayerFreeTime id={3} />
-                                <PlayerFreeTime id={4} />
+                                <PlayerCategory player={player} />
                             </div>
                         </div>
                     </div>
@@ -56,7 +58,7 @@ const PlayerEdit = () => {
                 {/* Phần dưới: Danh sách yêu cầu */}
                 <div className="player-bottom-section">
                     <h3 className="player-title">YÊU CẦU THUÊ</h3>
-                    <PlayerBookingList playerId={id} />
+                    <PlayerBookingList playerId={id ?? ''} />
                 </div>
             </div>
         </div>
