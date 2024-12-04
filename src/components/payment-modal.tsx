@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useUser } from "../contexts/UserContext";
+
+import { FiXCircle, FiCheckCircle  } from "react-icons/fi";
 
 interface ModalProps {
   show: boolean;
@@ -11,7 +14,27 @@ const PaymentModal: React.FC<ModalProps> = ({ show, onClose }) => {
   const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
   const [orderCode, setOrderCode] = useState<number | null>(null);
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
+  const [walletId, setWalletId] = useState<string | null>(null);
+  const [status, setStatus] = useState<string>('pending');
+  const [receiptPoll, setReceiptPoll] = useState<NodeJS.Timeout | null>(null);
   const amounts = [20000, 30000, 50000, 100000, 200000, 500000];
+  const { user } = useUser();
+
+  useEffect(() => {
+    const fetchWalletId = async () => {
+      if (user._id) {
+        try {
+          const response = await axios.get(`http://localhost:3000/api/v1/wallets/user/${user._id}`);
+          console.log('response:', response);
+          setWalletId(response.data._id);
+        } catch (error) {
+          console.error('Error fetching wallet ID:', error);
+        }
+      }
+    };
+
+    fetchWalletId();
+  }, [user._id]);
 
   const handlePayment = async () => {
     try {
@@ -21,14 +44,27 @@ const PaymentModal: React.FC<ModalProps> = ({ show, onClose }) => {
         return;
       }
 
-      const userId = '673eb14388834d5bb4566d01';
-      const walletId = '67454283f72b04ec30a06713';
-
+      const userId = user._id;
+      console.log('userId:', userId);
+      console.log('walletId:', walletId);
       console.log('amount:', amount);
       const response = await axios.post('http://localhost:3000/api/v1/payos/create-payment-link', { userId, walletId, amount });
       if (response.data && response.data.checkoutUrl) {
         setCheckoutUrl(response.data.checkoutUrl);
         setOrderCode(response.data.orderCode);
+        const poll = setInterval(async () => {
+          try {
+            const receiptResponse = await axios.get(`http://localhost:3000/api/v1/receipts/order/${response.data.orderCode}`);
+            console.log('receiptResponse:', receiptResponse);
+            if (receiptResponse.data.status !== 'pending') {
+              setStatus(receiptResponse.data.status);
+              clearInterval(poll);
+            }
+          } catch (error) {
+            console.error('Error fetching receipt status:', error);
+          }
+        }, 3000);
+        setReceiptPoll(poll);
       }
     } catch (error) {
       console.error('Error creating payment link:', error);
@@ -41,6 +77,11 @@ const PaymentModal: React.FC<ModalProps> = ({ show, onClose }) => {
         await axios.post(`http://localhost:3000/api/v1/payos/cancel-payment/${orderCode}`);
         setCheckoutUrl(null);
         setOrderCode(null);
+        if (receiptPoll) {
+          clearInterval(receiptPoll);
+          setReceiptPoll(null);
+        }
+        setStatus('failed');
       } catch (error) {
         console.error('Error canceling payment link:', error);
       }
@@ -49,6 +90,10 @@ const PaymentModal: React.FC<ModalProps> = ({ show, onClose }) => {
 
   const handleClose = () => {
     onClose();
+    if ( status !== 'pending' ) {
+      setStatus('pending');
+      setCheckoutUrl(null);
+    }
   };
 
   const formatNumber = (value: string) => {
@@ -82,7 +127,7 @@ const PaymentModal: React.FC<ModalProps> = ({ show, onClose }) => {
           </button>
         </div>
         <div className="px-16 py-10">
-          {checkoutUrl ? (
+          {status === 'pending' && checkoutUrl ? (
             <>
               <iframe src={checkoutUrl} className="w-full h-[700px]" title="Payment Checkout"></iframe>
               <button className="bg-red-500 text-white rounded px-6 py-3 w-full hover:bg-red-600 text-2xl mt-10 font-medium" onClick={handleCancel}>
@@ -91,27 +136,41 @@ const PaymentModal: React.FC<ModalProps> = ({ show, onClose }) => {
             </>
           ) : (
             <>
-              <input
-                type="text"
-                className="border border-gray-300 rounded px-4 py-3 w-full mb-10 text-2xl"
-                placeholder="Số tiền muốn nạp (VND)"
-                value={inputValue}
-                onChange={handleInputChange}
-              />
-              <div className="grid grid-cols-2 gap-6">
-                {amounts.map((amount) => (
-                  <button
-                    key={amount}
-                    className={`border rounded px-6 py-3 text-2xl font-medium ${selectedAmount === amount ? 'bg-red-500 text-white' : 'bg-gray-200 text-red-400 border-red-400 hover:bg-red-500 hover:text-white'}`}
-                    onClick={() => handleAmountClick(amount)}
-                  >
-                    {amount.toLocaleString()} VND
+              {status === 'completed' ? (
+                <div className="flex flex-col items-center">
+                  <FiCheckCircle className="text-green-500 mb-4 text-8xl" />
+                  <div className="text-green-500 text-3xl font-medium">Giao dịch thành công</div>
+                </div>
+              ) : status === 'failed' ? (
+                <div className="flex flex-col items-center">
+                  <FiXCircle className="text-red-500 text-8xl mb-4" />
+                  <div className="text-red-500 text-3xl font-medium">Giao dịch không thành công</div>
+                </div>
+              ) : (
+                <>
+                  <input
+                    type="text"
+                    className="border border-gray-300 rounded px-4 py-3 w-full mb-10 text-2xl"
+                    placeholder="Số tiền muốn nạp (VND)"
+                    value={inputValue}
+                    onChange={handleInputChange}
+                  />
+                  <div className="grid grid-cols-2 gap-6">
+                    {amounts.map((amount) => (
+                      <button
+                        key={amount}
+                        className={`border rounded px-6 py-3 text-2xl font-medium ${selectedAmount === amount ? 'bg-red-500 text-white' : 'bg-gray-200 text-red-400 border-red-400 hover:bg-red-500 hover:text-white'}`}
+                        onClick={() => handleAmountClick(amount)}
+                      >
+                        {amount.toLocaleString()} VND
+                      </button>
+                    ))}
+                  </div>
+                  <button className="bg-red-500 text-white rounded px-6 py-3 w-full hover:bg-red-600 text-2xl mt-10 font-medium" onClick={handlePayment}>
+                    Nạp tiền
                   </button>
-                ))}
-              </div>
-              <button className="bg-red-500 text-white rounded px-6 py-3 w-full hover:bg-red-600 text-2xl mt-10 font-medium" onClick={handlePayment}>
-                Nạp tiền
-              </button>
+                </>
+              )}
             </>
           )}
         </div>
