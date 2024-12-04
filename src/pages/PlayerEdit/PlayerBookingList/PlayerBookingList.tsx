@@ -73,7 +73,7 @@ const PlayerBookingList = ({ playerId }: { playerId: string }) => {
 
 
     return (
-        <div style={{ padding: "20px" }} className="table-container">
+        <div className="table-container">
             <table style={{ width: "100%", borderCollapse: "collapse", backgroundColor: "white" }}>
                 <thead>
                     <tr>
@@ -84,10 +84,11 @@ const PlayerBookingList = ({ playerId }: { playerId: string }) => {
                             textAlign: "center",
                             verticalAlign: "middle",
                         }}>Ảnh hồ sơ</th>
+                        {/* <th style={{ padding: "12px", borderBottom: "2px solid #888", color: "red" }}>Ảnh hồ sơ</th> */}
                         <th style={{ padding: "12px", borderBottom: "2px solid #888", color: "red" }}>Tên người thuê</th>
                         <th style={{ padding: "12px", borderBottom: "2px solid #888", color: "red" }}>Ngày sinh</th>
                         <th style={{ padding: "12px", borderBottom: "2px solid #888", color: "red" }}>Email</th>
-                        <th style={{ padding: "12px", borderBottom: "2px solid #888", color: "red" }}>Trang thái</th>
+                        <th style={{ padding: "12px", borderBottom: "2px solid #888", color: "red" }}>Trạng thái</th>
                         <th style={{ padding: "12px", borderBottom: "2px solid #888", color: "red" }}>Hành động</th>
                     </tr>
                 </thead>
@@ -108,11 +109,11 @@ const PlayerBookingList = ({ playerId }: { playerId: string }) => {
                     ) : (
                         bookings.map((booking) => (
                             < tr key={booking._id} >
-                                <td style={{ padding: "12px", borderBottom: "1px solid #ddd", textAlign: "center", verticalAlign: "middle" }}>
+                                <td style={{ padding: "12px", borderBottom: "1px solid #ddd" }}>
                                     <img
                                         src={booking.user.avatar}
                                         alt="Profile"
-                                        style={{ width: "40px", height: "40px", borderRadius: "50%" }}
+                                        style={{ width: "40px", height: "40px", borderRadius: "50%", margin: "auto" }}
                                     />
                                 </td>
                                 <td style={{ padding: "12px", borderBottom: "1px solid #ddd", textAlign: "center" }}>

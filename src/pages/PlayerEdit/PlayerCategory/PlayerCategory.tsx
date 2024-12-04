@@ -34,7 +34,7 @@ const PlayerCategory = ({ player }: { player: Player }) => {
                     <CategoryItem key={cate._id} category={cate} />
                 ))
             ) : (
-                <p>No category available for this player</p>
+                <p>Người dùng này chưa cập nhật thể loại game</p>
             )}
         </div>
     );
