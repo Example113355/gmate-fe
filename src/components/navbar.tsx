@@ -5,7 +5,6 @@ import TabBar from "./tabs/tabBar";
 import { TabState } from "./tabs/interface";
 import { CiSearch  } from "react-icons/ci";
 import { RiNotification2Line } from "react-icons/ri";
-import { FiXCircle, FiCheckCircle  } from "react-icons/fi";
 import { Button } from "antd";
 import PaymentModal from "../components/payment-modal";
 import { useNavigate } from "react-router-dom";
