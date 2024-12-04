@@ -9,10 +9,10 @@ const PlayerPie = () => {
 
   useEffect(() => {
     const dataPie = {
-      labels: ["JavaScript", "Python", "Ruby"],
+      labels: ["Liên Minh Huyền Thoại", "Tâm Sự", "Khác"],
       datasets: [
         {
-          label: "My First Dataset",
+          label: "Số giờ thuê",
           data: [300, 50, 100],
           backgroundColor: [
             "rgb(133, 105, 241)",
@@ -36,21 +36,35 @@ const PlayerPie = () => {
               font: {
                 family: "'Arial', sans-serif", // Font family
                 size: 10, // Font size
-                style: 'italic', // Font style (optional)
+                style: "italic", // Font style (optional)
               },
-              color: 'black', // Label text color
+              color: "black", // Label text color
             },
           },
           tooltip: {
             bodyFont: {
               family: "'Arial', sans-serif", // Tooltip text font family
               size: 14, // Tooltip text font size
-              weight: 'normal', // Tooltip text font weight
+              weight: "normal", // Tooltip text font weight
             },
             titleFont: {
               family: "'Arial', sans-serif", // Tooltip title font family
               size: 16, // Tooltip title font size
-              weight: 'bold', // Tooltip title font weight
+              weight: "bold", // Tooltip title font weight
+            },
+          },
+          title: {
+            display: true, // Display the title
+            text: "Game được thuê nhiều", // Title text
+            font: {
+              family: "'Arial', sans-serif", // Title font family
+              size: 10, // Title font size
+              weight: "bold", // Title font weight
+            },
+            color: "black", // Title text color
+            padding: {
+              top: 10,
+              bottom: 10,
             },
           },
         },

@@ -3,6 +3,7 @@ import PlayerPie from "./PlayerPie";
 
 const PlayerGraph = () => {
     return (
+        <>
         <div style={{
             margin: "auto",
             width: "100%",
@@ -19,6 +20,7 @@ const PlayerGraph = () => {
             <PlayerPie/>
             
         </div>
+        </>
     );
 }
 

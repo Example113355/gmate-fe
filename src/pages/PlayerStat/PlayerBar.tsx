@@ -6,8 +6,8 @@ const PlayerBar = () => {
   const [tooltipX, setTooltipX] = useState(0);
   const [tooltipY, setTooltipY] = useState(0);
 
-  const chartData = [112, 10, 225, 134, 101, 80, 50, 100, 200];
-  const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'];
+  const chartData = [112, 10, 225, 134, 101, 80];
+  const labels = ['Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 11', 'Tháng 11'];
 
   const showTooltip = (e) => {
     setTooltipContent(e.target.textContent);
