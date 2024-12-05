@@ -1,83 +1,125 @@
+import { useNavigate } from "react-router-dom";
 import { useUser } from "../contexts/UserContext";
 import "./userHomepageStyle.css";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 // Định nghĩa kiểu cho game
 interface Game {
-    id: number;
-    name: string;
-    img: string;
+  id: number;
+  name: string;
+  displayName: string;
+  image: string;
 }
 
-const fetchGamesFromAPI = () => {
-    return new Promise<Game[]>((resolve) => {
-        setTimeout(() => {
-        resolve([
-            { id: 1, name: 'Liên quân Mobile', img: 'src/assets/img/lq.png' },
-            { id: 2, name: 'Đấu trường chân lý', img: 'src/assets/img/lq.png' },
-            { id: 3, name: 'Liên minh huyền thoại', img: 'src/assets/img/lq.png' },
-            { id: 4, name: 'PlayerUnknown\'s Battlegrounds', img: 'src/assets/img/lq.png' },
-            { id: 5, name: 'CS:GO', img: 'src/assets/img/lq.png' }
-        ]);
-        }, 1000); // Giả lập thời gian trễ từ API (1 giây)
-    });
+const fetchGamesFromAPI = async (): Promise<Game[]> => {
+  try {
+    // URL API giả định, bạn cần thay bằng endpoint thật
+    const response = await fetch("http://localhost:3000/api/v1/public/game");
+
+    // Kiểm tra nếu không thành công
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    // Chuyển đổi dữ liệu JSON
+    const data = await response.json();
+
+    // Map dữ liệu để khớp với kiểu Game
+    const games: Game[] = data.map((item: any) => ({
+      id: item._id,
+      name: item.name,
+      displayName: item.displayName,
+      image: item.image,
+    }));
+
+    return games;
+  } catch (error) {
+    console.error("Failed to fetch games:", error);
+    return [];
+  }
 };
 
 // Định nghĩa kiểu dữ liệu cho một người chơi
 interface DPlayerRanking {
-    id: number;
-    name: string;
-    phone: string;
-    avatar: string;
-    donationAmount: string;
+  userId: any;
+  id: string;
+  firstName: string;
+  lastName: string;
+  avatar: string;
+  email: string;
+  weeklySpent: string;
 }
 
 interface GPlayerRanking {
-    id: number;
-    name: string;
-    phone: string;
-    avatar: string;
-    starRating: number;
+  id: string;
+  userId: any;
+  avatar: string;
+  nameDisplay: string;
+  totalRentHour: number;
+  totalRating: number;
 }
 
-const fetchDonatePlayerRankingFromAPI = () => {
-    return new Promise<DPlayerRanking[]>((resolve) => {
-        setTimeout(() => {
-        resolve([
-            { id: 1, name: 'Jjn wein', phone: '0909****', avatar: 'src/assets/img/lq.png', donationAmount: '20000đ'},
-            { id: 2, name: 'You', phone: '0909****', avatar: 'src/assets/img/lq.png', donationAmount: '15000đ'},
-            { id: 3, name: 'Player 3', phone: '0909****', avatar: 'src/assets/img/lq.png', donationAmount: '10000đ'},
-            { id: 4, name: 'Player 4', phone: '0909****', avatar: 'src/assets/img/lq.png', donationAmount: '5000đ'},
-        ]);
-        }, 1000); // Giả lập thời gian trễ từ API (1 giây)
-    });
+const fetchDonatePlayerRankingFromAPI = async (): Promise<DPlayerRanking[]> => {
+  try {
+    const response = await fetch(
+      "http://localhost:3000/api/v1/users?filter=weeklySpent"
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    // If the response is an object containing an array, access the array
+    const players: DPlayerRanking[] = Array.isArray(data.users)
+      ? data.users.map((item: any) => ({
+          id: item._id,
+          firstName: item.firstName,
+          lastName: item.lastName,
+          avatar: item.avatar, // Adjust as necessary
+          email: item.email,
+          weeklySpent: item.weeklySpent,
+        }))
+      : [];
+
+    return players;
+  } catch (error) {
+    console.error("Failed to fetch player ranking:", error);
+    return [];
+  }
 };
 
-const fetchGmasterPlayerRankingFromAPI = () => {
-    return new Promise<GPlayerRanking[]>((resolve) => {
-        setTimeout(() => {
-        resolve([
-            { id: 1, name: 'Jjn wein', phone: '0909****', avatar: 'src/assets/img/lq.png', starRating: 4 },
-            { id: 2, name: 'You', phone: '0909****', avatar: 'src/assets/img/lq.png', starRating: 3 },
-            { id: 3, name: 'Player 3', phone: '0909****', avatar: 'src/assets/img/lq.png',  starRating: 3 },
-            { id: 4, name: 'Player 4', phone: '0909****', avatar: 'src/assets/img/lq.png',  starRating: 3 },
-        ]);
-        }, 1000); // Giả lập thời gian trễ từ API (1 giây)
-    });
+const fetchGmasterPlayerRankingFromAPI = async (): Promise<
+  GPlayerRanking[]
+> => {
+  try {
+    const response = await fetch(
+      "http://localhost:3000/api/v1/players?fillter=rating"
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+
+    // Map dữ liệu từ API vào interface GPlayerRanking
+    const players: GPlayerRanking[] = data.map((item: any) => ({
+      id: item._id, // Nếu API trả về `_id`
+      userId: item.userId,
+      avatar: "src/assets/img/Player Image.png", // Đường dẫn ảnh;
+      nameDisplay: item.nameDisplay,
+      totalRentHour: item.totalRentHour,
+      totalRating: item.totalRating / item.totalReview,
+    }));
+
+    return players;
+  } catch (error) {
+    console.error("Failed to fetch Gmaster Player Ranking:", error);
+    return [];
+  }
 };
-
-
-
-const playersByRating = [
-  { name: "Player 1", rating: 3 },
-  { name: "Player 2", rating: 4 },
-  { name: "Player 3", rating: 2 },
-  { name: "Player 4", rating: 5 },
-  { name: "Player 5", rating: 1 },
-  { name: "Player 6", rating: 5 },
-  { name: "Player 7", rating: 2 },
-  { name: "Player 8", rating: 4 },
-];
 
 interface StarRatingProps {
   rating: number;
@@ -141,38 +183,144 @@ const Star: React.FC<StarProps> = ({ filled }) => (
   </span>
 );
 
+interface Player {
+  id: string;
+  userId: any;
+  avatar: string;
+  nameDisplay: string;
+  introduce: string;
+  rentPrice: number;
+  totalRating: number;
+  pics: { _id: string; url: string }[];
+}
+
+const fetchPlayerFromAPI = async ({
+  fillter,
+}: {
+  fillter: string;
+}): Promise<Player[]> => {
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/v1/players?filter=${fillter}`
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+
+    const players: Player[] = data.map((item: any) => ({
+      id: item._id, // ID người chơi
+      userId: item.userId, // ID người dùng
+      avatar: item.avatar || "", // Avatar (giả sử API trả về trường này)
+      nameDisplay: item.nameDisplay, // Tên hiển thị
+      introduce: item.introduce || "", // Giới thiệu
+      rentPrice: item.rentPrice || 0, // Giá thuê
+      totalRating: item.totalRating / item.totalReview || 0, // Tổng số đánh giá
+      pics: item.pics || [], // Mảng hình ảnh (giả sử API trả về mảng này)
+    }));
+
+    return players;
+  } catch (error) {
+    console.error("Failed to fetch Gmaster Player Ranking:", error);
+    return [];
+  }
+};
+
 const UserHomePage = () => {
-    const id = 2; // ID của user
-    const { user, setUser } = useUser();
-    const [games, setGames] = useState<Game[]>([]); // Chỉ định kiểu mảng các game
-    const [, setLoading] = useState(true); // Trạng thái loading
+  const { user } = useUser();
+  const [games, setGames] = useState<Game[]>([]); // Chỉ định kiểu mảng các game
+  const [, setLoading] = useState(true); // Trạng thái loading
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    // Gọi API và cập nhật dữ liệu
+    fetchGamesFromAPI().then((data) => {
+      setGames(data); // Dữ liệu phải có kiểu Game[]
+      setLoading(false); // Đặt loading thành false khi nhận được dữ liệu
+    });
+  }, [user]);
 
-    useEffect(() => {
-        // Gọi API và cập nhật dữ liệu
-        fetchGamesFromAPI().then((data) => {
-        setGames(data); // Dữ liệu phải có kiểu Game[]
-        setLoading(false); // Đặt loading thành false khi nhận được dữ liệu
-        });
-    }, [user]); 
+  const [topDonate, setTopDonate] = useState<DPlayerRanking[]>([]);
+  const [topGmaster, setTopGmaster] = useState<GPlayerRanking[]>([]);
 
-    const [topDonate, setTopDonate] = useState<DPlayerRanking[]>([]);
-    const [topGmaster, setTopGmaster] = useState<GPlayerRanking[]>([]);
+  const [pro, setPro] = useState<Player[]>([]);
+  const [popular, setPopular] = useState<Player[]>([]);
 
-    useEffect(() => {
-        // Gọi API và cập nhật dữ liệu
-        fetchDonatePlayerRankingFromAPI().then((data) => {
-        setTopDonate(data); // Dữ liệu phải có kiểu Game[]
-        setLoading(false); // Đặt loading thành false khi nhận được dữ liệu
-        });
+  useEffect(() => {
+    // Gọi API và cập nhật dữ liệu
+    fetchDonatePlayerRankingFromAPI().then((data) => {
+      setTopDonate(data); // Dữ liệu phải có kiểu Game[]
+      console.log("Top Donate", data);
+      setLoading(false); // Đặt loading thành false khi nhận được dữ liệu
+    });
 
-        fetchGmasterPlayerRankingFromAPI().then((data) => {
-        setTopGmaster(data); // Dữ liệu phải có kiểu Game[]
-        setLoading(false); // Đặt loading thành false khi nhận được dữ liệu
-        });
-    }, [user]);
+    fetchGmasterPlayerRankingFromAPI().then((data) => {
+      setTopGmaster(data); // Dữ liệu phải có kiểu Game[]
+      setLoading(false); // Đặt loading thành false khi nhận được dữ liệu
+    });
+  }, [user]);
 
-    const you = topDonate.find((player) => player.id === id);
+  const you = topDonate.find((player) => player.id === user._id);
+  const index = topDonate.findIndex((player) => player.id === user._id);
+
+  useEffect(() => {
+    // Gọi API và cập nhật dữ liệu
+    fetchPlayerFromAPI({ fillter: "proplayer" }).then((data) => {
+      setPro(data);
+      setLoading(false);
+    });
+
+    fetchPlayerFromAPI({ fillter: "popular" }).then((data) => {
+      setPopular(data);
+      console.log("Popular", data);
+      setLoading(false);
+    });
+  }, [user]);
+
+  const itemsPerPage = 10; // Số lượng item mỗi trang
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Tính toán chỉ số bắt đầu và kết thúc
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentPlayers = pro.slice(startIndex, endIndex);
+
+  // Xử lý nút Next và Prev
+  const handleNext = () => {
+    if (currentPage < Math.ceil(pro.length / itemsPerPage)) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+
+  const handlePrev = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
+
+  const itemsPerPage2 = 10; // Số lượng item mỗi trang
+  const [currentPage2, setCurrentPage2] = useState(1);
+
+  // Tính toán chỉ số bắt đầu và kết thúc
+  const startIndex2 = (currentPage2 - 1) * itemsPerPage2;
+  const endIndex2 = startIndex2 + itemsPerPage2;
+  const currentPlayers2 = popular.slice(startIndex2, endIndex2);
+  console.log("Current Players 2", currentPlayers2);
+
+  // Xử lý nút Next và Prev
+  const handleNext2 = () => {
+    if (currentPage2 < Math.ceil(popular.length / itemsPerPage2)) {
+      setCurrentPage2((prev) => prev + 1);
+    }
+  };
+
+  const handlePrev2 = () => {
+    if (currentPage2 > 1) {
+      setCurrentPage2((prev) => prev - 1);
+    }
+  };
 
   return (
     <div className="h-full w-full">
@@ -184,9 +332,6 @@ const UserHomePage = () => {
         @import
         url('https://fonts.googleapis.com/css2?family=Suez+One&display=swap');
       </style>
-      <h1>
-        user: {user._id} {user.lastName}
-      </h1>
 
       <div className="banner">
         <div className="content">
@@ -206,17 +351,17 @@ const UserHomePage = () => {
       <div className="game-filter">
         <h1>TÌM BẠN THEO GAME</h1>
         <div className="game-list">
-            {games.length === 0 ? (
-                <p>Loading...</p>
-            ) : (
-                games.map((game) => (
-                <div key={game.id} className="game">
-                    <img src={game.img} alt={game.name} />
-                    <p>{game.name}</p>
-                </div>
-                ))
-            )}
-            </div>
+          {games.length === 0 ? (
+            <p>Loading...</p>
+          ) : (
+            games.map((game) => (
+              <div key={game.id} className="game">
+                <img src={game.image} alt={game.name} />
+                <p>{game.displayName}</p>
+              </div>
+            ))
+          )}
+        </div>
       </div>
 
       <div className="ranking">
@@ -225,51 +370,96 @@ const UserHomePage = () => {
           <div className="ranking-table">
             <h2>Top Donate</h2>
             {you && (
-                <div className="ranking-child" id="you">
-                {you.id < 3 ? <img src={`src/assets/img/${you.id}.png`} alt="avatar" style={{ width: "25px", height: "25px" }} /> : <h4>{you.id}</h4>}
+              <div className="ranking-child" id="you">
+                {index < 3 ? (
+                  <img
+                    src={`src/assets/img/${index + 1}.png`}
+                    alt="avatar"
+                    style={{ width: "25px", height: "25px" }}
+                  />
+                ) : (
+                  <h4>{index}</h4>
+                )}
                 <img src={you.avatar} alt="avatar" />
                 <div className="ranking-child-info">
-                    <h4>{you.name}</h4>
-                    <h6>{you.phone}</h6>
+                  <h4>
+                    {you.firstName} {you.lastName}
+                  </h4>
+                  <h6>{you.email}</h6>
                 </div>
                 <div className="ranking-child-donate">
-                    <img src='src/assets/img/token-branded_bcoin.png' alt="dollar" />
-                    <h5>{you.donationAmount}</h5>
+                  <img
+                    src="src/assets/img/token-branded_bcoin.png"
+                    alt="dollar"
+                  />
+                  <h5>{you.weeklySpent}</h5>
                 </div>
-                </div>
+              </div>
             )}
             <h3>Đại gia tuần này</h3>
             <div className="ranking-table-2">
-                {topDonate.map((player, index) => (
-                    <div key={player.id} className="ranking-child" id={`top${index + 1}`}>
-                        {index < 3 ? <img src={`src/assets/img/${index + 1}.png`} alt="avatar" style={{ width: "25px", height: "25px" }} /> : <h4>{index + 1}</h4>}
-                        <img src={player.avatar} alt="avatar" />
-                        <div className="ranking-child-info">
-                            <h4>{player.name}</h4>
-                            <h6>{player.phone}</h6>
-                        </div>
-                        <div className="ranking-child-donate">
-                            <img src='src/assets/img/token-branded_bcoin.png' alt="dollar" />
-                            <h5>{player.donationAmount}</h5>
-                        </div>
-                    </div>
-                ))}
+              {topDonate.map((player, index) => (
+                <div
+                  key={player.id}
+                  className="ranking-child"
+                  id={`top${index + 1}`}
+                >
+                  {index < 3 ? (
+                    <img
+                      src={`src/assets/img/${index + 1}.png`}
+                      alt="avatar"
+                      style={{ width: "25px", height: "25px" }}
+                    />
+                  ) : (
+                    <h4>{index + 1}</h4>
+                  )}
+                  <img src={player?.avatar} alt="avatar" />
+                  <div className="ranking-child-info">
+                    <h4>
+                      {player.firstName} {player.lastName}
+                    </h4>
+                    <h6>{player.email}</h6>
+                  </div>
+                  <div className="ranking-child-donate">
+                    <img
+                      src="src/assets/img/token-branded_bcoin.png"
+                      alt="dollar"
+                    />
+                    <h5>{player.weeklySpent}</h5>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
           <div className="ranking-table">
             <h2>Top Gmaster</h2>
             <div className="ranking-table-2" id="ranking-gmaster">
-                {topGmaster.map((player, index) => (
-                    <div key={player.id} className="ranking-child" id={`top${index + 1}`}>
-                        {index < 3 ? <img src={`src/assets/img/${index + 1}.png`} alt="avatar" style={{ width: "25px", height: "25px" }} /> : <h4>{index + 1}</h4>}
-                        <img src={player.avatar} alt="avatar" />
-                        <div className="ranking-child-info">
-                            <h4>{player.name}</h4>
-                            <h6>{player.phone}</h6>
-                        </div>
-                        <StarRating rating={player.starRating} totalStars={5} />
-                    </div>
-                ))}
+              {topGmaster.map((player, index) => (
+                <div
+                  key={player.id}
+                  className="ranking-child"
+                  id={`top${index + 1}`}
+                  onClick={() => {
+                    navigate(`/user/${player.userId._id}`);
+                  }}
+                >
+                  {index < 3 ? (
+                    <img
+                      src={`src/assets/img/${index + 1}.png`}
+                      alt="avatar"
+                      style={{ width: "25px", height: "25px" }}
+                    />
+                  ) : (
+                    <h4>{index + 1}</h4>
+                  )}
+                  <img src={player?.userId?.avatar} alt="avatar" />
+                  <div className="ranking-child-info">
+                    <h4>{player.nameDisplay}</h4>
+                    <h6>Tổng số giờ thuê: {player.totalRentHour}</h6>
+                  </div>
+                  <StarRating rating={player.totalRating} totalStars={5} />
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -278,96 +468,114 @@ const UserHomePage = () => {
       <div className="pro-player">
         <div className="name-title">
           <h1>NGƯỜI CHƠI PHỔ BIẾN</h1>
-          <img src="src\assets\img\ToolTip1.png" alt="" className="tooltip"/>
+          <img src="src\assets\img\ToolTip1.png" alt="" className="tooltip" />
         </div>
         <div className="pro-player-list">
-          {playersByRating.map((player, index) => (
-            <div className="pro-player-item" key={index}>
-              <img src="src/assets/img/Player Image.png" alt="avatar" />
+          {currentPlayers2.map((player) => (
+            <div className="pro-player-item" key={player.userId}>
+              <img src={player?.userId?.avatar} alt="avatar" />
               <div className="name-container">
-                <h4>{player.name}</h4>
+                <h4>{player.nameDisplay}</h4>
                 <div className="green-dot"></div>
               </div>
-              <span className="description">
-                Tới sưởi ấm trái tim mình đi. Ongame: Liên quân, LOL, CSGO, ...
-                Gì cũng chơi được.
-              </span>
+              <span className="description">{player.introduce}</span>
               <div className="pro-player-rating">
                 <div className="image-circle-container">
-                  <img
-                    src="src/assets/img/lq.png"
-                    alt="Image 1"
-                    className="image-circle"
-                  />
-                  <img
-                    src="src/assets/img/lq.png"
-                    alt="Image 2"
-                    className="image-circle"
-                  />
-                  <img
-                    src="src/assets/img/lq.png"
-                    alt="Image 3"
-                    className="image-circle"
-                  />
+                  {player.pics.map((pic) => {
+                    return (
+                      <img
+                        key={pic._id}
+                        src={pic.url}
+                        alt="Image 1"
+                        className="image-circle"
+                      />
+                    );
+                  })}
                 </div>
                 <div className="star-rating">
-                  <StarRating rating={player.rating} totalStars={5} />
+                  <StarRating rating={player.totalRating} totalStars={5} />
                 </div>
               </div>
               <div className="money">
                 <img src="src\assets\img\token-branded_bcoin.png" />
-                <h6>20.000đ</h6>
+                <h6>{player.rentPrice}</h6>
               </div>
             </div>
           ))}
+        </div>
+        <div className="pagination">
+          <button onClick={handlePrev2} disabled={currentPage2 === 1}>
+            Previous
+          </button>
+          <span>
+            Page {currentPage2} of {Math.ceil(popular.length / itemsPerPage2)}
+          </span>
+          <button
+            onClick={handleNext2}
+            disabled={
+              currentPage2 === Math.ceil(popular.length / itemsPerPage2)
+            }
+          >
+            Next
+          </button>
         </div>
       </div>
 
       <div className="pro-player">
         <div className="name-title">
           <h1>PRO PLAYER COACHING</h1>
-          <img src="src\assets\img\ToolTip (1).png" alt="" className="tooltip"/>
+          <img
+            src="src\assets\img\ToolTip (1).png"
+            alt=""
+            className="tooltip"
+          />
         </div>
         <div className="pro-player-list">
-          {playersByRating.map((player, index) => (
-            <div className="pro-player-item" key={index}>
-              <img src="src/assets/img/Player Image (1).png" alt="avatar" />
+          {currentPlayers.map((player) => (
+            <div className="pro-player-item" key={player.userId}>
+              <img src={player?.userId?.avatar} alt="avatar" />
               <div className="name-container">
-                <h4>{player.name}</h4>
+                <h4>{player.nameDisplay}</h4>
                 <div className="green-dot"></div>
               </div>
-              <span className="description">
-                Tới sưởi ấm trái tim mình đi. Ongame: Liên quân, LOL, CSGO, ...
-                Gì cũng chơi được.
-              </span>
+              <span className="description">{player.introduce}</span>
               <div className="pro-player-rating">
                 <div className="image-circle-container">
-                  <img
-                    src="src/assets/img/lq.png"
-                    alt="Image 1"
-                    className="image-circle"
-                  />
-                  <img
-                    src="src/assets/img/lq.png"
-                    alt="Image 2"
-                    className="image-circle"
-                  />
-                  <img
-                    src="src/assets/img/lq.png"
-                    alt="Image 3"
-                    className="image-circle"
-                  />
+                  {player.pics.map((pic) => {
+                    return (
+                      <img
+                        key={pic._id}
+                        src={pic.url}
+                        alt="Image 1"
+                        className="image-circle"
+                      />
+                    );
+                  })}
                 </div>
                 <div className="star-rating">
-                  <StarRating rating={player.rating} totalStars={5} />
+                  <StarRating rating={player.totalRating} totalStars={5} />
                 </div>
               </div>
               <div className="money">
                 <img src="src\assets\img\token-branded_bcoin.png" />
-                <h6>20000đ</h6>
+                <h6>{player.rentPrice}</h6>
               </div>
             </div>
           ))}
+        </div>
+        <div className="pagination">
+          <button onClick={handlePrev} disabled={currentPage === 1}>
+            Previous
+          </button>
+          <span>
+            Page {currentPage} of {Math.ceil(pro.length / itemsPerPage)}
+          </span>
+          <button
+            onClick={handleNext}
+            disabled={currentPage === Math.ceil(pro.length / itemsPerPage)}
+          >
+            Next
+          </button>
         </div>
       </div>
     </div>

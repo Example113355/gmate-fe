@@ -19,14 +19,14 @@ html, body{
 
 .donate-banner{
     background-color: #F89893;
-    width: 300px;
+    width: 250px;
     aspect-ratio: 3 / 1;
     border-radius: 10px;
     display: flex;
     justify-content: center; /* Horizontal center */
     align-items: center; 
     color: white;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .donate-top{
@@ -67,10 +67,21 @@ html, body{
 }
 
 .player-his-container{
-    background-color: white;
+    background-color: #f9f9f9;
     border-radius: 10px;
     padding: 10px;
     margin: auto;
     width: 100%;
     max-width: 1300px;
+}
+.player-pie {
+    border: 2px solid black;
+    border-radius: 8px; /* rounded-lg corresponds to a radius of 8px */
+    height: 74%;
+    width: 100%;
+  }
+@media (max-width: 1024px) {
+    .player-pie {
+        display: none;
+    }
 }

@@ -8,8 +8,6 @@ import { RiNotification2Line } from "react-icons/ri";
 import { PiHandWithdrawDuotone } from "react-icons/pi";
 import { FiPlusCircle } from "react-icons/fi";
 
-
-import { Button } from "antd";
 import PaymentModal from "../components/payment-modal";
 import WithdrawModal from "../components/withdraw-modal";
 import { useNavigate } from "react-router-dom";
@@ -26,7 +24,7 @@ const Navbar: React.FC<NavbarProps> = ({ tabState, setTabState, onLogout }) => {
   const [isChatBoxOpen, setIsChatBoxOpen] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
-  const { user, setUser } = useUser();
+  const { user } = useUser();
   const [balance, setBalance] = useState(0);
 
   const handleTabChange = (id: string) => {

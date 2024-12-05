@@ -2,9 +2,7 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./assets/styles/base.css";
 import "./assets/styles/keyframes.css";
 import MainLayout from "./components/MainLayout";
-import MainLayoutPlayer from "./components/MainLayoutPlayer";
 
-import HomePage from "./pages/home";
 import LogIn from "./pages/Login/Login";
 import NotFoundPage from "./pages/notFound";
 import UserHomePage from "./pages/userHomepage";
@@ -52,13 +50,9 @@ function App() {
           <Route index element={<UserHomePage />} />
           <Route path="/user/:id" element={<UserDetail />} />
           <Route path="/user-homepage" element={<UserHomePage />} />
-        </Route>
-
-        <Route path="/" element={<MainLayout/>}>
-          <Route index element={<UserHomePage />} />
           <Route path="/player/profile" element={<PlayerProfile />} />
           <Route path="/player/stat" element={<PlayerStat />} />
-          <Route path="/playeredit/:id" element={<PlayerEdit />} />
+          <Route path="/player/edit" element={<PlayerEdit />} />
         </Route>
 
         <Route path="/login" element={<LogIn />} />

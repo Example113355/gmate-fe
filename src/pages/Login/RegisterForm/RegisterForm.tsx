@@ -12,7 +12,7 @@ const RegisterForm = () => {
 
     function handleSubmit() {
         form.validateFields().then(() => {
-            post('/auth/register', {
+            post('/public/auth/register', {
                 email,
                 password,
                 name

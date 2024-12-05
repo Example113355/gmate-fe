@@ -6,8 +6,8 @@ const PlayerBar = () => {
   const [tooltipX, setTooltipX] = useState(0);
   const [tooltipY, setTooltipY] = useState(0);
 
-  const chartData = [112, 10, 225, 134, 101, 80, 50, 100, 200];
-  const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'];
+  const chartData = [112, 10, 225, 134, 101, 80, 100, 200, 50, 20, 100];
+  const labels = ['Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'];
 
   const showTooltip = (e) => {
     setTooltipContent(e.target.textContent);
@@ -30,13 +30,12 @@ const PlayerBar = () => {
         <div className="border-2 border-solid border-black p-6 rounded-lg bg-white" style={{ width: '600px' }}>
           <div className="md:flex md:justify-between md:items-center">
             <div>
-              <h2 className="text-xl text-gray-800 font-bold leading-tight">Product Sales</h2>
-              <p className="mb-2 text-gray-600 text-sm">Monthly Average</p>
+              <h2 className="text-xl text-gray-800 font-bold leading-tight">Tổng thời gian thuê từng tháng</h2>
             </div>
             <div className="mb-4">
               <div className="flex items-center">
                 <div className="w-2 h-2 bg-blue-600 mr-2 rounded-full"></div>
-                <div className="text-sm text-gray-700">Sales</div>
+                <div className="text-sm text-gray-700">số giờ</div>
               </div>
             </div>
           </div>
@@ -59,7 +58,7 @@ const PlayerBar = () => {
             )}
 
             {/* Graph Container with Fixed Width */}
-            <div className="flex -mx-2 items-end mb-2" style={{ width: '500px' }}> {/* Fixed width for the graph */}
+            <div className="flex -mx-2 items-end mb-2"> {/* Fixed width for the graph */}
               {chartData.map((data, index) => (
                 <div key={index} className="px-2" style={{ width: `${100 / chartData.length}%` }}> {/* Dynamic width for bars */}
                   <div

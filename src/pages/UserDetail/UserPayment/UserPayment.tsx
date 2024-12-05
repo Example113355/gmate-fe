@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import MessageModal from '../../../components/messages/MessageModal';
 import './UserPayment.css';
+import { User } from '../interface';
+import { Rate } from 'antd';
 
-const UserPayment = () => {
+const UserPayment = ({ user }: { user: User }) => {
   const [isMessageModalOpen, setMessageModalOpen] = useState(false);
 
   const openMessageModal = () => setMessageModalOpen(true);
@@ -12,20 +14,16 @@ const UserPayment = () => {
     <div className="user_payment">
       <div className="user_payment--info">
         <h3 className="price_container">
-          <span className="price">100,000</span> đ/h
+          <span className="price">{user.rentPrice.toLocaleString('vi')}</span> đ/h
         </h3>
 
         <div className="price_rate">
           <div className="price_rate--star">
-            <span className="star">⭐</span>
-            <span className="star">⭐</span>
-            <span className="star">⭐</span>
-            <span className="star">⭐</span>
-            <span className="star star_unrated">⭐</span>
+            <Rate disabled defaultValue={user.totalRating / user.totalReview} />
           </div>
 
           <div className="rate_total">
-            <span className="rate_amount">88</span>&nbsp;đánh giá
+            <span className="rate_amount">{user.totalReview}</span>&nbsp;đánh giá
           </div>
         </div>
       </div>
