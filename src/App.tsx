@@ -10,9 +10,9 @@ import NotFoundPage from "./pages/notFound";
 import UserHomePage from "./pages/userHomepage";
 import UserDetail from "./pages/UserDetail/UserDetail";
 import TestModalPage from "./pages/testPayment";
-import PlayerStat from './pages/PlayerStat/PlayerStat'
-import PlayerEdit from './pages/PlayerEdit/PlayerEdit'
-import PlayerProfile from './pages/PlayerProfile'
+import PlayerStat from "./pages/PlayerStat/PlayerStat";
+import PlayerEdit from "./pages/PlayerEdit/PlayerEdit";
+import PlayerProfile from "./pages/PlayerProfile";
 import { useEffect, useState } from "react";
 import { fetchToken, onMessageListener } from "./utils/firebase";
 
@@ -55,7 +55,7 @@ function App() {
 
           <Route path="/player/profile" element={<PlayerProfile />} />
           <Route path="/player/stat" element={<PlayerStat />} />
-          <Route path="/playeredit/:id" element={<PlayerEdit />} />
+          <Route path="/player/edit/" element={<PlayerEdit />} />
         </Route>
 
         <Route path="/login" element={<LogIn />} />
@@ -63,7 +63,6 @@ function App() {
         <Route path="/test-modal" element={<TestModalPage />} />
 
         <Route path="/user-homepage" element={<UserHomePage />} />
-
       </Routes>
     </Router>
   );
