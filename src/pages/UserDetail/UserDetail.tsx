@@ -9,28 +9,25 @@ import { get } from "../../utils/http_2";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import openNotification from "../../components/notify";
-import { User } from "./interface"
-
+import { User } from "./interface";
 
 const UserDetail = () => {
   const { id } = useParams<{ id: string }>();
   const [user, setUser] = useState<User>();
 
-    useEffect(() => {
-        get(`/player/${id}`, {}).then((response: any) => {
-        if (response.status === 200) {
-            setUser(response.data);
-        } else {
-            openNotification("error", "Lỗi", "Không tìm thấy người dùng");
-        }
-        });
-    }, [id]);
+  useEffect(() => {
+    get(`/players/${id}`, {}).then((response: any) => {
+      if (response.status === 200) {
+        setUser(response.data);
+      } else {
+        openNotification("error", "Lỗi", "Không tìm thấy người dùng");
+      }
+    });
+  }, [id]);
 
   return (
     <div className="user_detail bg-[#E1E1E1]">
-      <div className="left_sidebar">
-        {user && <UserInfo user={user} />}
-      </div>
+      <div className="left_sidebar">{user && <UserInfo user={user} />}</div>
 
       <div className="content">
         <div className="content_header">
@@ -45,7 +42,11 @@ const UserDetail = () => {
               content="518"
               unit="người"
             />
-            <UserContentHeader title="Đã được thuê" content={user?.totalRentHour?.toString() || "0"} unit="giờ" />
+            <UserContentHeader
+              title="Đã được thuê"
+              content={user?.totalRentHour?.toString() || "0"}
+              unit="giờ"
+            />
             <UserContentHeader
               title="Tỷ lệ hoàn thành"
               content="84.17"
@@ -57,11 +58,9 @@ const UserDetail = () => {
         <div className="content_base content_game">
           <h3>CÁC LOẠI GAME</h3>
           <div className="game_list">
-            {
-                user?.categories.map((category) => (
-                    <UserGameItem key={category.id} type={category.category} />
-                ))
-            }
+            {user?.categories.map((category) => (
+              <UserGameItem key={category.id} type={category.category} />
+            ))}
           </div>
         </div>
 
@@ -72,11 +71,7 @@ const UserDetail = () => {
           </div>
 
           <div className="content_info--text">
-            <p>
-              {
-                user?.description
-              }
-            </p>
+            <p>{user?.description}</p>
           </div>
         </div>
 
@@ -144,9 +139,7 @@ const UserDetail = () => {
         </div>
       </div>
 
-      <div className="right_sidebar">
-        {user && <UserPayment user={user} />}
-      </div>
+      <div className="right_sidebar">{user && <UserPayment user={user} />}</div>
     </div>
   );
 };
