@@ -194,7 +194,7 @@ const PlayerProfile = () => {
       {/* <PlayerHeader id={1} /> */}
       <div className="container flex justify-between mx-auto my-8">
         <div className="w-1/6 mr-8">
-          <img src={profile.userId.avatar} alt="avatar"></img>
+          <img src={profile?.userId?.avatar} alt="avatar"></img>
           <p className="py-6 text-xl text-center text-emerald-600 ">
             Cập nhật ảnh
           </p>
