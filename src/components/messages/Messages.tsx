@@ -19,7 +19,7 @@ const Messages: React.FC = () => {
     <div className="flex-1 overflow-y-auto px-4 text-2xl">
       {
         !loading && messages.length > 0 &&
-          messages.map((message) => (
+          messages.map((message:any) => (
             <div key={message._id} ref={lastMessageRef}>
               <Message message={message} />
             </div>
