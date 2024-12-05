@@ -4,7 +4,8 @@ import { useParams } from "react-router-dom";
 
 const TopDonate = () => {
     const [users, setUsers] = useState([]);
-    const { id } = useParams();
+    const { user } = useUser();
+    const id = user._id;
     useEffect(() => {
         const fetchTopUser = async () => {
             try {

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { getHistoryBook } from '../PlayerEdit/ApiService';
 import { useParams } from "react-router-dom";
+import { useUser } from "../../contexts/UserContext";
 
 const PlayerHistory = () => {
     const [bookings, setBookings] = useState([]);
-    const { id } = useParams();
+    const { user } = useUser();
+    const id = user._id;
     useEffect(() => {
         const fetchHistory = async () => {
             try {
