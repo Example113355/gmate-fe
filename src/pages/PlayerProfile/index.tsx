@@ -2,6 +2,8 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import moment from "moment";
 import { useUser } from "../../contexts/UserContext";
+import { addImg } from "../PlayerEdit/ApiService";
+const apiUrl = import.meta.env.VITE_BASE_URL;
 
 const PlayerProfile = () => {
   const { user } = useUser();
@@ -19,12 +21,13 @@ const PlayerProfile = () => {
   const [description, setDescription] = useState(profile?.description);
   const [displayName, setDisplayName] = useState(profile?.nameDisplay);
   const [introduce, setIntroduce] = useState(profile?.introduce);
+
   const fetchPlayerProfile = async () => {
     try {
       console.log("fetching player profile");
       console.log(playerId);
       const response = await axios.get(
-        `http://localhost:3000/api/v1/players/${playerId}`
+        `${apiUrl}/players/${playerId}`
       );
       if (response.status === 200) {
         setProfile(response.data);
@@ -35,6 +38,45 @@ const PlayerProfile = () => {
       console.error(e);
     }
   };
+
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const imgbbApiKey = "59116505232052788f5d23f579248cfb"; // Replace with your ImgBB API key
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  const uploadImage = async (file) => {
+    setLoading(true);
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const response = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbApiKey}`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+      addImg(playerId, data.data.url);
+      window.location.reload();
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      alert("An error occurred while uploading the image.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      uploadImage(file);
+    }
+  };
+  
 
   useEffect(() => {
     fetchPlayerProfile();
@@ -89,7 +131,7 @@ const PlayerProfile = () => {
     const updateName = inputRef.current.value;
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/v1/players/${playerId}`,
+        `${apiUrl}/players/${playerId}`,
         {
           nameDisplay: updateName,
         }
@@ -113,7 +155,7 @@ const PlayerProfile = () => {
     const updateDes = desRef.current.value;
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/v1/players/${playerId}`,
+        `${apiUrl}/players/${playerId}`,
         {
           description: updateDes,
         }
@@ -137,7 +179,7 @@ const PlayerProfile = () => {
     const newIntroduce = introduceRef.current.value;
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/v1/players/${playerId}`,
+        `${apiUrl}/players/${playerId}`,
         {
           introduce: newIntroduce,
         }
@@ -162,7 +204,7 @@ const PlayerProfile = () => {
     });
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/v1/players/${playerId}`,
+        `${apiUrl}/players/${playerId}`,
         {
           categories: newCategories,
         }
@@ -186,7 +228,7 @@ const PlayerProfile = () => {
     });
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/v1/players/${playerId}`,
+        `${apiUrl}/players/${playerId}`,
         {
           pics: newImages,
         }
@@ -210,15 +252,13 @@ const PlayerProfile = () => {
   };
 
   return (
-    <div className="container-2xl">
+    <div className="container-2xl" >
       {/* <PlayerHeader id={1} /> */}
       <div className="container flex justify-between mx-auto my-8">
         <div className="w-1/6 mr-8">
-          <img src={profile?.userId?.avatar} alt="avatar"></img>
-          <p className="py-6 text-xl text-center text-emerald-600 ">
-            Cập nhật ảnh
-          </p>
-          <p className="text-xl text-center text-neutral-500">
+          <img src={profile?.userId?.avatar} style={{ borderRadius: '10%' }}  alt="avatar"></img>
+          
+          <p className="text-xl text-center text-neutral-500 p-5">
             NGÀY THAM GIA: {moment(profile.createAt).format("DD/MM/YYYY")}
           </p>
           <div className="flex items-center mt-8">
@@ -308,7 +348,7 @@ const PlayerProfile = () => {
               </div>
               <div className="h-0.5 bg-gray-500"></div>
               <p className="pt-4 text-2xl">CÁC LOẠI GAME</p>
-              <div className="flex gap-6 mt-2 mb-8">
+              <div className="flex gap-6 mt-4 mb-8">
                 {profile.categories?.map((cate: any, index: any) => {
                   return (
                     <div
@@ -349,7 +389,51 @@ const PlayerProfile = () => {
               <div className="h-0.5 bg-gray-500"></div>
               <div className="flex justify-between py-4 text-2xl">
                 <p>ẢNH TẢI LÊN</p>
-                <p className="text-green-500">Thêm ảnh mới</p>
+                <div className="relative">
+      {/* Hover Effect Button */}
+      <p
+        className="text-green-500 cursor-pointer hover:text-green-600 hover:underline transition duration-300"
+        onClick={openModal}
+      >
+        Thêm ảnh mới
+      </p>
+
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg w-96 p-6 relative">
+            {/* Modal Header */}
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">
+              Upload Image
+            </h2>
+
+            {/* File Upload */}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="block w-full text-sm text-gray-500 
+                file:mr-4 file:py-2 file:px-4
+                file:rounded-lg file:border-0
+                file:text-sm file:font-semibold
+                file:bg-green-50 file:text-green-700
+                hover:file:bg-green-100"
+            />
+
+            {/* Show Loading or Uploaded Link */}
+            {loading && <p className="text-sm text-gray-500 mt-2">Uploading...</p>}
+
+            {/* Close Button */}
+            <button
+              className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 transition duration-200"
+              onClick={closeModal}
+            >
+              &times;
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
               </div>
               <div className="flex gap-4">
                 {profile.pics?.map((pic: any, index: any) => {
@@ -372,6 +456,8 @@ const PlayerProfile = () => {
                   );
                 })}
               </div>
+              <div className="h-0.5 bg-gray-500 mt-8"></div>
+
               <div className="flex items-center mt-8">
                 <h3 className="text-2xl">MÔ TẢ:</h3>
                 {!editDes && (
@@ -403,30 +489,9 @@ const PlayerProfile = () => {
               {!editDes && (
                 <div className="text-2xl">{profile.description}</div>
               )}
-              <div className="h-0.5 bg-gray-500"></div>
-
-              <p className="py-4 text-2xl">ĐÁNH GIÁ</p>
-              <div className="flex justify-between">
-                <img src={profile.avatar} className="w-14 h-14" />
-                <div className="flex-1 ml-4">
-                  <p className="text-2xl text-blue-500">Lâm Trúc</p>
-                  <div>04:22:39 27/8/2024</div>
-                  <p className="text-xl">Mê bạn này quá tr</p>
-                  <div className="h-0.5 bg-gray-500"></div>
-                </div>
-              </div>
             </div>
           </div>
-          <div className="flex gap-2 mx-auto mt-4 ml-72">
-            <div className="p-4 border-2 border-rose-500">Previous</div>
-            <div className="p-4 text-white border-2 bg-rose-500 border-rose-500">
-              1
-            </div>
-            <div className="p-4 border-2 border-rose-500">2</div>
-            <div className="p-4 border-2 border-rose-500">3</div>
-            <div className="p-4 border-2 border-rose-500">4</div>
-            <div className="p-4 border-2 border-rose-500">Next</div>
-          </div>
+         
         </div>
       </div>
       {/* <Footer /> */}
