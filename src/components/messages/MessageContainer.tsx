@@ -1,32 +1,21 @@
-import MessageInput from "./MessageInput";
-import Messages from "./Messages";
+import React from 'react';
 
-interface MessageContainerProps {
-  listMessages: any[];
-  setListMessages: any;
-  selectedConversation: any;
-}
+import useConversation from '../../zustand/useConversation';
 
-const MessageContainer: React.FC<MessageContainerProps> = ({
-  listMessages,
-  selectedConversation,
-  setListMessages,
-}) => {
+import MessageInput from './MessageInput';
+import Messages from './Messages';
+
+const MessageContainer: React.FC = () => {
+  const { selectedConversation } = useConversation();
+
   return (
     <div className="w-2/3 flex flex-col" style={{ maxHeight: "550px" }}>
       <div className="px-4 py-5 mb-2 bg-white border border-gray-300">
-        <span className="label-text text-2xl pr-4">To:</span>
-        {selectedConversation?.firstName + " " + selectedConversation?.lastName}
+        <span className="label-text text-2xl pr-4">Tới:</span>{' '}
+        <span className="text-gray-900 font-bold text-2xl">{selectedConversation?.firstName + " " + selectedConversation?.lastName}</span>
       </div>
-
-      {/* Message List Area */}
-      <Messages listMessages={listMessages} />
-
-      {/* Fixed Message Input at Bottom */}
-      <MessageInput
-        selectedConversation={selectedConversation}
-        setListMessages={setListMessages}
-      />
+      <Messages />
+      <MessageInput />
     </div>
   );
 };
