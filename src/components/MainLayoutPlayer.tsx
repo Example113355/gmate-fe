@@ -7,11 +7,11 @@ import { TabState } from "./tabs/interface"
 const MainLayoutPlayer = () => {
     const [tabState, setTabState] = useState<TabState>({
         activeTabId: "1",
-
+        tabs: [], 
     });
     return (
         <div className="">
-            <Navbar tabState={tabState} setTabState={setTabState} />
+            <Navbar tabState={tabState} setTabState={setTabState} onLogout={() => {}} />
             <Outlet />
             <Footer />
         </div>

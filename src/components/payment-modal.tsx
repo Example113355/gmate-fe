@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useUser } from "../contexts/UserContext";
-
-import { FiXCircle, FiCheckCircle  } from "react-icons/fi";
+import { FiXCircle, FiCheckCircle } from "react-icons/fi";
 
 interface ModalProps {
   show: boolean;
@@ -16,7 +15,7 @@ const PaymentModal: React.FC<ModalProps> = ({ show, onClose }) => {
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
   const [walletId, setWalletId] = useState<string | null>(null);
   const [status, setStatus] = useState<string>('pending');
-  const [receiptPoll, setReceiptPoll] = useState<NodeJS.Timeout | null>(null);
+  const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
   const amounts = [20000, 30000, 50000, 100000, 200000, 500000];
   const { user } = useUser();
 
@@ -38,7 +37,7 @@ const PaymentModal: React.FC<ModalProps> = ({ show, onClose }) => {
 
   const handlePayment = async () => {
     try {
-      const amount = Number(inputValue.replace(/,/g, ''));
+      const amount = Number(inputValue.replace(/\./g, ''));
       if (isNaN(amount)) {
         console.error('Invalid amount:', inputValue);
         return;
@@ -52,19 +51,21 @@ const PaymentModal: React.FC<ModalProps> = ({ show, onClose }) => {
       if (response.data && response.data.checkoutUrl) {
         setCheckoutUrl(response.data.checkoutUrl);
         setOrderCode(response.data.orderCode);
-        const poll = setInterval(async () => {
+
+        // Start polling for receipt status
+        const id = setInterval(async () => {
           try {
             const receiptResponse = await axios.get(`http://localhost:3000/api/v1/receipts/order/${response.data.orderCode}`);
             console.log('receiptResponse:', receiptResponse);
             if (receiptResponse.data.status !== 'pending') {
               setStatus(receiptResponse.data.status);
-              clearInterval(poll);
+              clearInterval(id);
             }
           } catch (error) {
             console.error('Error fetching receipt status:', error);
           }
-        }, 3000);
-        setReceiptPoll(poll);
+        }, 5000); // Poll every 5 seconds
+        setIntervalId(id);
       }
     } catch (error) {
       console.error('Error creating payment link:', error);
@@ -77,11 +78,11 @@ const PaymentModal: React.FC<ModalProps> = ({ show, onClose }) => {
         await axios.post(`http://localhost:3000/api/v1/payos/cancel-payment/${orderCode}`);
         setCheckoutUrl(null);
         setOrderCode(null);
-        if (receiptPoll) {
-          clearInterval(receiptPoll);
-          setReceiptPoll(null);
+        setStatus('pending');
+        if (intervalId) {
+          clearInterval(intervalId);
+          setIntervalId(null);
         }
-        setStatus('failed');
       } catch (error) {
         console.error('Error canceling payment link:', error);
       }
@@ -89,19 +90,16 @@ const PaymentModal: React.FC<ModalProps> = ({ show, onClose }) => {
   };
 
   const handleClose = () => {
+    setStatus('pending');
     onClose();
-    if ( status !== 'pending' ) {
-      setStatus('pending');
-      setCheckoutUrl(null);
-    }
   };
 
   const formatNumber = (value: string) => {
-    return value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/,/g, '');
+    const value = e.target.value.replace(/\./g, '');
     if (!isNaN(Number(value))) {
       setInputValue(formatNumber(value));
       setSelectedAmount(null);
@@ -138,13 +136,13 @@ const PaymentModal: React.FC<ModalProps> = ({ show, onClose }) => {
             <>
               {status === 'completed' ? (
                 <div className="flex flex-col items-center">
-                  <FiCheckCircle className="text-green-500 mb-4 text-8xl" />
-                  <div className="text-green-500 text-3xl font-medium">Giao dịch thành công</div>
+                  <FiCheckCircle className="text-green-500 text-6xl mb-4" />
+                  <div className="text-green-500 text-2xl font-medium">Giao dịch thành công</div>
                 </div>
               ) : status === 'failed' ? (
                 <div className="flex flex-col items-center">
-                  <FiXCircle className="text-red-500 text-8xl mb-4" />
-                  <div className="text-red-500 text-3xl font-medium">Giao dịch không thành công</div>
+                  <FiXCircle className="text-red-500 text-6xl mb-4" />
+                  <div className="text-red-500 text-2xl font-medium">Giao dịch không thành công</div>
                 </div>
               ) : (
                 <>
@@ -162,7 +160,7 @@ const PaymentModal: React.FC<ModalProps> = ({ show, onClose }) => {
                         className={`border rounded px-6 py-3 text-2xl font-medium ${selectedAmount === amount ? 'bg-red-500 text-white' : 'bg-gray-200 text-red-400 border-red-400 hover:bg-red-500 hover:text-white'}`}
                         onClick={() => handleAmountClick(amount)}
                       >
-                        {amount.toLocaleString()} VND
+                        {formatNumber(amount.toString())} VND
                       </button>
                     ))}
                   </div>
