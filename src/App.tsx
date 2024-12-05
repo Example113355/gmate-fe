@@ -52,13 +52,9 @@ function App() {
           <Route index element={<UserHomePage />} />
           <Route path="/user/:id" element={<UserDetail />} />
           <Route path="/user-homepage" element={<UserHomePage />} />
-        </Route>
-
-        <Route path="/" element={<MainLayoutPlayer />}>
-          <Route index element={<UserHomePage />} />
           <Route path="/player/profile" element={<PlayerProfile />} />
-          <Route path="/player/stat/:id" element={<PlayerStat />} />
-          <Route path="/player/edit/:id" element={<PlayerEdit />} />
+          <Route path="/player/stat" element={<PlayerStat />} />
+          <Route path="/player/edit" element={<PlayerEdit />} />
         </Route>
 
         <Route path="/login" element={<LogIn />} />
