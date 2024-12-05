@@ -9,7 +9,7 @@ import "./PlayerEdit.css";
 import { useUser } from "../../contexts/UserContext";
 
 const PlayerEdit = () => {
-  const [player, setPlayer] = useState({});
+  const [player, setPlayer] = useState<any>({});
   const [playerAvt, setPlayerAvt] = useState("");
   const { user, setUser } = useUser();
   const id = user._id;
