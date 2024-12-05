@@ -3,7 +3,7 @@ import PlayerBookingList from "./PlayerBookingList/PlayerBookingList";
 import PlayerCategory from "./PlayerCategory/PlayerCategory";
 import { useEffect, useState } from "react";
 import { getPlayerById } from "./ApiService";
-import { useParams } from "react-router-dom";
+
 
 import "./PlayerEdit.css";
 import { useUser } from "../../contexts/UserContext";
@@ -11,7 +11,7 @@ import { useUser } from "../../contexts/UserContext";
 const PlayerEdit = () => {
   const [player, setPlayer] = useState<any>({});
   const [playerAvt, setPlayerAvt] = useState("");
-  const { user, setUser } = useUser();
+  const { user } = useUser();
   const id = user._id;
   // console.log(id);
 

@@ -5,7 +5,7 @@ import TabBar from "./tabs/tabBar";
 import { TabState } from "./tabs/interface";
 import { CiSearch  } from "react-icons/ci";
 import { RiNotification2Line } from "react-icons/ri";
-import { Button } from "antd";
+
 import PaymentModal from "../components/payment-modal";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../contexts/UserContext";
@@ -20,7 +20,7 @@ const Navbar: React.FC<NavbarProps> = ({ tabState, setTabState, onLogout }) => {
   const navigate = useNavigate();
   const [isChatBoxOpen, setIsChatBoxOpen] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const { user, setUser } = useUser();
+  const { user } = useUser();
   const [balance, setBalance] = useState(0);
 
   const handleTabChange = (id: string) => {

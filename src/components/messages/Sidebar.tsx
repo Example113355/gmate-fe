@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Conversation from "./Conversation";
-import { useUser } from "../../contexts/UserContext";
+
 import { get } from "../../utils/http_2";
 interface SidebarProps {
   setSelectedConversation: React.Dispatch<React.SetStateAction<null>>;

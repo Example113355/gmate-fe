@@ -4,7 +4,7 @@ import moment from "moment";
 import { useUser } from "../../contexts/UserContext";
 
 const PlayerProfile = () => {
-  const { user, setUser } = useUser();
+  const { user } = useUser();
   console.log("AAAAAAAA");
   console.log(user);
   const playerId = user._id;

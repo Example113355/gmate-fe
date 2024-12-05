@@ -2,9 +2,7 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./assets/styles/base.css";
 import "./assets/styles/keyframes.css";
 import MainLayout from "./components/MainLayout";
-import MainLayoutPlayer from "./components/MainLayoutPlayer";
 
-import HomePage from "./pages/home";
 import LogIn from "./pages/Login/Login";
 import NotFoundPage from "./pages/notFound";
 import UserHomePage from "./pages/userHomepage";
