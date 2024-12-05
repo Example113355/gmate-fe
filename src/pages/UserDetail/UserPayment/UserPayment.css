@@ -15,6 +15,7 @@
 .price_rate {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .star {

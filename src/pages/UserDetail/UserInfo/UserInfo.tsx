@@ -8,7 +8,7 @@ const UserInfo = ({ user }: { user: User }) => {
   return (
     <div className="user_info--container">
       <div className="user_info">
-        <img src={user?.userId?.avatar} alt="" />
+        <img src={user.pics[0].url} alt="" />
 
         <h3 className={user.onlineStatus ? "status" : "status unactive"}>
           {user.onlineStatus ? "Đang sẵn sàng" : "Đang bận"}
