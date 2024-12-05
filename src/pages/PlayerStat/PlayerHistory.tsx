@@ -4,7 +4,7 @@ const PlayerHistory = () => {
     const bookings = [
         {
             id: 1,
-            profileImage: "https://pixwares.com/storage/2023/07/anh-gai-xinh.jpg", // Placeholder image URL
+            profileImage: "https://i.imgur.com/gdFB11X.png", // Placeholder image URL
             name: "Dũnggggggggg",
             phone: "+1 212 121 212",
             email: "dungdeptrai@example.com",
@@ -15,7 +15,8 @@ const PlayerHistory = () => {
 
     return (
         <div className="player-his-container">
-            <table style={{ width: "100%", borderCollapse: "collapse", backgroundColor: "white" }}>
+            <b style={{color:"red", fontSize:"15px", marginBottom:"10px"}}>Lịch sử thuê</b>
+            <table style={{ width: "100%", borderCollapse: "collapse", backgroundColor: "#f9f9f9" }}>
                 <thead>
                     <tr>
                         <th style={{ padding: "12px", borderBottom: "2px solid #888", color: "red" }}>Ảnh hồ sơ</th>
@@ -29,11 +30,11 @@ const PlayerHistory = () => {
                 <tbody>
                     {bookings.map((booking) => (
                         <tr key={booking.id}>
-                            <td style={{ padding: "12px", borderBottom: "1px solid #ddd", textAlign: "center" }}>
+                            <td style={{ padding: "12px", borderBottom: "1px solid #ddd"}}>
                                 <img
                                     src={booking.profileImage}
                                     alt="Profile"
-                                    style={{ width: "40px", height: "40px", borderRadius: "50%" }}
+                                    style={{ width: "40px", height: "40px", borderRadius: "50%", margin: "auto" }}
                                 />
                             </td>
                             <td style={{ padding: "12px", borderBottom: "1px solid #ddd", textAlign: "center" }}>

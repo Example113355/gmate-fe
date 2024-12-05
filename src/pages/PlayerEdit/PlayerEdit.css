@@ -70,3 +70,174 @@
 .player-bottom-section {
     margin-top: 20px;
 }
+
+@media (max-width: 768px) {
+    .user_game_item {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .user_avatar {
+        margin-bottom: 10px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .player-top-content {
+        flex-direction: column;
+        /* Thay đổi bố cục từ hàng ngang sang cột */
+        align-items: center;
+        /* Canh giữa các phần tử */
+        gap: 20px;
+        /* Khoảng cách giữa avatar và thông tin */
+    }
+
+    .player-avatar-container {
+        width: 150px;
+        /* Giảm kích thước avatar */
+    }
+
+    .player-avatar {
+        border-radius: 50%;
+        /* Bo tròn hình ảnh avatar */
+    }
+
+    .player-info-container {
+        text-align: center;
+        /* Canh giữa nội dung */
+    }
+
+    .player-name {
+        font-size: 22px;
+        /* Giảm kích thước font */
+        margin-bottom: 12px;
+    }
+
+    .section-title {
+        font-size: 16px;
+        /* Giảm kích thước font */
+        margin: 16px 0 8px;
+    }
+
+    .game-list {
+        justify-content: center;
+        /* Căn giữa các thể loại */
+        gap: 8px;
+        /* Giảm khoảng cách giữa các mục */
+    }
+
+    .user_game_item {
+        padding: 10px;
+    }
+
+    .user_avatar_img {
+        width: 25px;
+        height: 25px;
+    }
+
+    .categories {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .category-item {
+        margin-bottom: 10px;
+    }
+
+    .table-container {
+        display: flex;
+        /* Đặt thành flex container */
+        justify-content: center;
+        /* Căn giữa theo chiều ngang */
+        align-items: center;
+        /* Căn giữa theo chiều dọc */
+        flex-direction: column;
+        /* Đảm bảo nội dung xếp chồng */
+        width: 100%;
+        /* Chiếm toàn bộ chiều rộng màn hình */
+        padding: 16px;
+        /* Thêm khoảng cách xung quanh */
+    }
+
+    table {
+        display: block;
+        width: 100%;
+        max-width: 480px;
+        border: none;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+    }
+
+    thead {
+        display: none;
+    }
+
+    tbody {
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+    }
+
+    tbody tr {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin-bottom: 16px;
+        padding: 12px;
+        background-color: white;
+    }
+
+    tbody td {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        /* padding: 8px 0; */
+        padding: 10px;
+        border: none;
+        min-width: 210px;
+    }
+
+    tbody td img {
+        margin-bottom: 8px;
+        align-self: center;
+    }
+
+    tbody td:first-child {
+        text-align: center;
+    }
+
+    tbody td:last-child {
+        display: flex;
+        justify-content: center;
+        margin-top: 8px;
+        gap: 8px;
+    }
+
+    button {
+        flex: 1;
+        width: 100%;
+        margin: 0;
+        padding: 8px;
+        font-size: 14px;
+        cursor: pointer;
+        border-radius: 4px;
+        text-align: center;
+        box-sizing: border-box;
+        /* Bao gồm padding và border vào kích thước tổng thể */
+    }
+
+    button:first-child {
+        background-color: #f56c6c;
+        color: white;
+    }
+
+    button:last-child {
+        background-color: #e0e0e0;
+        color: #333;
+    }
+}
