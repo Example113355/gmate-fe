@@ -1,58 +1,40 @@
-import React from 'react';
-import Conversation from './Conversation';
+import React, { useEffect, useState } from "react";
+import Conversation from "./Conversation";
 
-const Sidebar: React.FC = () => {
+import { get } from "../../utils/http_2";
+interface SidebarProps {
+  setSelectedConversation: React.Dispatch<React.SetStateAction<null>>;
+}
+
+const Sidebar = ({ setSelectedConversation }: SidebarProps) => {
+  const [conversations, setConversations] = useState([]);
+  useEffect(() => {
+    // Fetch conversations
+    get("/messages/get-conversations", {}).then((response: any) => {
+      console.log("Get conversations response:");
+      console.log(response);
+      if (response.status === 200) {
+        setConversations(response.data);
+      }
+      console.log("Conversations:");
+      console.log(response.data);
+    });
+  }, []);
   return (
     <div className="flex flex-col overflow-auto">
-      <Conversation
-        name="Khải Tạ"
-        lastMessage="hello b"
-        lastActive="8 giờ trước"
-        avatarUrl="https://cdn0.iconfinder.com/data/icons/communication-line-10/24/account_profile_user_contact_person_avatar_placeholder-512.png"
-      />
       {/* Additional conversations */}
-      <Conversation
-        name="John Doe"
-        lastMessage="See you soon!"
-        lastActive="1 giờ trước"
-        avatarUrl="https://cdn0.iconfinder.com/data/icons/communication-line-10/24/account_profile_user_contact_person_avatar_placeholder-512.png"
-      />
-      <Conversation
-        name="John Doe"
-        lastMessage="See you soon!"
-        lastActive="1 giờ trước"
-        avatarUrl="https://cdn0.iconfinder.com/data/icons/communication-line-10/24/account_profile_user_contact_person_avatar_placeholder-512.png"
-      />
-      <Conversation
-        name="John Doe"
-        lastMessage="See you soon!"
-        lastActive="1 giờ trước"
-        avatarUrl="https://cdn0.iconfinder.com/data/icons/communication-line-10/24/account_profile_user_contact_person_avatar_placeholder-512.png"
-      />
-      <Conversation
-        name="John Doe"
-        lastMessage="See you soon!"
-        lastActive="1 giờ trước"
-        avatarUrl="https://cdn0.iconfinder.com/data/icons/communication-line-10/24/account_profile_user_contact_person_avatar_placeholder-512.png"
-      />
-      <Conversation
-        name="John Doe"
-        lastMessage="See you soon!"
-        lastActive="1 giờ trước"
-        avatarUrl="https://cdn0.iconfinder.com/data/icons/communication-line-10/24/account_profile_user_contact_person_avatar_placeholder-512.png"
-      />
-      <Conversation
-        name="John Doe"
-        lastMessage="See you soon!"
-        lastActive="1 giờ trước"
-        avatarUrl="https://cdn0.iconfinder.com/data/icons/communication-line-10/24/account_profile_user_contact_person_avatar_placeholder-512.png"
-      />
-      <Conversation
-        name="John Doe"
-        lastMessage="See you soon!"
-        lastActive="1 giờ trước"
-        avatarUrl="https://cdn0.iconfinder.com/data/icons/communication-line-10/24/account_profile_user_contact_person_avatar_placeholder-512.png"
-      />
+      {conversations.map((conversation: any) => (
+        <Conversation
+          name={conversation.firstName + " " + conversation.lastName}
+          lastMessage=""
+          lastActive=""
+          avatarUrl={
+            conversation.avatar ??
+            "https://icons.veryicon.com/png/o/miscellaneous/rookie-official-icon-gallery/225-default-avatar.png"
+          }
+          onClick={() => setSelectedConversation(conversation)}
+        />
+      ))}
     </div>
   );
 };

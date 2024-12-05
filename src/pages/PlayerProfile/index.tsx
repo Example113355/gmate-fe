@@ -4,18 +4,18 @@ import moment from "moment";
 import { useUser } from "../../contexts/UserContext";
 
 const PlayerProfile = () => {
-  const { user, setUser } = useUser();
+  const { user } = useUser();
   console.log("AAAAAAAA");
   console.log(user);
   const playerId = user._id;
 
-  const [profile, setProfile] = useState({});
-  const [editMode, setEditMode] = useState(false);
-  const [editDes, setEditDes] = useState(false);
-  const [editIntroduce, setEditIntroduce] = useState(false);
-  const inputRef = useRef(null);
-  const introduceRef = useRef(null);
-  const desRef = useRef(null);
+  const [profile, setProfile] = useState<any>({});
+  const [editMode, setEditMode] = useState<any>(false);
+  const [editDes, setEditDes] = useState<any>(false);
+  const [editIntroduce, setEditIntroduce] = useState<any>(false);
+  const inputRef = useRef<any>(null);
+  const introduceRef = useRef<any>(null);
+  const desRef = useRef<any>(null);
   const [description, setDescription] = useState(profile?.description);
   const [displayName, setDisplayName] = useState(profile?.nameDisplay);
   const [introduce, setIntroduce] = useState(profile?.introduce);
@@ -100,7 +100,11 @@ const PlayerProfile = () => {
         console.log("Fail to update player profile");
       }
     } catch (error) {
-      console.log(error.message);
+      if (error instanceof Error) {
+        console.log(error.message);
+      } else {
+        console.log("An unknown error occurred");
+      }
     }
   };
 
@@ -120,7 +124,11 @@ const PlayerProfile = () => {
         console.log("Fail to update player profile");
       }
     } catch (error) {
-      console.log(error.message);
+      if (error instanceof Error) {
+        console.log(error.message);
+      } else {
+        console.log("An unknown error occurred");
+      }
     }
   };
 
@@ -140,12 +148,16 @@ const PlayerProfile = () => {
         console.log("Fail to update player profile");
       }
     } catch (error) {
-      console.log(error.message);
+      if (error instanceof Error) {
+        console.log(error.message);
+      } else {
+        console.log("An unknown error occurred");
+      }
     }
   };
 
-  const handleDeleteCategory = async (name) => {
-    const newCategories = profile.categories?.filter((cate) => {
+  const handleDeleteCategory = async (name: any) => {
+    const newCategories = profile.categories?.filter((cate: any) => {
       return cate.category !== name;
     });
     try {
@@ -161,11 +173,15 @@ const PlayerProfile = () => {
         console.log("Fail to update player profile");
       }
     } catch (error) {
-      console.log(error.message);
+      if (error instanceof Error) {
+        console.log(error.message);
+      } else {
+        console.log("An unknown error occurred");
+      }
     }
   };
-  const handleDeleteImage = async (name) => {
-    const newImages = profile.pics?.filter((pic) => {
+  const handleDeleteImage = async (name: any) => {
+    const newImages = profile.pics?.filter((pic: any) => {
       return pic.url !== name;
     });
     try {
@@ -181,7 +197,11 @@ const PlayerProfile = () => {
         console.log("Fail to update player profile");
       }
     } catch (error) {
-      console.log(error.message);
+      if (error instanceof Error) {
+        console.log(error.message);
+      } else {
+        console.log("An unknown error occurred");
+      }
     }
   };
 
@@ -289,7 +309,7 @@ const PlayerProfile = () => {
               <div className="h-0.5 bg-gray-500"></div>
               <p className="pt-4 text-2xl">CÁC LOẠI GAME</p>
               <div className="flex gap-6 mt-2 mb-8">
-                {profile.categories?.map((cate, index) => {
+                {profile.categories?.map((cate: any, index: any) => {
                   return (
                     <div
                       key={index}
@@ -332,7 +352,7 @@ const PlayerProfile = () => {
                 <p className="text-green-500">Thêm ảnh mới</p>
               </div>
               <div className="flex gap-4">
-                {profile.pics?.map((pic, index) => {
+                {profile.pics?.map((pic: any, index: any) => {
                   return (
                     <div key={index} className="relative">
                       <img className="w-36 h-36" src={pic.url} />
