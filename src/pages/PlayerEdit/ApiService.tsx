@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiUrl = 'http://localhost:3000/api/v1';
+const apiUrl = import.meta.env.VITE_BASE_URL;
 
 const getUserInfo = async (userId) => {
     try {
@@ -11,6 +11,16 @@ const getUserInfo = async (userId) => {
         return null; // Handle error appropriately
     }
 };
+
+export const addImg = async (playerId: string, url: string) =>{
+    try {
+        await axios.post(`${apiUrl}/players/addimg`,  { id: playerId, url: url});
+        return null;
+    } catch (error) {
+        console.error(`Error fetching upload imge`, error);
+        return null; // Handle error appropriately
+    }
+}
 
 export const getHistoryBook = async (playerId: string) =>{
     try {
