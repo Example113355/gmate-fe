@@ -1,9 +1,48 @@
 import axios from 'axios'
 import { useEffect, useRef, useState } from 'react'
 import moment from 'moment';
+import { useParams } from 'react-router-dom';
+import { Alert, Flex, Input, Modal, Spin } from 'antd';
 
 const PlayerProfile = () => {
-    const playerId = '6747efc732ac0ac2da3d2030';
+    const playerId = '674f994f63e208a84ae8c965';
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [imageFile, setImageFile] = useState(null);
+    const [reviews, setReviews] = useState([]);
+    const [avatarFile, setAvatarFile] = useState(null);
+    const showModal = () => {
+      setIsModalOpen(true);
+    };
+    const handleFileChange = (e) => {
+        setImageFile(e.target.files[0]);
+    };
+
+    const handleAvatarChange = (e) => {
+        setAvatarFile(e.target.files[0]);
+    };
+
+    const handleOk = async () => {
+      setIsModalOpen(false);
+      try {
+        
+        const response = await axios.put(`http://localhost:3000/api/v1/players/${playerId}`,{
+            categories: [...profile.categories,{category:newGame}],
+        })
+        if (response.status === 200) {
+            fetchPlayerProfile();
+        } else {
+            console.log("Fail to update player profile")
+        }
+
+    } catch (error) {
+        console.log(error.message);
+    }
+    };
+    const handleCancel = () => {
+      setIsModalOpen(false);
+    };
+    const [newGame, setNewGame] = useState("New game");
     const [profile, setProfile] = useState({});
     const [editMode, setEditMode] = useState(false);
     const [editDes, setEditDes] = useState(false);
@@ -16,9 +55,22 @@ const PlayerProfile = () => {
     const [introduce, setIntroduce] = useState(profile?.introduce);
     const fetchPlayerProfile = async ()=> {
         try {
-            const response = await axios.get(`http://localhost:3000/api/v1/player/${playerId}`);
+            const response = await axios.get(`http://localhost:3000/api/v1/players/${playerId}`);
             if (response.status === 200) {
                 setProfile(response.data);
+            } else {
+                console.log("Fail to get player profile!");
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    const fetchReviews = async ()=> {
+        try {
+            const response = await axios.get(`http://localhost:3000/api/v1/reviews/playerId/${playerId}`);
+            if (response.status === 200) {
+                setReviews(response.data);
             } else {
                 console.log("Fail to get player profile!");
             }
@@ -31,6 +83,12 @@ const PlayerProfile = () => {
         
         fetchPlayerProfile();
     },[playerId])
+
+    useEffect(()=> {
+        
+        fetchReviews();
+    },[playerId])
+
 
     
 
@@ -82,7 +140,7 @@ const PlayerProfile = () => {
         setEditMode(false);
         const updateName = inputRef.current.value;
         try {
-            const response = await axios.put(`http://localhost:3000/api/v1/player/${playerId}`,{
+            const response = await axios.put(`http://localhost:3000/api/v1/players/${playerId}`,{...profile,
                 nameDisplay: updateName,
             })
             if (response.status === 200) {
@@ -102,7 +160,7 @@ const PlayerProfile = () => {
         setEditDes(false);
         const updateDes = desRef.current.value;
         try {
-            const response = await axios.put(`http://localhost:3000/api/v1/player/${playerId}`,{
+            const response = await axios.put(`http://localhost:3000/api/v1/players/${playerId}`,{
                 description: updateDes,
             })
             if (response.status === 200) {
@@ -122,7 +180,7 @@ const PlayerProfile = () => {
         setEditIntroduce(false);
         const newIntroduce = introduceRef.current.value;
         try {
-            const response = await axios.put(`http://localhost:3000/api/v1/player/${playerId}`,{
+            const response = await axios.put(`http://localhost:3000/api/v1/players/${playerId}`,{
                 introduce: newIntroduce,
             })
             if (response.status === 200) {
@@ -141,7 +199,7 @@ const PlayerProfile = () => {
     const handleDeleteCategory = async (name) => {
        const newCategories = profile.categories?.filter((cate)=> {return cate.category !== name});
        try {
-            const response = await axios.put(`http://localhost:3000/api/v1/player/${playerId}`,{
+            const response = await axios.put(`http://localhost:3000/api/v1/players/${playerId}`,{
                 categories: newCategories,
             })
             if (response.status === 200) {
@@ -158,7 +216,7 @@ const PlayerProfile = () => {
     const handleDeleteImage = async (name) => {
         const newImages = profile.pics?.filter((pic)=> {return pic.url !== name});
         try {
-             const response = await axios.put(`http://localhost:3000/api/v1/player/${playerId}`,{
+             const response = await axios.put(`http://localhost:3000/api/v1/players/${playerId}`,{
                  pics: newImages,
              })
              if (response.status === 200) {
@@ -178,13 +236,129 @@ const PlayerProfile = () => {
         
     }
 
+    const avatar = profile.pics? profile.pics[0].url:"";
+
+    const handleUploadFile = async () => {
+        if (!imageFile) {
+            alert("Vui lòng chọn ảnh!");
+            return;
+        }
+        const formData = new FormData();
+        formData.append("file", imageFile);
+        formData.append("upload_preset", "TMDTHK241"); // Tạo trong Cloudinary
+        formData.append("cloud_name", "degq59937");
+        setLoading(true);
+        try {
+            const response = await axios.post(
+              "https://api.cloudinary.com/v1_1/degq59937/image/upload",
+              formData
+            );
+      
+            
+            if (response.status === 200) {
+                const imageUrl = response.data.secure_url; // Link ảnh sau khi upload
+            
+                const response2 = await axios.put(`http://localhost:3000/api/v1/players/${playerId}`,{
+                    pics: [...profile.pics,{url: imageUrl}],
+                })
+                if (response2.status === 200) {
+                    setLoading(false);
+                    fetchPlayerProfile();
+                }
+            } else {
+                console.log("Fail to update player profile")
+            }
+            
+      
+            // Gửi link ảnh về backend
+            
+            alert("Upload thành công!");
+          } catch (error) {
+            console.error("Lỗi khi upload ảnh:", error);
+            alert("Upload thất bại!");
+        } 
+
+    };
+
+    const handleUploadFile2 = async () => {
+        if (!avatarFile) {
+            alert("Vui lòng chọn ảnh!");
+            return;
+        }
+        const formData = new FormData();
+        formData.append("file", avatarFile);
+        formData.append("upload_preset", "TMDTHK241"); // Tạo trong Cloudinary
+        formData.append("cloud_name", "degq59937");
+        setLoading(true);
+        try {
+            const response = await axios.post(
+              "https://api.cloudinary.com/v1_1/degq59937/image/upload",
+              formData
+            );
+      
+            
+            if (response.status === 200) {
+                
+                
+                const imageUrl = response.data.secure_url; // Link ảnh sau khi upload
+            
+                const response2 = await axios.put(`http://localhost:3000/api/v1/players/${playerId}`,{
+                pics: [{url: imageUrl},...profile.pics],
+                })
+
+                if(response2.status === 200) {
+                    fetchPlayerProfile();
+                    setLoading(false);
+                }
+            } else {
+                console.log("Fail to update player profile")
+            }
+            
+      
+            // Gửi link ảnh về backend
+            
+            alert("Upload thành công!");
+          } catch (error) {
+            console.error("Lỗi khi upload ảnh:", error);
+            alert("Upload thất bại!");
+        } 
+
+    };
+
+    const handleAddGame = async () => {
+        
+        showModal();
+            
+    }
+
+
+    useEffect(()=> {
+        console.log("Game:", newGame);
+    },[newGame]);
+    
+
     return (
         <div className="container-2xl">
+            <Flex gap="middle" vertical>
+                <Spin spinning={loading} >
+                    
+                </Spin>
+      
+            </Flex>
+            <Modal title="Thêm game mới" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                <Input onChange={e=>setNewGame(e.target.value)} placeholder="Nhập tên game" />
+            </Modal>
             {/* <PlayerHeader id={1} /> */}
             <div className='container flex justify-between mx-auto my-8'>
                 <div className='w-1/6 mr-8'>
-                    <img src={profile.avatar} alt='avatar'></img>
-                    <p className='py-6 text-xl text-center text-emerald-600 '>Cập nhật ảnh</p>
+                    <img src={avatar} alt='avatar'></img>
+                    <p onClick={handleUploadFile2} className='hover:cursor-pointer py-4 text-xl text-center text-emerald-600 '>Cập nhật ảnh</p>
+                    <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleAvatarChange}
+                                    // className="hidden"
+                                />
                     <p className='text-xl text-center text-neutral-500'>NGÀY THAM GIA: {moment(profile.createAt).format("DD/MM/YYYY")}</p>
                     <div className='flex items-center mt-8'>
                         <h3 className='text-2xl text-red-500'>GIỚI THIỆU:</h3>
@@ -256,7 +430,7 @@ const PlayerProfile = () => {
                                 </div>
                                 <div className='p-8 text-center'>
                                     <p>ĐÃ ĐƯỢC THUÊ</p>
-                                    <p className='pt-4 text-red-500'>500 GIỜ</p>
+                                    <p className='pt-4 text-red-500'>{profile.totalRentHour} GIỜ</p>
                                 </div>
                                 <div className='p-8 text-center'>
                                     <p>TỶ LỆ HOÀN THÀNH</p>
@@ -296,6 +470,7 @@ const PlayerProfile = () => {
                                 
                                 <div className='bg-red-500 rounded-md'>
                                     <button
+                                        onClick={handleAddGame}
                                         style={{ width: "35px", height: "35px" }}
                                         className="flex items-center justify-center p-2 mb-2 text-white hover:text-red-600"
                                     >
@@ -314,6 +489,13 @@ const PlayerProfile = () => {
                             <div className='flex justify-between py-4 text-2xl'>
                                 <p>ẢNH TẢI LÊN</p>
                                 <p className='text-green-500'>Thêm ảnh mới</p>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleFileChange}
+                                    // className="hidden"
+                                />
+                                <button className='bg-red-600 text-white px-6 py-4 hover:opacity-80' onClick={handleUploadFile}>Submit</button>
                             </div>
                             <div className='flex gap-4'>
                                 {profile.pics?.map((pic,index)=> {
@@ -368,30 +550,30 @@ const PlayerProfile = () => {
                             }
                             <div className='h-0.5 bg-gray-500'></div>
 
-                            <p className='py-4 text-2xl'>ĐÁNH GIÁ</p>
-                            <div className='flex justify-between'>
-                                <img src={profile.avatar} className='w-14 h-14' />
-                                <div className='flex-1 ml-4'>
-                                    <p className='text-2xl text-blue-500'>Lâm Trúc</p>
-                                    <div>04:22:39   27/8/2024</div>
-                                    <p className='text-xl'>Mê bạn này quá tr</p>
-                                    <div className='h-0.5 bg-gray-500'></div>
-                                </div>
-                            </div>
+                            <p className='py-4 text-2xl'>ĐÁNH GIÁ ({reviews.length})</p>
+                            {
+                                reviews.map((review, idx) => {
+                                    return (
+                                        <div key={idx} className='flex justify-between'>
+                                            <img src={avatar} className='w-14 h-14' />
+                                            <div className='flex-1 ml-4'>
+                                                <p className='text-2xl text-blue-500'>Lâm Trúc</p>
+                                                <div>{moment(review.createAt).format("DD/MM/YYYY")}</div>
+                                                <p className='text-xl'>{review.review}</p>
+                                                <div className='h-0.5 bg-gray-500'></div>
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                            }
+                            
                             
                            
 
                         </div>
 
                     </div>
-                    <div className='flex gap-2 mx-auto mt-4 ml-72'>
-                        <div className='p-4 border-2 border-rose-500'>Previous</div>
-                        <div className='p-4 text-white border-2 bg-rose-500 border-rose-500'>1</div>
-                        <div className='p-4 border-2 border-rose-500'>2</div>
-                        <div className='p-4 border-2 border-rose-500'>3</div>
-                        <div className='p-4 border-2 border-rose-500'>4</div>
-                        <div className='p-4 border-2 border-rose-500'>Next</div>
-                    </div>
+                   
                 </div>
 
             </div>
