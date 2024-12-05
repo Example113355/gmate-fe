@@ -17,7 +17,7 @@ const Message: React.FC<MessageProps> = ({ message }) => {
 
   return (
     <div
-      className={`p-3 rounded-full mb-2 max-w-[280px] inline-block ml-auto ${
+      className={`p-3 rounded-full mb-2 max-w-[280px] inline-block  ${
         fromMe ? "bg-red-500 text-white ml-auto" : "bg-gray-200 text-gray-800"
       }`}
     >

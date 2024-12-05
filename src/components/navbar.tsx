@@ -12,7 +12,7 @@ import PaymentModal from "../components/payment-modal";
 import WithdrawModal from "../components/withdraw-modal";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../contexts/UserContext";
-import RentModal from "./RentModal";
+import { post } from "../utils/http_2";
 
 interface NavbarProps {
   tabState: TabState;
@@ -27,6 +27,27 @@ const Navbar: React.FC<NavbarProps> = ({ tabState, setTabState, onLogout }) => {
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
   const { user } = useUser();
   const [balance, setBalance] = useState(0);
+  const [liveBookings, setLiveBookings] = useState<any>(null);
+  let dueTime: any = null;
+  const calculateTimeLeft = () => {
+    const now = new Date();
+
+    const timeDiff =
+      dueTime instanceof Date ? dueTime.getTime() - now.getTime() : 0;
+    console.log("timeDiff:", timeDiff);
+    console.log(dueTime);
+
+    if (timeDiff <= 0) {
+      return null; // Countdown is finished
+    }
+
+    const hours = Math.floor((timeDiff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((timeDiff / (1000 * 60)) % 60);
+    const seconds = Math.floor((timeDiff / 1000) % 60);
+
+    return { hours, minutes, seconds };
+  };
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
   const handleTabChange = (id: string) => {
     setTabState((prevState) => ({ ...prevState, activeTabId: id }));
@@ -50,7 +71,36 @@ const Navbar: React.FC<NavbarProps> = ({ tabState, setTabState, onLogout }) => {
       }
     };
 
+    const fetchLiveBookings = async () => {
+      try {
+        const response: any = await post("/rent/getlivebooking", {
+          user_id: user._id,
+          is_user: !user.isGmater,
+        });
+        console.log("live bookings:", response);
+        setLiveBookings(response.data.booking[0]);
+        console.log("live bookings time:", response.data.booking[0].timeEnd);
+        if (response.data.booking[0].timeEnd) {
+          dueTime = new Date(response.data.booking[0].timeEnd);
+        }
+
+        const interval = setInterval(() => {
+          const newTimeLeft = calculateTimeLeft();
+          if (newTimeLeft === null) {
+            clearInterval(interval);
+            setTimeLeft(null); // Stop the countdown when finished
+          } else {
+            setTimeLeft(newTimeLeft);
+          }
+        }, 1000); // Update every second
+        return () => clearInterval(interval);
+      } catch (error) {
+        console.error("Error fetching live bookings:", error);
+      }
+    };
+
     fetchBalance();
+    if (user._id) fetchLiveBookings();
   }, [user._id]);
 
   const openChatBox = () => setIsChatBoxOpen(true);
@@ -130,7 +180,6 @@ const Navbar: React.FC<NavbarProps> = ({ tabState, setTabState, onLogout }) => {
                   ) : null
                 }
               </button>
-              
 
               <div className="hidden miic:flex items-center justify-center bg-background px-4 py-2 rounded-lg">
                 <img
@@ -138,7 +187,9 @@ const Navbar: React.FC<NavbarProps> = ({ tabState, setTabState, onLogout }) => {
                   alt=""
                   className="w-10 h-10"
                 ></img>
-                <h1 className="font-suez text-black text-xl ml-2">{balance.toLocaleString()} đ</h1>
+                <h1 className="font-suez text-black text-xl ml-2">
+                  {balance.toLocaleString()} đ
+                </h1>
                 <button className="ml-4" onClick={handleOpenPaymentModal}>
                   <FiPlusCircle className="text-4xl text-red-400 hover:text-red-600" />
                 </button>
@@ -165,9 +216,18 @@ const Navbar: React.FC<NavbarProps> = ({ tabState, setTabState, onLogout }) => {
         </div>
       </nav>
       <PaymentModal show={showPaymentModal} onClose={handleClosePaymentModal} />
-      <WithdrawModal show={showWithdrawModal} onClose={handleCloseWithdrawModal} />
+      <WithdrawModal
+        show={showWithdrawModal}
+        onClose={handleCloseWithdrawModal}
+      />
       <ChatBox isOpen={isChatBoxOpen} onClose={closeChatBox} />
-
+      <div className="flex flex-1 justify-end">
+        {timeLeft ? (
+          <p>{`${timeLeft.hours} hours ${timeLeft.minutes} minutes ${timeLeft.seconds} seconds left`}</p>
+        ) : (
+          <p>Time's up!</p>
+        )}
+      </div>
     </>
   );
 };

@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { getBookingListById, updateBookingStatus } from "../ApiService";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const PlayerBookingList = ({ playerId }: { playerId: string }) => {
   const [bookings, setBookings] = useState<any[]>([]);
@@ -85,9 +87,13 @@ const PlayerBookingList = ({ playerId }: { playerId: string }) => {
         );
     }
   };
+  const navigate = useNavigate();
 
-  const handleAcceptBooking = async (bookingId: string) => {
+  const handleAcceptBooking = async (bookingId: string, userId: string) => {
     try {
+      console.log("Accepting booking...");
+      console.log(bookingId);
+      console.log(userId);
       // Gọi API để chấp nhận đặt chơi
       await updateBookingStatus(playerId, bookingId, "Accept");
       // Sửa lại thứ tự record trong bảng booking
@@ -95,6 +101,18 @@ const PlayerBookingList = ({ playerId }: { playerId: string }) => {
         booking._id === bookingId ? { ...booking, status: "Accept" } : booking
       );
       setBookings(sortBookings(updatedBookings));
+      const res = await axios({
+        method: "POST",
+        url: `http://localhost:3000/api/v1/messages/send/${userId}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        data: {
+          message:
+            "Yêu cầu thuê của bạn đã được chấp nhận, nhắn tin với mình nhé",
+        },
+      });
+      window.location.href = "/";
     } catch (error) {
       console.error("Error accepting booking:", error);
     }
@@ -271,7 +289,9 @@ const PlayerBookingList = ({ playerId }: { playerId: string }) => {
                           marginRight: "5px",
                           cursor: "pointer",
                         }}
-                        onClick={() => handleAcceptBooking(booking._id)}
+                        onClick={() =>
+                          handleAcceptBooking(booking._id, booking.userId)
+                        }
                         disabled={
                           booking.status === "Accept" ||
                           booking.status === "Cancelled"
