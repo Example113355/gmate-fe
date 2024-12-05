@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCommenting, faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 import Sidebar from './Sidebar';
 import MessageContainer from './MessageContainer';
+import React from 'react';
 
 interface ChatBoxProps {
   isOpen: boolean;
@@ -40,9 +41,7 @@ const ChatBox = ({ isOpen, onClose }: ChatBoxProps) => {
           <div className="w-1/3 bg-gray-100 border-r border-gray-300 overflow-y-auto" style={{ maxHeight: '550px' }}>
             <Sidebar />
           </div>
-
           <MessageContainer />
-
         </div>
       </div>
     </div>

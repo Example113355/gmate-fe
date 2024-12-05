@@ -1,32 +1,36 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import useGetMessages from '../../hooks/useGetMessages';
+
 import Message from './Message';
+import useListenMessages from '../../hooks/useListenMessages';
 
 const Messages: React.FC = () => {
-  const messagesEndRef = useRef<HTMLDivElement | null>(null);
-
-  const scrollToBottom = () => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  const { messages, loading } = useGetMessages();
+  useListenMessages();
+  const lastMessageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    scrollToBottom();
-  }, []);
+    setTimeout(() => {
+      lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  }, [messages]);
 
   return (
     <div className="flex-1 overflow-y-auto px-4 text-2xl">
-      <Message text="Hello, this is a message from the other user! Hello, this is a message from the other user!" isUser={false} />
-      <Message text="Hello! This is a message from you." isUser={true} />
-      <Message text="Another message to test scrolling..." isUser={false} />
-      <Message text="More messages to test scrollability." isUser={true} />
-      <Message text="Hello, this is a message from the other user!" isUser={false} />
-      <Message text="Hello! This is a message from you." isUser={true} />
-      <Message text="Another message to test scrolling..." isUser={false} />
-      <Message text="More messages to test scrollability." isUser={true} />
+      {
+        !loading && messages.length > 0 &&
+          messages.map((message) => (
+            <div key={message._id} ref={lastMessageRef}>
+              <Message message={message} />
+            </div>
+          ))
+      }
 
-      {/* Invisible div to anchor scroll position */}
-      <div ref={messagesEndRef} />
+      {
+        !loading && messages.length === 0 && (
+          <p className='text-center'>Gửi tin nhắn để bắt đầu cuộc trò chuyện</p>
+        )
+      }
     </div>
   );
 };
