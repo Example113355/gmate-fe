@@ -23,7 +23,7 @@ const PlayerHistory = () => {
     }, [id]);
     const getStatusTag = (status: string) => {
         switch (status) {
-            case "Completed":
+            case "Accept":
                 return <span style={{ backgroundColor: "#8bc34a", padding: "2px 5px", borderRadius: "4px", color: "#fff" }}>Hoàn thành</span>;
             case "Cancelled":
                 return <span style={{ backgroundColor: "#e74c3c", padding: "2px 5px", borderRadius: "4px", color: "#fff" }}>Từ chối</span>;
