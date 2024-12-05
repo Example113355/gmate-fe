@@ -229,10 +229,10 @@ const fetchPlayerFromAPI = async ({
 };
 
 const UserHomePage = () => {
-  const { user } = useUser();
   const [games, setGames] = useState<Game[]>([]); // Chỉ định kiểu mảng các game
   const [, setLoading] = useState(true); // Trạng thái loading
   const navigate = useNavigate();
+  const { user } = useUser();
 
   useEffect(() => {
     // Gọi API và cập nhật dữ liệu
@@ -252,7 +252,6 @@ const UserHomePage = () => {
     // Gọi API và cập nhật dữ liệu
     fetchDonatePlayerRankingFromAPI().then((data) => {
       setTopDonate(data); // Dữ liệu phải có kiểu Game[]
-      console.log("Top Donate", data);
       setLoading(false); // Đặt loading thành false khi nhận được dữ liệu
     });
 
@@ -274,7 +273,6 @@ const UserHomePage = () => {
 
     fetchPlayerFromAPI({ fillter: "popular" }).then((data) => {
       setPopular(data);
-      console.log("Popular", data);
       setLoading(false);
     });
   }, [user]);
@@ -307,7 +305,6 @@ const UserHomePage = () => {
   const startIndex2 = (currentPage2 - 1) * itemsPerPage2;
   const endIndex2 = startIndex2 + itemsPerPage2;
   const currentPlayers2 = popular.slice(startIndex2, endIndex2);
-  console.log("Current Players 2", currentPlayers2);
 
   // Xử lý nút Next và Prev
   const handleNext2 = () => {
@@ -401,7 +398,7 @@ const UserHomePage = () => {
               {topDonate.map((player, index) => (
                 <div
                   key={player.id}
-                  className="ranking-child"
+                  className="ranking-child hover:bg-background"
                   id={`top${index + 1}`}
                 >
                   {index < 3 ? (
@@ -437,11 +434,12 @@ const UserHomePage = () => {
               {topGmaster.map((player, index) => (
                 <div
                   key={player.id}
-                  className="ranking-child"
+                  className="ranking-child hover:bg-background"
                   id={`top${index + 1}`}
                   onClick={() => {
                     navigate(`/user/${player.userId._id}`);
                   }}
+                  style={{ cursor: "pointer" }}
                 >
                   {index < 3 ? (
                     <img
@@ -472,7 +470,16 @@ const UserHomePage = () => {
         </div>
         <div className="pro-player-list">
           {currentPlayers2.map((player) => (
-            <div className="pro-player-item" key={player.userId}>
+            <div
+              className="pro-player-item"
+              key={player.userId}
+              style={{
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                navigate(`/user/${player.userId._id}`);
+              }}
+            >
               <img src={player?.userId?.avatar} alt="avatar" />
               <div className="name-container">
                 <h4>{player.nameDisplay}</h4>
@@ -532,7 +539,7 @@ const UserHomePage = () => {
         </div>
         <div className="pro-player-list">
           {currentPlayers.map((player) => (
-            <div className="pro-player-item" key={player.userId}>
+            <div className="pro-player-item" key={player.userId} >
               <img src={player?.userId?.avatar} alt="avatar" />
               <div className="name-container">
                 <h4>{player.nameDisplay}</h4>

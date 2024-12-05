@@ -14,6 +14,7 @@ export interface User {
   pics: Pic[];
   categories: Category[];
   createAt: Date;
+  createdAt: Date;
   updateAt: Date;
   description: string;
 }

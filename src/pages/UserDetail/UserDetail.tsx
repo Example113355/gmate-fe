@@ -11,9 +11,11 @@ import { useParams } from "react-router-dom";
 import openNotification from "../../components/notify";
 import { User } from "./interface";
 
+
 const UserDetail = () => {
   const { id } = useParams<{ id: string }>();
   const [user, setUser] = useState<User>();
+
 
   useEffect(() => {
     get(`/players/${id}`, {}).then((response: any) => {
@@ -140,6 +142,8 @@ const UserDetail = () => {
       </div>
 
       <div className="right_sidebar">{user && <UserPayment user={user} />}</div>
+
+
     </div>
   );
 };

@@ -3,8 +3,6 @@ import "./UserInfo.css";
 import { User } from "../interface";
 
 const UserInfo = ({ user }: { user: User }) => {
-  const createdAtDate = new Date(user.createAt);
-  const start_day = createdAtDate.toISOString().split("T")[0];
   console.log(user);
 
   return (
@@ -17,7 +15,7 @@ const UserInfo = ({ user }: { user: User }) => {
         </h3>
 
         <span>
-          Ngày tham gia: <span className="start_day">{start_day}</span>
+          Ngày tham gia: <span className="start_day">12/2024</span>
         </span>
       </div>
 
@@ -25,7 +23,7 @@ const UserInfo = ({ user }: { user: User }) => {
         <h3>Giới thiệu:</h3>
 
         <div className="description--container">
-          <UserDescription date={start_day} description={user.introduce} />
+          <UserDescription date="12/2024" description={user.introduce} />
         </div>
       </div>
     </div>

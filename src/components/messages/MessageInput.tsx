@@ -25,7 +25,9 @@ const MessageInput: React.FC = () => {
         onChange={(e) => setMessage(e.target.value)} // Update state on input change
       />
       <button onClick={() => handleSubmit()} className="ml-3">
-        <FontAwesomeIcon icon={faPaperPlane} color="#f0564a" className="text-4xl" />
+        <FontAwesomeIcon icon={faPaperPlane} color={
+          message ? "#f0564a" : "gray"
+        } className="text-4xl" />
       </button>
     </div>
   );

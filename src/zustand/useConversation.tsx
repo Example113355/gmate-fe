@@ -10,8 +10,8 @@ interface Conversation {
 interface ConversationState {
     selectedConversation: Conversation | null;
     setSelectedConversation: (selectedConversation: Conversation | null) => void;
-    messages: [];
-    setMessages: (messages: []) => void;
+    messages: any[];
+    setMessages: (messages: any[]) => void;
 }
 
 const useConversation = create<ConversationState>((set) => ({

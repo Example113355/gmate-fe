@@ -6,14 +6,13 @@ import { TabState } from "./tabs/interface";
 import { useUser } from "../contexts/UserContext";
 
 const MainLayout = () => {
-
   const { user, setUser } = useUser();
   const navigate = useNavigate();
   const [tabState, setTabState] = useState<TabState>({
     activeTabId: "1",
     tabs: [
       { id: "1", title: "Trang chủ", to: "/" },
-      { id: "2", title: "Trở thành GMater", to: "/user-homepage" },
+      { id: "2", title: "Trở thành GMater", to: "/sign-gmate" },
       { id: "3", title: "Cài đặt", to: "/settings" },
     ],
   });
@@ -38,7 +37,7 @@ const MainLayout = () => {
         activeTabId: "1",
         tabs: [
           { id: "1", title: "Trang chủ", to: "/" },
-          { id: "2", title: "Trở thành GMater", to: "/user-homepage" },
+          { id: "2", title: "Trở thành GMater", to: "/sign-gmate" },
           { id: "3", title: "Cài đặt", to: "/settings" },
         ],
       };
@@ -51,7 +50,7 @@ const MainLayout = () => {
     if (user.email === "") {
       //get user from local storage
       const newUser = localStorage.getItem("user");
-      
+
       if (newUser) {
         setUser(JSON.parse(newUser));
       }

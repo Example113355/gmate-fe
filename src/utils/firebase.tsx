@@ -18,7 +18,7 @@ const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 let messaging: Messaging;
 messaging = getMessaging(app);
 
-export const fetchToken = (setTokenFound: (arg0: boolean) => void) => {
+export const fetchToken = (setTokenFound: (arg0: any) => void) => {
   Notification.requestPermission().then((permission) => {
     // If the user accepts, let's create a notification
     if (permission === "granted") {
@@ -29,7 +29,7 @@ export const fetchToken = (setTokenFound: (arg0: boolean) => void) => {
         .then((currentToken) => {
           if (currentToken) {
             console.log("current token for client: ", currentToken);
-            setTokenFound(true);
+            setTokenFound(currentToken);
           } else {
             console.log(
               "No registration token available. Request permission to generate one."
