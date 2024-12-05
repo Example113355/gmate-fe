@@ -192,6 +192,11 @@
     display: flex;
     gap: 12px;
     margin-bottom: 4px;
+    overflow-x: auto;
+}
+
+.content_info--img::-webkit-scrollbar {
+    display: none;
 }
 
 .thumbnail {
@@ -216,4 +221,73 @@
     height: 100%;
     object-fit: cover;
     border-radius: 8px;
+}
+
+@media(max-width: 1200px) {
+    .user_detail {
+        flex-direction: column;
+        padding: 0 100px;
+    }
+    .user_description--wrapper h3 {
+        font-size: 2.4rem;
+    }
+    .user_description--wrapper p {
+        font-size: 1.8rem;
+    }
+    .user_description--wrapper span {
+        font-size: 1.6rem;
+    }
+    .user_detail .left_sidebar {
+        order: 1;
+    }
+    .user_detail .right_sidebar {
+        order: 2;
+    }
+    .user_detail .content {
+        order: 3;
+        border-top: 1px solid #a6a7a8;
+    }
+    .user_payment {
+        width: 60%;
+        margin: auto;
+    }
+    .content_header--bottom {
+        justify-content: space-between;
+    }
+}
+
+@media(max-width: 768px) {
+    .user_payment {
+        width: 90%;
+    }
+    .user_content_item .title {
+        font-size: 1.4rem;
+    }
+    .user_detail {
+        padding: 0 50px;
+    }
+}
+
+@media(max-width: 576px) {
+    .user_detail {
+        padding: 0 20px;
+    }
+    .content_header--top {
+        padding-top: 10px;
+    }
+    .content_header--top h3 {
+        font-size: 2rem;
+    }
+    .user_content_item .title {
+        text-align: center;
+    }
+    .user_description--wrapper h3 {
+        font-size: 1.8rem;
+    }
+    .user_description--wrapper p {
+        font-size: 1.4rem;
+    }
+    .user_description--wrapper span {
+        font-size: 1.2rem;
+    }
 }

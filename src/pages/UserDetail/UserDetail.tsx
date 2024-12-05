@@ -16,7 +16,7 @@ const UserDetail = () => {
   const [user, setUser] = useState<User>();
 
   useEffect(() => {
-    get(`/players/${id}`, {}).then((response: any) => {
+    get(`/player/${id}`, {}).then((response: any) => {
       if (response.status === 200) {
         setUser(response.data);
       } else {
