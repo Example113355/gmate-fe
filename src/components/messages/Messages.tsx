@@ -1,29 +1,40 @@
-import React, { useEffect, useRef } from 'react';
-import Message from './Message';
+import React, { useEffect, useRef } from "react";
+import Message from "./Message";
+import { useUser } from "../../contexts/UserContext";
 
-const Messages: React.FC = () => {
+interface MessagesProps {
+  listMessages: any[]; // Adjust the type according to your actual data structure
+}
+
+const Messages: React.FC<MessagesProps> = ({ listMessages }) => {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const {user} = useUser();
 
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   useEffect(() => {
+    const temp = listMessages;
     scrollToBottom();
   }, []);
 
   return (
     <div className="flex-1 overflow-y-auto px-4 text-2xl">
-      <Message text="Hello, this is a message from the other user! Hello, this is a message from the other user!" isUser={false} />
-      <Message text="Hello! This is a message from you." isUser={true} />
-      <Message text="Another message to test scrolling..." isUser={false} />
-      <Message text="More messages to test scrollability." isUser={true} />
-      <Message text="Hello, this is a message from the other user!" isUser={false} />
-      <Message text="Hello! This is a message from you." isUser={true} />
-      <Message text="Another message to test scrolling..." isUser={false} />
-      <Message text="More messages to test scrollability." isUser={true} />
+      <div className=" flex flex-col px-4 ">
+      {listMessages.map((message, index) => (
+        <Message
+          key={index}
+          text={message.message}
+          isUser={message.senderId == user._id}
+        />
+      ))}
+      </div>
+      
+
+      {/* Example messages */}
 
       {/* Invisible div to anchor scroll position */}
       <div ref={messagesEndRef} />

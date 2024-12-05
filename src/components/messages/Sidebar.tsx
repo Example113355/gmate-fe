@@ -3,10 +3,14 @@ import Conversation from "./Conversation";
 
 import { get } from "../../utils/http_2";
 interface SidebarProps {
+  selectedConversation: any;
   setSelectedConversation: React.Dispatch<React.SetStateAction<null>>;
 }
 
-const Sidebar = ({ setSelectedConversation }: SidebarProps) => {
+const Sidebar = ({
+  selectedConversation,
+  setSelectedConversation,
+}: SidebarProps) => {
   const [conversations, setConversations] = useState([]);
   useEffect(() => {
     // Fetch conversations
@@ -18,6 +22,7 @@ const Sidebar = ({ setSelectedConversation }: SidebarProps) => {
       }
       console.log("Conversations:");
       console.log(response.data);
+      setSelectedConversation(response.data[0]);
     });
   }, []);
   return (
@@ -33,6 +38,7 @@ const Sidebar = ({ setSelectedConversation }: SidebarProps) => {
             "https://icons.veryicon.com/png/o/miscellaneous/rookie-official-icon-gallery/225-default-avatar.png"
           }
           onClick={() => setSelectedConversation(conversation)}
+          isSelected={selectedConversation?._id === conversation._id}
         />
       ))}
     </div>

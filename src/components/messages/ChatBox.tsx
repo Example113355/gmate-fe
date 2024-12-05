@@ -67,10 +67,10 @@ const ChatBox = ({ isOpen, onClose }: ChatBoxProps) => {
             className="w-1/3 bg-gray-100 border-r border-gray-300 overflow-y-auto"
             style={{ maxHeight: "550px" }}
           >
-            <Sidebar setSelectedConversation={setSelectedConversation} />
+            <Sidebar selectedConversation={selectedConversation} setSelectedConversation={setSelectedConversation} />
           </div>
 
-          <MessageContainer />
+          <MessageContainer listMessages={listMessages} selectedConversation={selectedConversation} setListMessages= {setListMessages}  />
         </div>
       </div>
     </div>
