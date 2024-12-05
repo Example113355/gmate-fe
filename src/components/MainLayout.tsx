@@ -6,6 +6,7 @@ import { TabState } from "./tabs/interface";
 import { useUser } from "../contexts/UserContext";
 
 const MainLayout = () => {
+
   const { user, setUser } = useUser();
   const navigate = useNavigate();
   const [tabState, setTabState] = useState<TabState>({
@@ -50,6 +51,7 @@ const MainLayout = () => {
     if (user.email === "") {
       //get user from local storage
       const newUser = localStorage.getItem("user");
+      
       if (newUser) {
         setUser(JSON.parse(newUser));
       }

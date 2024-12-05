@@ -1,10 +1,9 @@
-
-
 interface ConversationProps {
   name: string;
   lastMessage: string;
   lastActive: string;
   avatarUrl: string;
+  isSelected?: boolean;
   onClick: () => void;
 }
 
@@ -14,10 +13,13 @@ const Conversation: React.FC<ConversationProps> = ({
   lastActive,
   avatarUrl,
   onClick,
+  isSelected,
 }) => {
   return (
     <div
-      className="flex gap-4 items-center p-2 bg-white hover:bg-sky-500 rounded cursor-pointer border border-gray-300"
+      className={`flex gap-4 items-center p-2 bg-white ${
+        isSelected ? "bg-sky-500" : ""
+      } hover:bg-sky-500 rounded cursor-pointer border border-gray-300`}
       onClick={onClick}
     >
       <div className="avatar">
