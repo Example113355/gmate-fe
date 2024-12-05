@@ -90,7 +90,7 @@ const PlayerPie = () => {
   }, []);
 
   return (
-    <div className="border-2 border-solid border-black rounded-lg h-[74%] w-[100%]">
+    <div className="player-pie">
         <canvas ref={chartRef} className="w-64 h-64 p-1"></canvas>
     </div>
   );
