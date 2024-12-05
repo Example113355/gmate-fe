@@ -5,8 +5,11 @@ import TabBar from "./tabs/tabBar";
 import { TabState } from "./tabs/interface";
 import { CiSearch  } from "react-icons/ci";
 import { RiNotification2Line } from "react-icons/ri";
+import { PiHandWithdrawDuotone } from "react-icons/pi";
+import { FiPlusCircle } from "react-icons/fi";
 
 import PaymentModal from "../components/payment-modal";
+import WithdrawModal from "../components/withdraw-modal";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../contexts/UserContext";
 
@@ -20,6 +23,7 @@ const Navbar: React.FC<NavbarProps> = ({ tabState, setTabState, onLogout }) => {
   const navigate = useNavigate();
   const [isChatBoxOpen, setIsChatBoxOpen] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showWithdrawModal, setShowWithdrawModal] = useState(false);
   const { user } = useUser();
   const [balance, setBalance] = useState(0);
 
@@ -50,6 +54,8 @@ const Navbar: React.FC<NavbarProps> = ({ tabState, setTabState, onLogout }) => {
   const closeChatBox = () => setIsChatBoxOpen(false);
   const handleOpenPaymentModal = () => setShowPaymentModal(true);
   const handleClosePaymentModal = () => setShowPaymentModal(false);
+  const handleOpenWithdrawModal = () => setShowWithdrawModal(true);
+  const handleCloseWithdrawModal = () => setShowWithdrawModal(false);
 
   return (
     <>
@@ -121,6 +127,7 @@ const Navbar: React.FC<NavbarProps> = ({ tabState, setTabState, onLogout }) => {
                   ) : null
                 }
               </button>
+              
 
               <div className="hidden miic:flex items-center justify-center bg-background px-4 py-2 rounded-lg">
                 <img
@@ -129,15 +136,11 @@ const Navbar: React.FC<NavbarProps> = ({ tabState, setTabState, onLogout }) => {
                   className="w-10 h-10"
                 ></img>
                 <h1 className="font-suez text-black text-xl ml-2">{balance.toLocaleString()} đ</h1>
-                <button
-                  className="flex items-center justify-center ml-3"
-                  onClick={handleOpenPaymentModal}
-                >
-                  <img
-                    src="/assets/img/PlusIcon.png"
-                    alt=""
-                    className="w-6 h-6"
-                  />
+                <button className="ml-4" onClick={handleOpenPaymentModal}>
+                  <FiPlusCircle className="text-4xl text-red-400 hover:text-red-600" />
+                </button>
+                <button className="ml-2" onClick={handleOpenWithdrawModal}>
+                  <PiHandWithdrawDuotone className="text-4xl text-green-400 hover:text-green-600" />
                 </button>
               </div>
 
@@ -159,6 +162,7 @@ const Navbar: React.FC<NavbarProps> = ({ tabState, setTabState, onLogout }) => {
         </div>
       </nav>
       <PaymentModal show={showPaymentModal} onClose={handleClosePaymentModal} />
+      <WithdrawModal show={showWithdrawModal} onClose={handleCloseWithdrawModal} />
       <ChatBox isOpen={isChatBoxOpen} onClose={closeChatBox} />
     </>
   );
