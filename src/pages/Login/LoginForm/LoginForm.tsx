@@ -53,7 +53,7 @@ const LogInForm = () => {
 
     function handleSubmit() {
         form.validateFields().then(() => {
-            post('api/v1/public/auth/login', {
+            post('/public/auth/login', {
                 email: email,
                 password: password
             }).then((response) => {

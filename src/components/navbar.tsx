@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { apiCall } from "../utils/http";
 import ChatBox from "./messages/ChatBox";
 import TabBar from "./tabs/tabBar";
 import { TabState } from "./tabs/interface";
-import { CiSearch } from "react-icons/ci";
+import { CiSearch  } from "react-icons/ci";
 import { RiNotification2Line } from "react-icons/ri";
 import { Button } from "antd";
 import PaymentModal from "../components/payment-modal";
@@ -21,11 +21,30 @@ const Navbar: React.FC<NavbarProps> = ({ tabState, setTabState, onLogout }) => {
   const [isChatBoxOpen, setIsChatBoxOpen] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const { user, setUser } = useUser();
+  const [balance, setBalance] = useState(0);
 
   const handleTabChange = (id: string) => {
     setTabState((prevState) => ({ ...prevState, activeTabId: id }));
     navigate(tabState.tabs.find((tab) => tab.id === id)?.to || "/");
   };
+
+  useEffect(() => {
+    const fetchBalance = async () => {
+      console.log("user:", user);
+      if( user._id)
+      {
+        try {
+          console.log(user._id);
+          const response = await apiCall('get', `http://localhost:3000/api/v1/wallets/user/${user._id}`);
+          setBalance(response.balance);
+        } catch (error) {
+          console.error("Error fetching balance:", error);
+        }
+      }
+    };
+
+    fetchBalance();
+  }, [user._id]);
 
   const openChatBox = () => setIsChatBoxOpen(true);
   const closeChatBox = () => setIsChatBoxOpen(false);
@@ -109,7 +128,7 @@ const Navbar: React.FC<NavbarProps> = ({ tabState, setTabState, onLogout }) => {
                   alt=""
                   className="w-10 h-10"
                 ></img>
-                <h1 className="font-suez text-black text-xl ml-2">20.000đ</h1>
+                <h1 className="font-suez text-black text-xl ml-2">{balance.toLocaleString()} đ</h1>
                 <button
                   className="flex items-center justify-center ml-3"
                   onClick={handleOpenPaymentModal}

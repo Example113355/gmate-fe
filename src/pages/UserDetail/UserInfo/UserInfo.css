@@ -24,6 +24,10 @@
     margin-bottom: 6px;
 }
 
+.status.unactive {
+    color: #e74c3c;
+}
+
 .user_info span {
     font-size: 12px;
     color: #7f8c8d;
