@@ -2,7 +2,7 @@ export interface User {
   isGmater: boolean;
   isProfileCompleted: boolean;
   id: string;
-  userID: string;
+  userId: any;
   isProPlayer: boolean;
   totalRating: number;
   totalReview: number;

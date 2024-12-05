@@ -17,7 +17,6 @@ const Messages: React.FC<MessagesProps> = ({ listMessages }) => {
   };
 
   useEffect(() => {
-    const temp = listMessages;
     scrollToBottom();
   }, []);
 
